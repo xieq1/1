@@ -15,6 +15,6 @@ public class LoginServiceImpl implements LoginService{
     public User Login(String name,String password) {
         System.out.print(name);
         System.out.print(password);
-        return UserDao.Login(name,password);
+        return UserDao.UserLogin(name,password);
     }
 }

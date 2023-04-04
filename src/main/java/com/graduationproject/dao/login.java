@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository("UserDao")
 @Mapper
 public interface login {
-    public User Login(@Param("name")String name, @Param("password")String password);
+    public User UserLogin(@Param("name")String name, @Param("password")String password);
 }
