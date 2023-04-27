@@ -13,8 +13,8 @@ public class LoginServiceImpl implements LoginService{
     private login UserDao;
     @Override
     public User Login(String name,String password) {
-        System.out.print(name);
-        System.out.print(password);
+        //System.out.print(name);
+        //System.out.print(password);
         return UserDao.UserLogin(name,password);
     }
 }

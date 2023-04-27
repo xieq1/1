@@ -3,8 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link type="text/css" rel="stylesheet" href="/static/mycss.css">
+    <script src="/static/jquery-3.6.4.js"></script>
 </head>
 <body>
-<h1>HelloWord,admin</h1>
+<div class="container">
+    <!-- header -->
+    <div class="area row">
+        <div class="col-md-12 nav">
+            <ul>
+                <li><a href="#">个人信息</a></li>
+                <li class="right"><a href="#">退出</a></li>
+            </ul>
+        </div>
+    </div>
+    <!-- main  -->
+    <div class="area row">
+        <!-- sidebar -->
+        <div id="sidebar-placeholder"></div>
+        <script>
+            $(document).ready(function() {
+                $.ajax({
+                    url: "/static/sidebar.html",
+                    success: function(data) {
+                        $("#sidebar-placeholder").html(data);
+                    }
+                });
+            });
+        </script>
+        <!-- article -->
+        <div class="area grow-1" id="">
+            <h1>设计内容</h1>
+            <form id="form" th:action="@{/User/insert}" method="post">
+                <table>
+                    <tr>
+                        <td>用户名</td>
+                        <td><input id="username" name="name" value="" /></td>
+                    </tr>
+                    <tr>
+                        <td>密码</td>
+                        <td><input id="password" name="password" /></td>
+                    </tr>
+
+                    <tr>
+                        <td>权限等级</td>
+                        <td><input id="jurisdicion" name="jurisdicion" value="" /></td>
+                    </tr>
+                    <tr>
+                        <td>职位</td>
+                        <td><input id="job" name="job" value="" /></td>
+                    </tr>
+                    <tr>
+                        <td>工资</td>
+                        <td><input id="salary" name="salary" value="" /></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td align="right"><input type="submit" value="提交"></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+    <!-- footer -->
+    <div class="area footer row">
+        <div class="col-md-12">
+            <p>东北林业大学<br>
+                软件工程专业</p>
+        </div>
+    </div>
+</div>
 </body>
 </html>

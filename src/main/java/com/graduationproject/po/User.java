@@ -4,6 +4,51 @@ public class User {
     int userid;
     String name;
     String password;
+    String idnumber;
+    String jurisdicion;
+    String phone;
+    String job;
+    String salary;
+    public String getIdnumber() {
+        return idnumber;
+    }
+
+    public void setIdnumber(String idnumber) {
+        this.idnumber = idnumber;
+    }
+
+    public String getJurisdicion() {
+        return jurisdicion;
+    }
+
+    public void setJurisdicion(String jurisdicion) {
+        this.jurisdicion = jurisdicion;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getJob() {
+        return job;
+    }
+
+    public void setJob(String job) {
+        this.job = job;
+    }
+
+    public String getSalary() {
+        return salary;
+    }
+
+    public void setSalary(String salary) {
+        this.salary = salary;
+    }
+
     public int getUserid() {
         return userid;
     }
