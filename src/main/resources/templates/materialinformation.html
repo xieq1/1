@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
     <link type="text/css" rel="stylesheet" href="/mycss.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="/jquery-3.6.4.js"></script>
 </head>
 <body>
@@ -20,96 +21,103 @@
     <!-- main  -->
     <div class="area row">
         <!-- sidebar -->
-        <div class="area sidebar">
-            <div class="sidebar-group">
-                <h2>人员管理</h2>
-                <ul>
-                    <li><a th:href="@{/tostaffinformation}">员工信息管理</a></li>
-                </ul>
-            </div>
-            <div class="sidebar-group">
-                <h2>材料管理</h2>
-                <ul>
-                    <li><a th:href="@{/tomaterialinformation}">材料信息管理</a></li>
-                    <li><a th:href="@{/toinventorymanagement}">材料库存管理</a></li>
-                </ul>
-            </div>
-            <div class="sidebar-group">
-                <h2>设计方案管理</h2>
-                <ul>
-                    <li><a th:href="@{/todesign}">设计方案信息管理</a></li>
-                    <li><a th:href="@{/tooffer}">报价管理</a></li>
-                </ul>
-            </div>
-            <div class="sidebar-group">
-                <h2>施工过程管理</h2>
-                <ul>
-                    <li><a th:href="@{/toprocess}">施工流程管理</a></li>
-                    <li><a th:href="@{/toplan}">进度管理</a></li>
-                    <li><a th:href="@{/tocheck}">验收管理</a></li>
-                    <li><a th:href="@{/torecord}">施工记录管理</a></li>
-                </ul>
-            </div>
-            <div class="sidebar-group">
-                <h2>财务管理</h2>
-                <ul>
-                    <li><a th:href="@{/toslary}">工资管理</a></li>
-                    <li><a th:href="@{/topurchase}">采购管理</a></li>
-                    <li><a th:href="@{/tocost}">成本管理</a></li>
-                    <li><a th:href="@{/tocontract}">合同管理</a></li>
-                    <li><a th:href="@{/tostate}">报表管理</a></li>
-                    <li><a th:href="@{/toexpenditure}">支出统计</a></li>
-                </ul>
-            </div>
-            <div class="sidebar-group">
-                <h2>客户沟通管理</h2>
-                <ul>
-                    <li><a th:href="@{/toopinion}">客户意见管理</a></li>
-                    <li><a th:href="@{/tolink}">沟通记录管理</a></li>
-                    <li><a th:href="@{/tomessage}">客户信息管理</a></li>
-                </ul>
-            </div>
-            <div class="sidebar-group">
-                <h2>售后管理</h2>
-                <ul>
-                    <li><a th:href="@{/tomaintain1}">维修管理</a></li>
-                    <li><a th:href="@{/tomaintain}">维护管理</a></li>
-                </ul>
-            </div>
-        </div>
+        <div th:include="sidebar"></div>
         <!-- article -->
-        <div class="area grow-1" id="">
-            <h1>设计内容</h1>
-            <form id="form" th:action="@{/User/insert}" method="post">
-                <table>
-                    <tr>
-                        <td>用户名</td>
-                        <td><input id="username" name="name" value="" /></td>
-                    </tr>
-                    <tr>
-                        <td>密码</td>
-                        <td><input id="password" name="password" /></td>
-                    </tr>
+        <div class="container">
+            <!-- 操作按钮 -->
+            <div>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-modal">新增</button>
+                <button type="button" class="btn btn-danger" id="delete-selected-btn">删除所选</button>
+            </div>
 
-                    <tr>
-                        <td>权限等级</td>
-                        <td><input id="jurisdicion" name="jurisdicion" value="" /></td>
-                    </tr>
-                    <tr>
-                        <td>职位</td>
-                        <td><input id="job" name="job" value="" /></td>
-                    </tr>
-                    <tr>
-                        <td>工资</td>
-                        <td><input id="salary" name="salary" value="" /></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td align="right"><input type="submit" value="提交"></td>
-                    </tr>
-                </table>
+            <!-- 表格 -->
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th><input type="checkbox" id="select-all"></th>
+                    <th>ID</th>
+                    <th>名称</th>
+                    <th>库存数量</th>
+                    <th>规格</th>
+                    <th>品种</th>
+                    <th>价格（元）</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- 表格数据 -->
+                </tbody>
+            </table>
+
+            <!-- 分页 -->
+            <ul class="pagination">
+                <li><a href="#">«</a></li>
+                <li class="active"><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li><a href="#">»</a></li>
+            </ul>
+        </div>
+
+        <!-- 新增/编辑材料信息的模态框 -->
+        <div class="modal fade" id="add-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <form id="add-form">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span>&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">新增/编辑材料信息</h4>
+                        </div>
+                        <div class="modal-body">
+                            <!-- 表单数据项 -->
+                            <div class="form-group">
+                                <label for="id-input" class="control-label">ID:</label>
+                                <input type="text" class="form-control" id="id-input" placeholder="请输入材料ID">
+                            </div>
+                            <div class="form-group">
+                                <label for="name-input" class="control-label">名称:</label>
+                                <input type="text" class="form-control" id="name-input" placeholder="请输入材料名称">
+                            </div>
+                            <div class="form-group">
+                                <label for="amount-input" class="control-label">库存数量:</label>
+                                <input type="number" class="form-control" id="amount-input" placeholder="请输入材料库存数量">
+                            </div>
+                            <div class="form-group">
+                                <label for="spec-input" class="control-label">规格:</label>
+                                <input type="text" class="form-control" id="spec-input" placeholder="请输入材料规格">
+                            </div>
+                            <div class="form-group">
+                                <label for="type-select" class="control-label">品种:</label>
+                                <select class="form-control" id="type-select">
+                                    <option value="普通螺纹钢">普通螺纹钢</option>
+                                    <option value="优质螺纹钢">优质螺纹钢</option>
+                                    <option value="普通硅酸盐水泥">普通硅酸盐水泥</option>
+                                    <option value="高强硅酸盐水泥">高强硅酸盐水泥</option>
+                                    <option value="白玻">白玻</option>
+                                    <option value="透明玻璃">透明玻璃</option>
+                                    <option value="丙烯酸">丙烯酸</option>
+                                    <option value="氟碳漆">氟碳漆</option>
+                                    <option value="丙烷酸">丙烷酸</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="price-input" class="control-label">价格(元):</label>
+                                <input type="text" class="form-control" id="price-input" placeholder="请输入材料价格">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">保存</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        </div>
+                    </div>
+                </div>
             </form>
         </div>
+
+        <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     </div>
     <!-- footer -->
     <div class="area footer row">

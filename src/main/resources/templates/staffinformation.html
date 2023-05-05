@@ -1,9 +1,83 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
     <link type="text/css" rel="stylesheet" href="/mycss.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        /* 样式表 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+        }
+        h1 {
+            margin: 0;
+        }
+        main {
+            padding: 20px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .page-link {
+            padding: 10px;
+            border: 1px solid #ddd;
+            background-color: #fff;
+            color: #333;
+            text-decoration: none;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+        .page-link.active {
+            background-color: #333;
+            color: #fff;
+        }
+        .btn-group {
+            display: flex;
+            justify-content: center;
+        }
+        .btn {
+            padding: 5px 10px;
+            margin-right: 5px;
+            border: none;
+            background-color: #f2f2f2;
+            color: #333;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .btn.delete {
+            background-color: #ff6666;
+            color: #fff;
+        }
+        .btn.update {
+            background-color: #66b3ff;
+            color: #fff;
+        }
+    </style>
     <script src="/jquery-3.6.4.js"></script>
 </head>
 <body>
@@ -19,85 +93,66 @@
     </div>
     <!-- main  -->
     <div class="area row">
-        <!-- sidebar -->
-        <div class="area row">
             <!-- sidebar -->
-            <div class="area sidebar">
-                <div class="sidebar-group">
-                    <h2>人员管理</h2>
-                    <ul>
-                        <li><a th:href="@{/tostaffinformation}">员工信息管理</a></li>
-                    </ul>
-                </div>
-                <div class="sidebar-group">
-                    <h2>材料管理</h2>
-                    <ul>
-                        <li><a th:href="@{/tomaterialinformation}">材料信息管理</a></li>
-                        <li><a th:href="@{/toinventorymanagement}">材料库存管理</a></li>
-                    </ul>
-                </div>
-                <div class="sidebar-group">
-                    <h2>设计方案管理</h2>
-                    <ul>
-                        <li><a th:href="@{/todesign}">设计方案信息管理</a></li>
-                        <li><a th:href="@{/tooffer}">报价管理</a></li>
-                    </ul>
-                </div>
-                <div class="sidebar-group">
-                    <h2>施工过程管理</h2>
-                    <ul>
-                        <li><a th:href="@{/toprocess}">施工流程管理</a></li>
-                        <li><a th:href="@{/toplan}">进度管理</a></li>
-                        <li><a th:href="@{/tocheck}">验收管理</a></li>
-                        <li><a th:href="@{/torecord}">施工记录管理</a></li>
-                    </ul>
-                </div>
-                <div class="sidebar-group">
-                    <h2>财务管理</h2>
-                    <ul>
-                        <li><a th:href="@{/toslary}">工资管理</a></li>
-                        <li><a th:href="@{/topurchase}">采购管理</a></li>
-                        <li><a th:href="@{/tocost}">成本管理</a></li>
-                        <li><a th:href="@{/tocontract}">合同管理</a></li>
-                        <li><a th:href="@{/tostate}">报表管理</a></li>
-                        <li><a th:href="@{/toexpenditure}">支出统计</a></li>
-                    </ul>
-                </div>
-                <div class="sidebar-group">
-                    <h2>客户沟通管理</h2>
-                    <ul>
-                        <li><a th:href="@{/toopinion}">客户意见管理</a></li>
-                        <li><a th:href="@{/tolink}">沟通记录管理</a></li>
-                        <li><a th:href="@{/tomessage}">客户信息管理</a></li>
-                    </ul>
-                </div>
-                <div class="sidebar-group">
-                    <h2>售后管理</h2>
-                    <ul>
-                        <li><a th:href="@{/tomaintain1}">维修管理</a></li>
-                        <li><a th:href="@{/tomaintain}">维护管理</a></li>
-                    </ul>
-                </div>
-            </div>
+        <div th:include="sidebar"></div>
         <!-- article -->
-        <div class="area grow-1" id="">
+        <div class="area grow-1">
             <h1>员工信息</h1>
-            <table>
-                <thead>
-                <tr>
-                    <th>用户名</th>
-                    <th>密码</th>
-                    <th>性别</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="user : ${users}">
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                </tbody>
-            </table>
+            <header>
+                <button>新增</button>
+                <form action="#" method="get">
+                    <input type="text" name="search" placeholder="搜索">
+                    <button type="submit">搜索</button>
+                </form>
+            </header>
+            <main>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>用户名</th>
+                        <th>性别</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>张三</td>
+                        <td>男</td>
+                        <td class="btn-group">
+                            <a href="#" class="btn delete">删除</a>
+                            <a href="#" class="btn update">修改</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>李四</td>
+                        <td>女</td>
+                        <td class="btn-group">
+                            <a href="#" class="btn delete">删除</a>
+                            <a href="#" class="btn update">修改</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>王五</td>
+                        <td>男</td>
+                        <td class="btn-group">
+                            <a href="#" class="btn delete">删除</a>
+                            <a href="#" class="btn update">修改</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="pagination">
+                    <a href="#" class="page-link">&laquo;</a>
+                    <a href="#" class="page-link active">1</a>
+                    <a href="#" class="page-link">&laquo;</a>
+                </div>
+            </main>
+        </div>
+    </div>
     <!-- footer -->
     <div class="area footer row">
         <div class="col-md-12">
