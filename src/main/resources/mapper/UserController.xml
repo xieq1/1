@@ -12,4 +12,11 @@
     <update id="updatebyuid" parameterType="com.graduationproject.po.User">
         update user set phone=#{phone} where userid=#{userid}
     </update>
+    <select id="getUserCount" resultType="int">
+        select count(*) from user
+    </select>
+    <select id="getUsersByPage" parameterType="com.graduationproject.po.User">
+        select * from user limit #{pageSize} offset #{offset}
+    </select>
+
 </mapper>

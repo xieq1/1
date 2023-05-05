@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link type="text/css" rel="stylesheet" href="/mycss.css">
+    <script src="/jquery-3.6.4.js"></script>
+</head>
+<body>
+<div class="container">
+    <!-- header -->
+    <div class="area row">
+        <div class="col-md-12 nav">
+            <ul>
+                <li><a th:href="@{/topersonalinformation}">个人信息</a></li>
+                <li class="right"><a href="#">退出</a></li>
+            </ul>
+        </div>
+    </div>
+    <!-- main  -->
+    <div class="area row">
+        <!-- sidebar -->
+        <div class="area row">
+            <!-- sidebar -->
+            <div class="area sidebar">
+                <div class="sidebar-group">
+                    <h2>人员管理</h2>
+                    <ul>
+                        <li><a th:href="@{/tostaffinformation}">员工信息管理</a></li>
+                    </ul>
+                </div>
+                <div class="sidebar-group">
+                    <h2>材料管理</h2>
+                    <ul>
+                        <li><a th:href="@{/tomaterialinformation}">材料信息管理</a></li>
+                        <li><a th:href="@{/toinventorymanagement}">材料库存管理</a></li>
+                    </ul>
+                </div>
+                <div class="sidebar-group">
+                    <h2>设计方案管理</h2>
+                    <ul>
+                        <li><a th:href="@{/todesign}">设计方案信息管理</a></li>
+                        <li><a th:href="@{/tooffer}">报价管理</a></li>
+                    </ul>
+                </div>
+                <div class="sidebar-group">
+                    <h2>施工过程管理</h2>
+                    <ul>
+                        <li><a th:href="@{/toprocess}">施工流程管理</a></li>
+                        <li><a th:href="@{/toplan}">进度管理</a></li>
+                        <li><a th:href="@{/tocheck}">验收管理</a></li>
+                        <li><a th:href="@{/torecord}">施工记录管理</a></li>
+                    </ul>
+                </div>
+                <div class="sidebar-group">
+                    <h2>财务管理</h2>
+                    <ul>
+                        <li><a th:href="@{/toslary}">工资管理</a></li>
+                        <li><a th:href="@{/topurchase}">采购管理</a></li>
+                        <li><a th:href="@{/tocost}">成本管理</a></li>
+                        <li><a th:href="@{/tocontract}">合同管理</a></li>
+                        <li><a th:href="@{/tostate}">报表管理</a></li>
+                        <li><a th:href="@{/toexpenditure}">支出统计</a></li>
+                    </ul>
+                </div>
+                <div class="sidebar-group">
+                    <h2>客户沟通管理</h2>
+                    <ul>
+                        <li><a th:href="@{/toopinion}">客户意见管理</a></li>
+                        <li><a th:href="@{/tolink}">沟通记录管理</a></li>
+                        <li><a th:href="@{/tomessage}">客户信息管理</a></li>
+                    </ul>
+                </div>
+                <div class="sidebar-group">
+                    <h2>售后管理</h2>
+                    <ul>
+                        <li><a th:href="@{/tomaintain1}">维修管理</a></li>
+                        <li><a th:href="@{/tomaintain}">维护管理</a></li>
+                    </ul>
+                </div>
+            </div>
+        <!-- article -->
+        <div class="area grow-1" id="">
+            <h1>个人信息</h1>
+
+        </div>
+    </div>
+    <!-- footer -->
+    <div class="area footer row">
+        <div class="col-md-12">
+            <p>东北林业大学<br>
+                软件工程专业</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
