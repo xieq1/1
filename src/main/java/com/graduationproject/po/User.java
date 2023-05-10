@@ -1,5 +1,7 @@
 package com.graduationproject.po;
 
+import java.util.List;
+
 public class User {
     int userid;
     String name;
@@ -9,6 +11,8 @@ public class User {
     String phone;
     String job;
     String salary;
+    private List<String> permissions; // 用户权限列表
+
     public String getIdnumber() {
         return idnumber;
     }

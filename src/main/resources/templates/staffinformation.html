@@ -5,79 +5,7 @@
     <title>Title</title>
     <link type="text/css" rel="stylesheet" href="/mycss.css">
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <style>
-        /* 样式表 */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background-color: #333;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px;
-        }
-        h1 {
-            margin: 0;
-        }
-        main {
-            padding: 20px;
-        }
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        .pagination {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-        }
-        .page-link {
-            padding: 10px;
-            border: 1px solid #ddd;
-            background-color: #fff;
-            color: #333;
-            text-decoration: none;
-            margin: 0 5px;
-            cursor: pointer;
-        }
-        .page-link.active {
-            background-color: #333;
-            color: #fff;
-        }
-        .btn-group {
-            display: flex;
-            justify-content: center;
-        }
-        .btn {
-            padding: 5px 10px;
-            margin-right: 5px;
-            border: none;
-            background-color: #f2f2f2;
-            color: #333;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        .btn.delete {
-            background-color: #ff6666;
-            color: #fff;
-        }
-        .btn.update {
-            background-color: #66b3ff;
-            color: #fff;
-        }
-    </style>
+    <link type="text/css" rel="stylesheet" href="/mycss2.css">
     <script src="/jquery-3.6.4.js"></script>
 </head>
 <body>
@@ -99,7 +27,9 @@
         <div class="area grow-1">
             <h1>员工信息</h1>
             <header>
-                <button>新增</button>
+                <div>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-modal">新增</button>
+                </div>
                 <form action="#" method="get">
                     <input type="text" name="search" placeholder="搜索">
                     <button type="submit">搜索</button>
@@ -151,8 +81,52 @@
                     <a href="#" class="page-link">&laquo;</a>
                 </div>
             </main>
+            <div class="modal fade" id="add-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <form id="add-form" th:action="@{/User/insert}" method="post">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span>&times;</span></button>
+                                <h4 class="modal-title" id="myModalLabel">新增</h4>
+                            </div>
+                            <div class="modal-body">
+                                <!-- 表单数据项 -->
+                                <table>
+                                    <tr>
+                                        <td>用户名</td>
+                                        <td><input id="username" name="name" value="" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td>密码</td>
+                                        <td><input id="password" name="password" /></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>权限等级</td>
+                                        <td><input id="jurisdicion" name="jurisdicion" value="" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td>职位</td>
+                                        <td><input id="job" name="job" value="" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td>工资</td>
+                                        <td><input id="salary" name="salary" value="" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td align="right"><input type="submit" value="提交"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <!-- footer -->
     <div class="area footer row">
         <div class="col-md-12">

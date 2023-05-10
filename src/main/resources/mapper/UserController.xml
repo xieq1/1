@@ -18,5 +18,9 @@
     <select id="getUsersByPage" parameterType="com.graduationproject.po.User">
         select * from user limit #{pageSize} offset #{offset}
     </select>
+    <select id="findbyid" parameterType="int" resultType="com.graduationproject.po.User">
+        select * from user where userid=#{userid}
+    </select>
+
 
 </mapper>

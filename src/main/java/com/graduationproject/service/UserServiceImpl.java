@@ -31,4 +31,9 @@ public class UserServiceImpl implements UserService{
         int offset = (page - 1) * pageSize;
         return sqlSession.selectList("getUsersByPage",ImmutableMap.of("pageSize", pageSize, "offset", offset));
     }
+
+    @Override
+    public User findById(int userId) {
+        return userservice.findbyid(userId);
+    }
 }

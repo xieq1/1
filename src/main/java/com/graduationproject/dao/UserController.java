@@ -11,10 +11,8 @@ import java.util.List;
 @Mapper
 public interface UserController {
     public void UserInsert(@Param("name")String name, @Param("password")String password,@Param("jurisdicion")String jurisdicion,@Param("job")String job,@Param("salary")String slary);
-
     int getUserCount();
-
+    public User findbyid(@Param("userid")int userid);
     List<User> getUsersByPage(@Param("page") int page, @Param("pageSize") int pageSize);
-
     List<User> getallUsers();
 }

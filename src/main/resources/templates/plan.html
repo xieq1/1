@@ -4,7 +4,116 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link type="text/css" rel="stylesheet" href="/mycss.css">
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 5px;
+        }
+        #edit-form {
+            display: none;
+        }
+    </style>
     <script src="/jquery-3.6.4.js"></script>
+    <script>
+        $(document).ready(function() {
+            // 添加记录
+            $("#add-btn").click(function() {
+                var projectId = $("#project-id").val();
+                var scheduleId = $("#schedule-id").val();
+                var planDuration = $("#plan-duration").val();
+                var actualDuration = $("#actual-duration").val();
+                var delayReason = $("#delay-reason").val();
+                var personnelAssignment = $("#personnel-assignment").val();
+                var solution = $("#solution").val();
+
+                if (projectId === "" || scheduleId === "" || planDuration === "" || actualDuration === "" || delayReason === "" || personnelAssignment === "" || solution === "") {
+                    alert("请将信息填写完整！");
+                    return;
+                }
+
+                var content =
+                    "<tr>" +
+                    "<td>" + projectId + "</td>" +
+                    "<td>" + scheduleId + "</td>" +
+                    "<td>" + planDuration + "</td>" +
+                    "<td>" + actualDuration + "</td>" +
+                    "<td>" + delayReason + "</td>" +
+                    "<td>" + personnelAssignment + "</td>" +
+                    "<td>" + solution + "</td>" +
+                    "<td><button class='edit-btn'>修改</button></td>" +
+                    "<td><button class='delete-btn'>删除</button></td>" +
+                    "</tr>";
+
+                $("#schedule-table").append(content);
+            });
+
+            // 显示修改表单
+            $(document).on("click", ".edit-btn", function() {
+                var row = $(this).closest("tr");
+                var scheduleId = row.find("td:nth-child(2)").text();
+                var planDuration = row.find("td:nth-child(3)").text();
+                var actualDuration = row.find("td:nth-child(4)").text();
+                var delayReason = row.find("td:nth-child(5)").text();
+                var personnelAssignment = row.find("td:nth-child(6)").text();
+                var solution = row.find("td:nth-child(7)").text();
+
+                $("#edit-form").show();
+                $("#schedule-id").val(scheduleId);
+                $("#plan-duration").val(planDuration);
+                $("#actual-duration").val(actualDuration);
+                $("#delay-reason").val(delayReason);
+                $("#personnel-assignment").val(personnelAssignment);
+                $("#solution").val(solution);
+
+                row.remove();
+            });
+
+            // 隐藏修改表单
+            $("#cancel-btn").click(function() {
+                var content =
+                    "<tr>" +
+                    "<td>" + $("#project-id").val() + "</td>" +
+                    "<td>" + $("#schedule-id").val() + "</td>" +
+                    "<td>" + $("#plan-duration").val() + "</td>" +
+                    "<td>" + $("#actual-duration").val() + "</td>" +
+                    "<td>" + $("#delay-reason").val() + "</td>" +
+                    "<td>" + $("#personnel-assignment").val() + "</td>" +
+                    "<td>" + $("#solution").val() + "</td>" +
+                    "<td><button class='edit-btn'>修改</button></td>" +
+                    "<td><button class='delete-btn'>删除</button></td>" +
+                    "</tr>";
+
+                $("#schedule-table").append(content);
+                $("#edit-form").hide();
+            });
+
+            // 删除记录
+            $(document).on("click", ".delete-btn", function() {
+                $(this).closest("tr").remove();
+            });
+
+            // 查询记录
+            $("#search-btn").click(function() {
+                var input, filter, table, tr, td, i, txtValue;
+                input = $("#search-input").val();
+                filter = input.toUpperCase();
+                table = document.getElementById("schedule-table");
+                tr = table.getElementsByTagName("tr");
+                for (i = 1; i < tr.length; i++) {
+                    td= tr[i].getElementsByTagName("td")[0];
+                    if (td) {
+                        txtValue = td.textContent || td.innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                        } else {
+                            tr[i].style.display = "none";
+                        }
+                    }
+                }
+            });
+        });
+    </script>
 </head>
 <body>
 <div class="container">
@@ -23,36 +132,68 @@
         <div th:include="sidebar"></div>
         <!-- article -->
         <div class="area grow-1" id="">
-            <h1>设计内容</h1>
-            <form id="form" th:action="@{/User/insert}" method="post">
-                <table>
-                    <tr>
-                        <td>用户名</td>
-                        <td><input id="username" name="name" value="" /></td>
-                    </tr>
-                    <tr>
-                        <td>密码</td>
-                        <td><input id="password" name="password" /></td>
-                    </tr>
-
-                    <tr>
-                        <td>权限等级</td>
-                        <td><input id="jurisdicion" name="jurisdicion" value="" /></td>
-                    </tr>
-                    <tr>
-                        <td>职位</td>
-                        <td><input id="job" name="job" value="" /></td>
-                    </tr>
-                    <tr>
-                        <td>工资</td>
-                        <td><input id="salary" name="salary" value="" /></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td align="right"><input type="submit" value="提交"></td>
-                    </tr>
-                </table>
+            <h1>施工进度管理</h1>
+            <table>
+                <tr>
+                    <th>施工项目ID</th>
+                    <th>进度ID</th>
+                    <th>计划工期</th>
+                    <th>实际工期</th>
+                    <th>落后原因</th>
+                    <th>人员分配</th>
+                    <th>解决方案</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>10001</td>
+                    <td>2023-06-01 ~ 2024-03-31</td>
+                    <td>2023-06-01 ~ 2024-05-15</td>
+                    <td>材料供应不足，天气原因等</td>
+                    <td>项目经理：张三<br>技术负责人：李四<br>其他成员：王五、赵六</td>
+                    <td>加强对材料的储备，合理安排施工计划，及时调整人员和资源的调配</td>
+                    <td><button class="edit-btn">修改</button></td>
+                    <td><button class="delete-btn">删除</button></td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>10002</td>
+                    <td>2023-07-01 ~ 2024-05-31</td>
+                    <td>2023-07-01 ~ 2024-06-30</td>
+                    <td>施工机械故障、人员缺乏等</td>
+                    <td>项目经理：张三<br>技术负责人：李四<br>其他成员：王五、赵六</td>
+                    <td>增加备用的施工机械，及时修理维护，调整项目进度和资源分配，提高工人的效率</td>
+                    <td><button class="edit-btn">修改</button></td>
+                    <td><button class="delete-btn">删除</button></td>
+                </tr>
+            </table>
+            <!-- 修改表单 -->
+            <form id="edit-form">
+                <label for="project-id">施工项目ID:</label>
+                <input type="text" id="project-id" name="project-id"><br><br>
+                <label for="schedule-id">进度ID:</label>
+                <input type="text" id="schedule-id" name="schedule-id"><br><br>
+                <label for="plan-duration">计划工期:</label>
+                <input type="text" id="plan-duration" name="plan-duration"><br><br>
+                <label for="actual-duration">实际工期:</label>
+                <input type="text" id="actual-duration" name="actual-duration"><br><br>
+                <label for="delay-reason">落后原因:</label>
+                <input type="text" id="delay-reason" name="delay-reason"><br><br>
+                <label for="personnel-assignment">人员分配:</label>
+                <input type="text" id="personnel-assignment" name="personnel-assignment"><br><br>
+                <label for="solution">解决方案:</label>
+                <input type="text" id="solution" name="solution"><br><br>
+                <input type="button" value="提交" id="submit-btn">
+                <input type="button" value="取消" id="cancel-btn">
             </form>
+
+            <!-- 查询表单 -->
+            <form id="search-form">
+                <label for="search-input">查询施工项目ID:</label>
+                <input type="text" id="search-input" name="search-input">
+                <input type="button" value="查询" id="search-btn">
+            </form>
+
+            <button id="add-btn">添加记录</button>
         </div>
     </div>
     <!-- footer -->

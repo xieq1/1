@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link type="text/css" rel="stylesheet" href="/mycss.css">
+    <link type="text/css" rel="stylesheet" href="/style.css">
     <script src="/jquery-3.6.4.js"></script>
 </head>
 <body>
@@ -24,36 +25,56 @@
         <!-- article -->
         <div class="area grow-1" id="">
             <h1>设计内容</h1>
-            <form id="form" th:action="@{/User/insert}" method="post">
+            <div class="communication-list">
                 <table>
+                    <thead>
                     <tr>
-                        <td>用户名</td>
-                        <td><input id="username" name="name" value="" /></td>
+                        <th>沟通时间</th>
+                        <th>沟通地点</th>
+                        <th>沟通内容</th>
                     </tr>
-                    <tr>
-                        <td>密码</td>
-                        <td><input id="password" name="password" /></td>
-                    </tr>
-
-                    <tr>
-                        <td>权限等级</td>
-                        <td><input id="jurisdicion" name="jurisdicion" value="" /></td>
-                    </tr>
-                    <tr>
-                        <td>职位</td>
-                        <td><input id="job" name="job" value="" /></td>
-                    </tr>
-                    <tr>
-                        <td>工资</td>
-                        <td><input id="salary" name="salary" value="" /></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td align="right"><input type="submit" value="提交"></td>
-                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- 这里需要使用服务器动态生成沟通记录 -->
+                    </tbody>
                 </table>
-            </form>
+            </div>
         </div>
+        <script>
+            $(function() {
+                // 发送 AJAX 请求获取后端服务器的沟通记录数据
+                $.ajax({
+                    method: 'get',
+                    url: 'http://localhost/communication/list',
+                    dataType: 'json',
+                    success: function(data) {
+                        // 请求成功时动态生成表格
+                        var tbody = '';
+                        for (var i = 0; i < data.length; i++) {
+                            var row = data[i];
+                            tbody += '<tr>';
+                            tbody += '<td>' + row.time + '</td>';
+                            tbody += '<td>' + row.location + '</td>';
+                            tbody += '<td>' + row.content + '</td>';
+                            tbody += '</tr>';
+                        }
+                        $('tbody').html(tbody);
+                    },
+                    error: function() {
+                        // 请求失败时打印错误信息
+                        console.log('Failed to fetch communication list.');
+                    }
+                });
+
+                // 为表格中每个行元素添加点击事件，当用户选择某个沟通记录时，在该页面展示该沟通记录详情
+                $('tbody').on('click', 'tr', function() {
+                    $(this).parent().find('tr').removeClass('selected');
+                    $(this).addClass('selected');
+                    // 打开该记录的详情页面
+                    window.location.href = 'communication-detail.html?communicationId=' + $(this).index();
+                });
+            });
+        </script>
     </div>
     <!-- footer -->
     <div class="area footer row">

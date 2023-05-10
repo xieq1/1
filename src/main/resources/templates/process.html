@@ -4,6 +4,129 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link type="text/css" rel="stylesheet" href="/mycss.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .construction-process {
+            margin-bottom: 50px;
+        }
+
+        /* 表格样式 */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        /* 操作按钮样式 */
+        .edit-button,
+        .add-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .delete-button {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        /* 添加对话框样式 */
+        #add-dialog {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        form {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"],
+        textarea,
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            font-size: 14px;
+            margin-top: 4px;
+            margin-bottom: 16px;
+            resize: vertical;
+        }
+
+        button[type="submit"],
+        .close-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+            float: right;
+        }
+
+        .close-button {
+            background-color: #f44336;
+            float: left;
+        }
+    </style>
     <script src="/jquery-3.6.4.js"></script>
 </head>
 <body>
@@ -23,36 +146,107 @@
         <div th:include="sidebar"></div>
         <!-- article -->
         <div class="area grow-1" id="">
-            <h1>设计内容</h1>
-            <form id="form" th:action="@{/User/insert}" method="post">
-                <table>
-                    <tr>
-                        <td>用户名</td>
-                        <td><input id="username" name="name" value="" /></td>
-                    </tr>
-                    <tr>
-                        <td>密码</td>
-                        <td><input id="password" name="password" /></td>
-                    </tr>
+            <h1>施工流程管理</h1>
 
+            <div class="construction-process">
+                <h2>施工环节</h2>
+                <table>
+                    <thead>
                     <tr>
-                        <td>权限等级</td>
-                        <td><input id="jurisdicion" name="jurisdicion" value="" /></td>
+                        <th>ID</th>
+                        <th>名称</th>
+                        <th>描述</th>
+                        <th>店面整体结构</th>
+                        <th>墙面</th>
+                        <th>水电</th>
+                        <th>装饰</th>
+                        <th>负责人</th>
+                        <th>施工人员</th>
+                        <th>项目杂费</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>地基</td>
+                        <td>挖土、加固、回填等工作</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>张三</td>
+                        <td>10人</td>
+                        <td>¥ 100,000</td>
+                        <td>
+                            <button class="edit-button">编辑</button>
+                            <button class="delete-button">删除</button>
+                        </td>
                     </tr>
                     <tr>
-                        <td>职位</td>
-                        <td><input id="job" name="job" value="" /></td>
+                        <td>2</td>
+                        <td>结构施工</td>
+                        <td>钢筋焊接、混凝土浇注等工作</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>李四</td>
+                        <td>20人</td>
+                        <td>¥ 200,000</td>
+                        <td>
+                            <button class="edit-button">编辑</button>
+                            <button class="delete-button">删除</button>
+                        </td>
                     </tr>
-                    <tr>
-                        <td>工资</td>
-                        <td><input id="salary" name="salary" value="" /></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td align="right"><input type="submit" value="提交"></td>
-                    </tr>
+                    </tbody>
                 </table>
-            </form>
+                <button class="add-button">添加新的施工环节</button>
+            </div>
+
+            <!-- 添加对话框 -->
+            <div id="add-dialog">
+                <form action="#">
+                    <label>
+                        名称：
+                        <input type="text" name="name" required>
+                    </label>
+                    <label>
+                        描述：
+                        <textarea name="description" rows="4"></textarea>
+                    </label>
+                    <label>
+                        店面整体结构：
+                        <input type="text" name="store_structure">
+                    </label>
+                    <label>
+                        墙面：
+                        <input type="text" name="wall">
+                    </label>
+                    <label>
+                        水电：
+                        <input type="text" name="hydraulic">
+                    </label>
+                    <label>
+                        装饰：
+                        <input type="text" name="decorative">
+                    </label>
+                    <label>
+                        负责人：
+                        <input type="text" name="manager">
+                    </label>
+                    <label>
+                        施工人员：
+                        <input type="text" name="worker">
+                    </label>
+                    <label>
+                        项目杂费：
+                        <input type="number" name="misc_expenses" min="0">
+                    </label>
+                    <button type="submit">添加</button>
+                    <button type="button" class="close-button">&times;</button>
+                </form>
+            </div>
         </div>
     </div>
     <!-- footer -->

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link type="text/css" rel="stylesheet" href="/mycss.css">
-    <script src="/jquery-3.6.4.js"></script>
+    <link type="text/css" rel="stylesheet" href="/mycss3.css">
 </head>
 <body>
 <div class="container">
@@ -23,36 +23,121 @@
         <div th:include="sidebar"></div>
         <!-- article -->
         <div class="area grow-1" id="">
-            <h1>设计内容</h1>
-            <form id="form" th:action="@{/User/insert}" method="post">
-                <table>
-                    <tr>
-                        <td>用户名</td>
-                        <td><input id="username" name="name" value="" /></td>
-                    </tr>
-                    <tr>
-                        <td>密码</td>
-                        <td><input id="password" name="password" /></td>
-                    </tr>
+            <h1>合同管理</h1>
 
-                    <tr>
-                        <td>权限等级</td>
-                        <td><input id="jurisdicion" name="jurisdicion" value="" /></td>
-                    </tr>
-                    <tr>
-                        <td>职位</td>
-                        <td><input id="job" name="job" value="" /></td>
-                    </tr>
-                    <tr>
-                        <td>工资</td>
-                        <td><input id="salary" name="salary" value="" /></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td align="right"><input type="submit" value="提交"></td>
-                    </tr>
-                </table>
+            <h2>上传合同</h2>
+            <form id="contract-form">
+                <input type="file" name="contract-file"><br>
+                <label for="client">客户名称：</label>
+                <input type="text" name="client" id="client"><br>
+                <label for="date">签订日期：</label>
+                <input type="date" name="date" id="date"><br>
+                <input type="submit" value="上传">
             </form>
+
+            <h2>合同列表</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>文件名</th>
+                    <th>客户名称</th>
+                    <th>签订日期</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody id="contract-list">
+                <!-- 这里将会自动插入数据行 -->
+                </tbody>
+            </table>
+
+            <!-- jQuery和合同管理脚本 -->
+            <script src="/jquery-3.6.4.js"></script>
+            <script>
+                // 加载合同列表并更新页面
+                $.get('/api/contract', function(data) {
+                    data.forEach(function(item) {
+                        var rowHTML = '<tr><td>' + item.filename + '</td><td>' +
+                            item.client + '</td><td>' + new Date(item.date).toLocaleDateString() +
+                            '</td><td><a href="' + item.url + '" target="_blank">查看</a> <button class="delete" data-id="' +
+                            item.id + '">删除</button></td></tr>';
+                        $('#contract-list').append(rowHTML);
+                    });
+                });
+
+                // 监听上传合同表单提交事件
+                $('#contract-form').submit(function(event) {
+                    event.preventDefault();  // 防止表单自动提交
+
+                    // 使用FormData对象异步上传合同文件，并添加请求参数以创建新的合同数据
+                    var formData = new FormData(this);
+                    formData.append('client', $('#client').val());
+                    formData.append('date', $('#date').val());
+                    $.ajax({
+                        url: '/api/contract',
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(data) {
+                            // 添加新数据行到合同列表中
+                            var rowHTML = '<tr><td>' + data.filename + '</td><td>' +
+                                data.client + '</td><td>' + new Date(data.date).toLocaleDateString() +
+                                '</td><td><a href="' + data.url + '" target="_blank">查看</a> <button class="delete" data-id="' +
+                                data.id + '">删除</button></td></tr>';
+                            $('#contract-list').append(rowHTML);
+
+                            // 提示用户上传成功
+                            showSuccess('合同上传成功');
+                        },
+                        error: function(xhr, status, error) {
+                            // 提示用户上传失败
+                            showAlert('合同上传失败：' + error);
+                        }
+                    });
+                });
+
+                // 监听删除按钮的点击事件
+                $(document).on('click', '.delete', function() {
+                    if (confirm('确定要删除这个合同吗？')) {
+                        // 发送DELETE请求以删除对应的合同数据
+                        var id = $(this).data('id');
+                        $.ajax({
+                            url: '/api/contract/' + id,
+                            type: 'DELETE',
+                            success: function(data) {
+                                // 移除对应的HTML数据行
+                                $(this).parent().parent().remove();
+
+                                // 提示用户删除成功
+                                showSuccess('合同删除成功');
+                            }.bind(this),
+                            error: function(xhr, status, error) {
+                                // 提示用户删除失败
+                                showAlert('合同删除失败：' + error);
+                            }
+                        });
+                    }
+                });
+
+                // 显示提示信息的帮助函数
+                function showAlert(message) {
+                    $('#alerts').append('<div class="alert">' + message +'</div>');
+                    window.setTimeout(function() {
+                        $('.alert').fadeOut('fast', function() {
+                            $(this).remove();
+                        });
+                    }, 3000);
+                }
+
+                function showSuccess(message) {
+                    $('#alerts').append('<div class="success">' + message + '</div>');
+                    window.setTimeout(function() {
+                        $('.success').fadeOut('fast', function() {
+                            $(this).remove();
+                        });
+                    }, 3000);
+                }
+            </script>
         </div>
     </div>
     <!-- footer -->

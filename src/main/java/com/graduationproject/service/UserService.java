@@ -10,4 +10,6 @@ public interface UserService {
     int getUserCount();
 
     List<User> getUsersByPage(int page, int pageSize);
+
+    User findById(int userId);
 }

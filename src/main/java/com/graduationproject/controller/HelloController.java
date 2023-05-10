@@ -9,12 +9,12 @@ public class HelloController {
     public String hello(){
         return "/login";
     }
-    @RequestMapping("/topersonalinformation")
+   /* @RequestMapping("/topersonalinformation")
     public String topersonalinformation()
     {
         return "personalinformation";
     }
-
+*/
     @RequestMapping("/tomaterialinformation")
     public String tomaterialinformation()
     {
