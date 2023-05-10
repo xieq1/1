@@ -4,6 +4,65 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link type="text/css" rel="stylesheet" href="/mycss.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        /* 表单输入框的样式 */
+        input[type="text"],
+        input[type="date"],
+        input[type="number"],
+        textarea,
+        select {
+            padding: 6px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-top: 6px;
+            margin-bottom: 16px;
+            resize: vertical;
+            font-size: 16px;
+        }
+
+        /* 输入框区域的宽度和布局 */
+        .form-group {
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            text-align: left;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        /* 提交按钮的样式 */
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            float: right;
+            font-size: 16px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        /* 客户评价下拉列表的样式 */
+        #customer-feedback {
+            width: 100%;
+            padding: 6px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-top: 6px;
+            margin-bottom: 16px;
+        }
+    </style>
     <script src="/jquery-3.6.4.js"></script>
 </head>
 <body>
@@ -23,36 +82,65 @@
         <div th:include="sidebar"></div>
         <!-- article -->
         <div class="area grow-1" id="">
-            <h1>设计内容</h1>
-            <form id="form" th:action="@{/User/insert}" method="post">
-                <table>
-                    <tr>
-                        <td>用户名</td>
-                        <td><input id="username" name="name" value="" /></td>
-                    </tr>
-                    <tr>
-                        <td>密码</td>
-                        <td><input id="password" name="password" /></td>
-                    </tr>
-
-                    <tr>
-                        <td>权限等级</td>
-                        <td><input id="jurisdicion" name="jurisdicion" value="" /></td>
-                    </tr>
-                    <tr>
-                        <td>职位</td>
-                        <td><input id="job" name="job" value="" /></td>
-                    </tr>
-                    <tr>
-                        <td>工资</td>
-                        <td><input id="salary" name="salary" value="" /></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td align="right"><input type="submit" value="提交"></td>
-                    </tr>
-                </table>
+            <h2>设备维护</h2>
+            <form id="maintenance-form">
+                <div class="form-group">
+                    <label for="device-name">设备名称:</label>
+                    <input type="text" id="device-name" name="deviceName" required>
+                </div>
+                <div class="form-group">
+                    <label for="maintenance-date">维护日期:</label>
+                    <input type="date" id="maintenance-date" name="maintenanceDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="maintenance-content">维护内容:</label>
+                    <textarea id="maintenance-content" name="maintenanceContent" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="material-used">消耗材料:</label>
+                    <textarea id="material-used" name="materialUsed" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="maintenance-cost">维护费用:</label>
+                    <input type="number" id="maintenance-cost" name="maintenanceCost" step=".01" required>
+                </div>
+                <div class="form-group">
+                    <label for="customer-feedback">客户评价:</label>
+                    <select id="customer-feedback" name="customerFeedback" required>
+                        <option value="">请选择</option>
+                        <option value="非常满意">非常满意</option>
+                        <option value="满意">满意</option>
+                        <option value="一般">一般</option>
+                        <option value="不满意">不满意</option>
+                    </select>
+                </div>
+                <input type="submit" value="提交">
             </form>
+            <script>
+                $(function() {
+                    $("#maintenance-form").submit(function(event) {
+                        event.preventDefault();
+
+                        var form = $(this);
+                        var url = form.attr("action");
+                        var method =form.attr("method");
+                        var data = form.serialize();
+
+                        $.ajax({
+                            url: url,
+                            method: method,
+                            data: data,
+                            success: function(response) {
+                                alert("提交成功！");
+                                window.location.href = "maintenance-record.html";
+                            },
+                            error: function(xhr, status, error) {
+                                alert("提交失败！" + error);
+                            }
+                        });
+                    });
+                });
+            </script>
         </div>
     </div>
     <!-- footer -->

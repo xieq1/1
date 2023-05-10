@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link type="text/css" rel="stylesheet" href="/mycss.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="/jquery-3.6.4.js"></script>
 </head>
 <body>
@@ -23,35 +24,43 @@
         <div th:include="sidebar"></div>
         <!-- article -->
         <div class="area grow-1" id="">
-            <h1>设计内容</h1>
-            <form id="form" th:action="@{/User/insert}" method="post">
-                <table>
-                    <tr>
-                        <td>用户名</td>
-                        <td><input id="username" name="name" value="" /></td>
-                    </tr>
-                    <tr>
-                        <td>密码</td>
-                        <td><input id="password" name="password" /></td>
-                    </tr>
-
-                    <tr>
-                        <td>权限等级</td>
-                        <td><input id="jurisdicion" name="jurisdicion" value="" /></td>
-                    </tr>
-                    <tr>
-                        <td>职位</td>
-                        <td><input id="job" name="job" value="" /></td>
-                    </tr>
-                    <tr>
-                        <td>工资</td>
-                        <td><input id="salary" name="salary" value="" /></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td align="right"><input type="submit" value="提交"></td>
-                    </tr>
-                </table>
+            <h2>施工记录</h2>
+            <form id="construction-form">
+                <div class="form-group">
+                    <label for="project-name">工程名称:</label>
+                    <input type="text" id="project-name" name="projectName" required>
+                </div>
+                <div class="form-group">
+                    <label for="construction-date">施工日期:</label>
+                    <input type="date" id="construction-date" name="constructionDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="worker-name">施工人员:</label>
+                    <input type="text" id="worker-name" name="workerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="equipment-name">设备名称:</label>
+                    <textarea id="equipment-name" name="equipmentName" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="material-name">材料名称:</label>
+                    <textarea id="material-name" name="materialName" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="construction-cost">施工费用:</label>
+                    <input type="number" id="construction-cost" name="constructionCost" step=".01" required>
+                </div>
+                <div class="form-group">
+                    <label for="customer-feedback">客户评价:</label>
+                    <select id="customer-feedback" name="customerFeedback" required>
+                        <option value="">请选择</option>
+                        <option value="非常满意">非常满意</option>
+                        <option value="满意">满意</option>
+                        <option value="一般">一般</option>
+                        <option value="不满意">不满意</option>
+                    </select>
+                </div>
+                <input type="submit" value="提交">
             </form>
         </div>
     </div>
