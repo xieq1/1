@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link type="text/css" rel="stylesheet" href="/css/mycss.css">
+    <link type="text/css" rel="stylesheet" href="/css/mycss3.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <!-- header -->
+    <div class="area row">
+        <div class="col-md-12 nav">
+            <ul>
+                <li><a th:href="@{/topersonalinformation}">个人信息</a></li>
+                <li class="right"><a href="#">退出</a></li>
+            </ul>
+        </div>
+    </div>
+    <!-- main  -->
+    <div class="area row">
+        <!-- sidebar -->
+        <div th:include="sidebar"></div>
+        <!-- article -->
+        <div class="area grow-1" id="">
+            <h1>支出统计</h1>
+
+            <h2>添加支出</h2>
+            <form id="add-form" action="/api/expense" method="post">
+                <label for="date">日期：</label>
+                <input type="date" name="date" id="date"><br>
+                <label for="type">类型：</label>
+                <select name="type" id="type">
+                    <option value="工资">工资</option>
+                    <option value="材料">材料</option>
+                    <option value="租金">租金</option>
+                    <option value="水电费">水电费</option>
+                    <option value="维修费">维修费</option>
+                    <option value="其他">其他</option>
+                </select><br>
+                <label for="amount">金额：</label>
+                <input type="number" name="amount" id="amount" min="0" step="0.01"><br>
+                <input type="submit" value="添加">
+            </form>
+
+            <h2>支出列表</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>日期</th>
+                    <th>类型</th>
+                    <th>金额</th>
+                </tr>
+                </thead>
+                <tbody id="expense-list">
+                <!-- 这里将会自动插入数据行 -->
+                </tbody>
+            </table>
+
+            <h2>支出报表</h2>
+            <button id="generate-report">生成报表</button>
+
+            <!-- jQuery和支出统计脚本 -->
+            <script src="/js/jquery-3.6.4.js"></script>
+            <script>
+                // 加载支出列表并更新页面
+                $.get('/api/expense', function(data) {
+                    data.forEach(function(item) {
+                        var rowHTML = '<tr><td>' + new Date(item.date).toLocaleDateString() + '</td><td>' +
+                            item.type + '</td><td>' + item.amount.toFixed(2) + '</td></tr>';
+                        $('#expense-list').append(rowHTML);
+                    });
+                });
+
+                // 监听添加支出表单提交事件
+                $('#add-form').submit(function(event) {
+                    event.preventDefault();  // 防止表单自动提交
+
+                    // 构造JSON对象并发送POST请求以添加支出
+                    var formData = {
+                        date: $('#date').val(),
+                        type: $('#type').val(),
+                        amount: Number($('#amount').val())
+                    };
+                    $.post('/api/expense', formData, function(data) {
+                        // 添加新数据行到支出列表中
+                        var rowHTML = '<tr><td>' + new Date(data.date).toLocaleDateString() + '</td><td>' +
+                            data.type + '</td><td>' + data.amount.toFixed(2) + '</td></tr>';
+                        $('#expense-list').append(rowHTML);
+                    });
+                });
+
+                // 监听生成报表按钮的点击事件
+                $('#generate-report').click(function(event) {
+                    // 发送GET请求以获取所有支出数据，并计算各项汇总数
+                    $.get('/api/expense', function(data) {
+                        var total = 0;
+                        var byType = {};
+                        data.forEach(function(item) {
+                            total += item.amount;
+                            if (item.type in byType) {
+                                byType[item.type] += item.amount;
+                            } else {
+                                byType[item.type] = item.amount;
+                            }
+                        });
+
+                        // 弹窗显示统计结果
+                        var content = '<p>总支出：' + total.toFixed(2) + '</p>';
+                        content += '<p>按类型统计：</p>';
+                        content += '<ul>';
+                        for (var type in byType) {
+                            content += '<li>' + type + '：' + byType[type].toFixed(2) + '</li>';
+                        }
+                        content += '</ul>';
+                        alert(content);
+                    });
+                });
+            </script>
+        </div>
+    </div>
+    <!-- footer -->
+    <div class="area footer row">
+        <div class="col-md-12">
+            <p>东北林业大学<br>
+                软件工程专业</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

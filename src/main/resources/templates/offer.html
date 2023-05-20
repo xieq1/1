@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link type="text/css" rel="stylesheet" href="/css/mycss.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="/js/jquery-3.6.4.js"></script>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+        }
+        th {
+            background-color: #ddd;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .modal {
+            display: none; /* 隐藏模态框 */
+            position: fixed; /* 固定在页面上 */
+            z-index: 1; /* 设置z轴层级 */
+            left: 0;
+            top: 0;
+            width: 100%; /* 宽度全屏 */
+            height: 100%; /* 高度全屏 */
+            overflow: auto; /* 允许页面滚动 */
+            background-color: rgba(0,0,0,0.4); /* 添加半透明背景色 */
+        }
+        .modal-content {
+            background-color: white;
+            margin: 5% auto; /* 控制模态框位置 */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 60%; /* 控制宽度大小 */
+        }
+        .close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- header -->
+    <div class="area row">
+        <div class="col-md-12 nav">
+            <ul>
+                <li><a th:href="@{/topersonalinformation}">个人信息</a></li>
+                <li class="right"><a href="#">退出</a></li>
+            </ul>
+        </div>
+    </div>
+    <!-- main  -->
+    <div class="area row">
+        <!-- sidebar -->
+        <div th:include="sidebar"></div>
+        <!-- article -->
+        <div class="area grow-1" id="">
+            <h1>设计方案报价管理页面</h1>
+
+            <table>
+                <tr>
+                    <th>序号</th>
+                    <th>设计方案名称</th>
+                    <th>设计师</th>
+                    <th>报价</th>
+                    <th>审核状态</th>
+                    <th>操作</th>
+                    <th>审核结果</th>   <!--新增一列，显示审核结果-->
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>商品展示页面设计</td>
+                    <td>张三</td>
+                    <td><input type="text" value="5000元" id="price-1"></td>   <!--使用input元素可以让财务人员编辑报价-->
+                    <td>待审核</td>
+                    <td><button onclick="showDetail(1)">查看详情</button></td>
+                    <td><button onclick="approve(1)">通过</button>&nbsp;<button onclick="reject(1)">拒绝</button></td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>企业宣传手册设计</td>
+                    <td>李四</td>
+                    <td><input type="text" value="8000元" id="price-2"></td>
+                    <td>待审核</td>
+                    <td><button onclick="showDetail(2)">查看详情</button></td>
+                    <td><button onclick="approve(2)">通过</button>&nbsp;<button onclick="reject(2)">拒绝</button></td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>APP界面设计</td>
+                    <td>王五</td>
+                    <td><input type="text" value="12000元" id="price-3"></td>
+                    <td>待审核</td>
+                    <td><button onclick="showDetail(3)">查看详情</button></td>
+                    <td><button onclick="approve(3)">通过</button>&nbsp;<button onclick="reject(3)">拒绝</button></td>
+                </tr>
+            </table>
+
+            <!-- 模态框 -->
+            <div id="detail-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2>设计方案详细信息</h2>
+                    <p id="detail-info"></p>
+                </div>
+            </div>
+
+            <script>
+                const modal = document.getElementById('detail-modal');
+                const closeBtn = document.getElementsByClassName("close")[0];
+                const detailInfoEle = document.getElementById('detail-info');
+
+                function showDetail(id) {
+                    // 根据id获取对应的设计方案信息
+                    const design = fetchDesign(id);  // 这里fetchDesign函数需要自行实现，用于根据id获取对应的设计方案信息
+
+                    // 将设计方案信息显示在模态框中
+                    detailInfoEle.innerHTML = `名称：${design.name}<br>描述：${design.description}`;
+
+                    // 显示模态框
+                    modal.style.display = 'block';
+                }
+
+                function approve(id) {
+                    // 获取对应设计方案的报价
+                    const priceEle = document.getElementById(`price-${id}`);
+                    const price = priceEle.value.trim();
+
+                    // 更新审核状态和报价，并提示操作成功
+                    const row = document.getElementsByTagName('tr')[id];
+                    row.cells[3].innerText = price;
+                    row.cells[4].innerText = '已通过';
+                    alert('操作成功。');
+                }
+
+                function reject(id) {
+                    // 更新审核状态，并提示操作成功
+                    const row = document.getElementsByTagName('tr')[id];
+                    row.cells[4].innerText = '已拒绝';
+                    alert('操作成功。');
+                }
+
+                // 为模态框关闭按钮和模态框外的区域添加点击事件，以关闭模态框
+                closeBtn.onclick = function() {
+                    modal.style.display = "none";
+                }
+                window.onclick = function(event) {
+                    if (event.target === modal) {
+                        modal.style.display = "none";
+                    }
+                }
+            </script>
+        </div>
+    </div>
+    <!-- footer -->
+    <div class="area footer row">
+        <div class="col-md-12">
+            <p>东北林业大学<br>
+                软件工程专业</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

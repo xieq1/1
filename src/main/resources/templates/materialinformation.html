@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link type="text/css" rel="stylesheet" href="/css/mycss.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="/js/jquery-3.6.4.js"></script>
+</head>
+<body>
+<div class="container">
+    <!-- header -->
+    <div class="area row">
+        <div class="col-md-12 nav">
+            <ul>
+                <li><a th:href="@{/topersonalinformation}">个人信息</a></li>
+                <li class="right"><a href="#">退出</a></li>
+            </ul>
+        </div>
+    </div>
+    <!-- main  -->
+    <div class="area row">
+        <!-- sidebar -->
+        <div th:include="sidebar"></div>
+        <!-- article -->
+        <div class="container">
+            <!-- 操作按钮 -->
+            <div>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-modal">新增</button>
+                <button type="button" class="btn btn-danger" id="delete-selected-btn">删除所选</button>
+            </div>
+
+            <!-- 表格 -->
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th><input type="checkbox" id="select-all"></th>
+                    <th>ID</th>
+                    <th>名称</th>
+                    <th>库存数量</th>
+                    <th>规格</th>
+                    <th>品种</th>
+                    <th>价格（元）</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- 表格数据 -->
+                </tbody>
+            </table>
+
+            <!-- 分页 -->
+            <ul class="pagination">
+                <li><a href="#">«</a></li>
+                <li class="active"><a href="#">1</a></li>
+            </ul>
+        </div>
+
+        <!-- 新增/编辑材料信息的模态框 -->
+        <div class="modal fade" id="add-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <form id="add-form">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span>&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">新增/编辑材料信息</h4>
+                        </div>
+                        <div class="modal-body">
+                            <!-- 表单数据项 -->
+                            <div class="form-group">
+                                <label for="id-input" class="control-label">ID:</label>
+                                <input type="text" class="form-control" id="id-input" placeholder="请输入材料ID">
+                            </div>
+                            <div class="form-group">
+                                <label for="name-input" class="control-label">名称:</label>
+                                <input type="text" class="form-control" id="name-input" placeholder="请输入材料名称">
+                            </div>
+                            <div class="form-group">
+                                <label for="amount-input" class="control-label">库存数量:</label>
+                                <input type="number" class="form-control" id="amount-input" placeholder="请输入材料库存数量">
+                            </div>
+                            <div class="form-group">
+                                <label for="spec-input" class="control-label">规格:</label>
+                                <input type="text" class="form-control" id="spec-input" placeholder="请输入材料规格">
+                            </div>
+                            <div class="form-group">
+                                <label for="type-select" class="control-label">品种:</label>
+                                <select class="form-control" id="type-select">
+                                    <option value="普通螺纹钢">普通螺纹钢</option>
+                                    <option value="优质螺纹钢">优质螺纹钢</option>
+                                    <option value="普通硅酸盐水泥">普通硅酸盐水泥</option>
+                                    <option value="高强硅酸盐水泥">高强硅酸盐水泥</option>
+                                    <option value="白玻">白玻</option>
+                                    <option value="透明玻璃">透明玻璃</option>
+                                    <option value="丙烯酸">丙烯酸</option>
+                                    <option value="氟碳漆">氟碳漆</option>
+                                    <option value="丙烷酸">丙烷酸</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="price-input" class="control-label">价格(元):</label>
+                                <input type="text" class="form-control" id="price-input" placeholder="请输入材料价格">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">保存</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </div>
+    <!-- footer -->
+    <div class="area footer row">
+        <div class="col-md-12">
+            <p>东北林业大学<br>
+                软件工程专业</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

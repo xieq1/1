@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.graduationproject.dao.ContractController">
+  <resultMap id="BaseResultMap" type="com.graduationproject.po.Contract">
+    <id column="contractid" jdbcType="INTEGER" property="contractid" />
+    <result column="contractcontent" jdbcType="VARCHAR" property="contractcontent" />
+    <result column="contractcontentname" jdbcType="VARCHAR" property="contractcontentname" />
+    <result column="contracslary" jdbcType="VARCHAR" property="contracslary" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    contractid, contractcontent, contractcontentname, contracslary
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from contract
+    where contractid = #{contractid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from contract
+    where contractid = #{contractid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="contractid" keyProperty="contractid" parameterType="com.graduationproject.po.Contract" useGeneratedKeys="true">
+    insert into contract (contractcontent, contractcontentname, 
+      contracslary)
+    values (#{contractcontent,jdbcType=VARCHAR}, #{contractcontentname,jdbcType=VARCHAR}, 
+      #{contracslary,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="contractid" keyProperty="contractid" parameterType="com.graduationproject.po.Contract" useGeneratedKeys="true">
+    insert into contract
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="contractcontent != null">
+        contractcontent,
+      </if>
+      <if test="contractcontentname != null">
+        contractcontentname,
+      </if>
+      <if test="contracslary != null">
+        contracslary,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="contractcontent != null">
+        #{contractcontent,jdbcType=VARCHAR},
+      </if>
+      <if test="contractcontentname != null">
+        #{contractcontentname,jdbcType=VARCHAR},
+      </if>
+      <if test="contracslary != null">
+        #{contracslary,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.graduationproject.po.Contract">
+    update contract
+    <set>
+      <if test="contractcontent != null">
+        contractcontent = #{contractcontent,jdbcType=VARCHAR},
+      </if>
+      <if test="contractcontentname != null">
+        contractcontentname = #{contractcontentname,jdbcType=VARCHAR},
+      </if>
+      <if test="contracslary != null">
+        contracslary = #{contracslary,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where contractid = #{contractid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.graduationproject.po.Contract">
+    update contract
+    set contractcontent = #{contractcontent,jdbcType=VARCHAR},
+      contractcontentname = #{contractcontentname,jdbcType=VARCHAR},
+      contracslary = #{contracslary,jdbcType=VARCHAR}
+    where contractid = #{contractid,jdbcType=INTEGER}
+  </update>
+</mapper>

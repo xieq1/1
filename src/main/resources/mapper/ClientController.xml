@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.graduationproject.dao.ClientController">
+  <resultMap id="BaseResultMap" type="com.graduationproject.po.Client">
+    <id column="clientid" jdbcType="INTEGER" property="clientid" />
+    <result column="clientname" jdbcType="VARCHAR" property="clientname" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="communicationrecord" jdbcType="VARCHAR" property="communicationrecord" />
+    <result column="shopname" jdbcType="VARCHAR" property="shopname" />
+    <result column="feedback" jdbcType="VARCHAR" property="feedback" />
+    <result column="sex" jdbcType="VARCHAR" property="sex" />
+    <result column="evaluate" jdbcType="VARCHAR" property="evaluate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    clientid, clientname, phone, communicationrecord, shopname, feedback, sex, evaluate
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from client
+    where clientid = #{clientid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from client
+    where clientid = #{clientid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="clientid" keyProperty="clientid" parameterType="com.graduationproject.po.Client" useGeneratedKeys="true">
+    insert into client (clientname, phone, communicationrecord, 
+      shopname, feedback, sex, 
+      evaluate)
+    values (#{clientname,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{communicationrecord,jdbcType=VARCHAR}, 
+      #{shopname,jdbcType=VARCHAR}, #{feedback,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, 
+      #{evaluate,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="clientid" keyProperty="clientid" parameterType="com.graduationproject.po.Client" useGeneratedKeys="true">
+    insert into client
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="clientname != null">
+        clientname,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="communicationrecord != null">
+        communicationrecord,
+      </if>
+      <if test="shopname != null">
+        shopname,
+      </if>
+      <if test="feedback != null">
+        feedback,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="evaluate != null">
+        evaluate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="clientname != null">
+        #{clientname,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="communicationrecord != null">
+        #{communicationrecord,jdbcType=VARCHAR},
+      </if>
+      <if test="shopname != null">
+        #{shopname,jdbcType=VARCHAR},
+      </if>
+      <if test="feedback != null">
+        #{feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluate != null">
+        #{evaluate,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.graduationproject.po.Client">
+    update client
+    <set>
+      <if test="clientname != null">
+        clientname = #{clientname,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="communicationrecord != null">
+        communicationrecord = #{communicationrecord,jdbcType=VARCHAR},
+      </if>
+      <if test="shopname != null">
+        shopname = #{shopname,jdbcType=VARCHAR},
+      </if>
+      <if test="feedback != null">
+        feedback = #{feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluate != null">
+        evaluate = #{evaluate,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where clientid = #{clientid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.graduationproject.po.Client">
+    update client
+    set clientname = #{clientname,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      communicationrecord = #{communicationrecord,jdbcType=VARCHAR},
+      shopname = #{shopname,jdbcType=VARCHAR},
+      feedback = #{feedback,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=VARCHAR},
+      evaluate = #{evaluate,jdbcType=VARCHAR}
+    where clientid = #{clientid,jdbcType=INTEGER}
+  </update>
+</mapper>

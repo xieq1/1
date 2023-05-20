@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link type="text/css" rel="stylesheet" href="/css/mycss.css">
+    <link type="text/css" rel="stylesheet" href="/css/mycss3.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="/js/jquery-3.6.4.js"></script>
+</head>
+<body>
+<div class="container">
+    <!-- header -->
+    <div class="area row">
+        <div class="col-md-12 nav">
+            <ul>
+                <li><a th:href="@{/topersonalinformation}">个人信息</a></li>
+                <li class="right"><a href="#">退出</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="area row">
+        <!-- sidebar -->
+        <div th:include="sidebar"></div>
+        <!-- article -->
+        <div class="area grow-1" id="">
+            <h1>客户信息管理</h1>
+
+            <h2>添加新客户信息</h2>
+            <form id="communication-form">
+                <label for="customer">客户姓名：</label>
+                <input type="text" name="customer" id="customer"><br>
+                <label for="contact">联系方式：</label>
+                <input type="text" name="contact" id="contact"><br>
+                <input type="submit" value="添加">
+            </form>
+
+            <h2>客户信息列表</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>客户姓名</th>
+                    <th>联系方式</th>
+                    <th>商铺名称</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody id="communication-list">
+                <!-- 这里将会自动插入数据行 -->
+                </tbody>
+            </table>
+
+            <!-- jQuery和客户沟通信息管理脚本 -->
+            <script src="/js/jquery-3.6.4.js"></script>
+            <script>
+                // 加载客户沟通信息列表并更新页面
+                $.get('/api/communication', function(data) {
+                    data.forEach(function(item) {
+                        var rowHTML = '<tr><td>' + item.customer + '</td><td>' +
+                            item.contact + '</td><td>' + new Date(item.time).toLocaleString() + '</td><td>' +
+                            item.content + '</td><td><button class="delete" data-id="' +
+                            item.id + '">删除</button></td></tr>';
+                        $('#communication-list').append(rowHTML);
+                    });
+                });
+
+                // 监听添加新客户沟通信息表单提交事件
+                $('#communication-form').submit(function(event) {
+                    event.preventDefault();  // 防止表单自动提交
+
+                    // 发送POST请求以添加新的客户沟通信息数据
+                    var requestData = {
+                        customer: $('#customer').val(),
+                        contact: $('#contact').val(),
+                        time: new Date($('#time').val()).toISOString(),
+                        content: $('#content').val()
+                    };
+                    $.post('/api/communication', requestData, function(data) {
+                        // 添加新数据行到客户沟通信息列表中
+                        var rowHTML = '<tr><td>' + data.customer + '</td><td>' +
+                            data.contact + '</td><td>' + new Date(data.time).toLocaleString() + '</td><td>' +
+                            data.content + '</td><td><button class="delete" data-id="' +
+                            data.id + '">删除</button></td></tr>';
+                        $('#communication-list').append(rowHTML);
+
+                        // 提示用户添加成功
+                        showSuccess('客户沟通信息添加成功');
+                    }).fail(function(xhr, status, error) {
+                        // 提示用户添加失败
+                        showAlert('客户沟通信息添加失败：' + error);
+                    });
+                });
+
+                // 监听删除按钮的点击事件
+                $(document).on('click', '.delete', function() {
+                    if (confirm('确定要删除这条客户沟通信息吗？')) {
+                        // 发送DELETE请求以删除对应的客户沟通信息数据
+                        var id = $(this).data('id');
+                        $.ajax({
+                            url: '/api/communication/' + id,
+                            type: 'DELETE',
+                            success: function(data) {
+                                // 移除对应的HTML数据行
+                                $(this).parent().parent().remove();
+
+                                // 提示用户删除成功
+                                showSuccess('客户沟通信息删除成功');
+                            }.bind(this),
+                            error: function(xhr, status, error) {
+                                // 提示用户删除失败                        showAlert('客户沟通信息删除失败：' + error);
+                            }
+                        });
+                    }
+                });
+
+                // 显示提示信息的帮助函数
+                function showAlert(message) {
+                    $('#alerts').append('<div class="alert">' + message + '</div>');
+                    window.setTimeout(function() {
+                        $('.alert').fadeOut('fast', function() {
+                            $(this).remove();
+                        });
+                    }, 3000);
+                }
+
+                function showSuccess(message) {
+                    $('#alerts').append('<div class="success">' + message + '</div>');
+                    window.setTimeout(function() {
+                        $('.success').fadeOut('fast', function() {
+                            $(this).remove();
+                        });
+                    }, 3000);
+                }
+            </script>
+        </div>
+    </div>
+    <!-- footer -->
+    <div class="area footer row">
+        <div class="col-md-12">
+            <p>东北林业大学<br>
+                软件工程专业</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

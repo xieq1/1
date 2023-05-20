@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.graduationproject.dao.ScheduleController">
+  <resultMap id="BaseResultMap" type="com.graduationproject.po.Schedule">
+    <id column="scheduleid" jdbcType="INTEGER" property="scheduleid" />
+    <result column="projectname" jdbcType="VARCHAR" property="projectname" />
+    <result column="timescaleplan" jdbcType="TIMESTAMP" property="timescaleplan" />
+    <result column="practicalscale" jdbcType="VARCHAR" property="practicalscale" />
+    <result column="cause" jdbcType="VARCHAR" property="cause" />
+    <result column="staffallocation" jdbcType="VARCHAR" property="staffallocation" />
+    <result column="solution" jdbcType="VARCHAR" property="solution" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    scheduleid, projectname, timescaleplan, practicalscale, cause, staffallocation, solution
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from schedule
+    where scheduleid = #{scheduleid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from schedule
+    where scheduleid = #{scheduleid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="scheduleid" keyProperty="scheduleid" parameterType="com.graduationproject.po.Schedule" useGeneratedKeys="true">
+    insert into schedule (projectname, timescaleplan, practicalscale, 
+      cause, staffallocation, solution
+      )
+    values (#{projectname,jdbcType=VARCHAR}, #{timescaleplan,jdbcType=TIMESTAMP}, #{practicalscale,jdbcType=VARCHAR}, 
+      #{cause,jdbcType=VARCHAR}, #{staffallocation,jdbcType=VARCHAR}, #{solution,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="scheduleid" keyProperty="scheduleid" parameterType="com.graduationproject.po.Schedule" useGeneratedKeys="true">
+    insert into schedule
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="projectname != null">
+        projectname,
+      </if>
+      <if test="timescaleplan != null">
+        timescaleplan,
+      </if>
+      <if test="practicalscale != null">
+        practicalscale,
+      </if>
+      <if test="cause != null">
+        cause,
+      </if>
+      <if test="staffallocation != null">
+        staffallocation,
+      </if>
+      <if test="solution != null">
+        solution,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="projectname != null">
+        #{projectname,jdbcType=VARCHAR},
+      </if>
+      <if test="timescaleplan != null">
+        #{timescaleplan,jdbcType=TIMESTAMP},
+      </if>
+      <if test="practicalscale != null">
+        #{practicalscale,jdbcType=VARCHAR},
+      </if>
+      <if test="cause != null">
+        #{cause,jdbcType=VARCHAR},
+      </if>
+      <if test="staffallocation != null">
+        #{staffallocation,jdbcType=VARCHAR},
+      </if>
+      <if test="solution != null">
+        #{solution,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.graduationproject.po.Schedule">
+    update schedule
+    <set>
+      <if test="projectname != null">
+        projectname = #{projectname,jdbcType=VARCHAR},
+      </if>
+      <if test="timescaleplan != null">
+        timescaleplan = #{timescaleplan,jdbcType=TIMESTAMP},
+      </if>
+      <if test="practicalscale != null">
+        practicalscale = #{practicalscale,jdbcType=VARCHAR},
+      </if>
+      <if test="cause != null">
+        cause = #{cause,jdbcType=VARCHAR},
+      </if>
+      <if test="staffallocation != null">
+        staffallocation = #{staffallocation,jdbcType=VARCHAR},
+      </if>
+      <if test="solution != null">
+        solution = #{solution,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where scheduleid = #{scheduleid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.graduationproject.po.Schedule">
+    update schedule
+    set projectname = #{projectname,jdbcType=VARCHAR},
+      timescaleplan = #{timescaleplan,jdbcType=TIMESTAMP},
+      practicalscale = #{practicalscale,jdbcType=VARCHAR},
+      cause = #{cause,jdbcType=VARCHAR},
+      staffallocation = #{staffallocation,jdbcType=VARCHAR},
+      solution = #{solution,jdbcType=VARCHAR}
+    where scheduleid = #{scheduleid,jdbcType=INTEGER}
+  </update>
+</mapper>

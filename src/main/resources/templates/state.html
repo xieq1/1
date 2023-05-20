@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link type="text/css" rel="stylesheet" href="/css/mycss.css">
+    <link type="text/css" rel="stylesheet" href="/css/mycss3.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="/js/jquery-3.6.4.js"></script>
+</head>
+<body>
+<div class="container">
+    <!-- header -->
+    <div class="area row">
+        <div class="col-md-12 nav">
+            <ul>
+                <li><a th:href="@{/topersonalinformation}">个人信息</a></li>
+                <li class="right"><a href="#">退出</a></li>
+            </ul>
+        </div>
+    </div>
+    <!-- main  -->
+    <div class="area row">
+        <!-- sidebar -->
+        <div th:include="sidebar"></div>
+        <!-- article -->
+        <div class="area grow-1" id="">
+            <!DOCTYPE html>
+            <html lang="zh-CN">
+            <head>
+                <meta charset="UTF-8">
+                <title>报表管理</title>
+                <script src="/js/jquery-3.6.4.js"></script>
+            </head>
+            <body>
+            <h1>报表管理</h1>
+
+            <h2>上传报表</h2>
+            <form id="upload-form" action="/api/report" method="post" enctype="multipart/form-data">
+                <label for="file">选择文件：</label>
+                <input type="file" name="file" id="file"><br>
+                <label for="type">报表类型：</label>
+                <select name="type" id="type">
+                    <option value="income_statement">利润表</option>
+                    <option value="balance_sheet">资产负债表</option>
+                </select><br>
+                <input type="submit" value="上传">
+            </form>
+
+            <h2>报表列表</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>名称</th>
+                    <th>大小</th>
+                    <th>类型</th>
+                    <th>上传时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody id="report-list">
+                <!-- 这里将会自动插入数据行 -->
+                </tbody>
+            </table>
+
+            <!-- jQuery和报表管理脚本 -->
+            <script src="/js/jquery-3.6.4.js"></script>
+            <script>
+                // 加载报表列表并更新页面
+                $.get('/api/report', function(data) {
+                    data.forEach(function(item) {
+                        var rowHTML = '<tr><td>' + item.name + '</td><td>' +
+                            (item.size / 1000).toFixed(2) + ' KB</td><td>' +
+                            (item.type === 'balance_sheet' ? '资产负债表' : '利润表') + '</td><td>' +
+                            new Date(item.upload_time).toLocaleString() + '</td><td>' +
+                            '<button data-id="' + item.id + '">查看</button> ' +
+                            '<button data-id="' + item.id + '">删除</button> ' +
+                            '<a href="/api/report/' + item.id + '/download">下载</a></td></tr>';
+                        $('#report-list').append(rowHTML);
+                    });
+                });
+
+                // 监听上传表单提交事件
+                $('#upload-form').submit(function(event) {
+                    event.preventDefault();  // 防止表单自动提交
+
+                    // 构造FormData对象并发送POST请求以上传文件
+                    var formData = new FormData();
+                    formData.append('file', $('#file')[0].files[0]);
+                    formData.append('type', $('#type').val());
+                    $.ajax({
+                        url: $(this).attr('action'),
+                        method: $(this).attr('method'),
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(data) {
+                            // 添加新数据行到报表列表中
+                            var rowHTML = '<tr><td>' + data.name + '</td><td>' +
+                                (data.size / 1000).toFixed(2) + ' KB</td><td>' +
+                                (data.type === 'balance_sheet' ? '资产负债表' : '利润表') + '</td><td>' +
+                                new Date(data.upload_time).toLocaleString() + '</td><td>' +
+                                '<button data-id="' + data.id + '">查看</button> ' +
+                                '<button data-id="' + data.id + '">删除</button> ' +
+                                '<a href="/api/report/' + data.id + '/download">下载</a></td></tr>';
+                            $('#report-list').append(rowHTML);
+                        }
+                    });
+                });
+
+                // 监听查看和删除按钮的点击事件
+                $('#report-list').on('click', 'button', function() {
+                    if ($(this).html() === '查看') {
+                        // TODO: 打开对应报表的浏览窗口
+
+                    } else if ($(this).html() === '删除') {
+                        // 发送DELETE请求以删除对应的数据
+                        $.ajax({
+                            url: '/api/report/' + $(this).attr('data-id'),
+                            method: 'DELETE',
+                            success: function(message) {
+                                // 删除对应的数据行
+                                $(this).parent().parent().remove();
+                            }.bind(this)
+                        });
+                    }
+                });
+            </script>
+            </body>
+            </html>
+        </div>
+    </div>
+    <!-- footer -->
+    <div class="area footer row">
+        <div class="col-md-12">
+            <p>东北林业大学<br>
+                软件工程专业</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link type="text/css" rel="stylesheet" href="/css/mycss.css">
+    <link type="text/css" rel="stylesheet" href="/css/mycss3.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="/js/jquery-3.6.4.js"></script>
+</head>
+<body>
+<div class="container">
+    <!-- header -->
+    <div class="area row">
+        <div class="col-md-12 nav">
+            <ul>
+                <li><a th:href="@{/topersonalinformation}">个人信息</a></li>
+                <li class="right"><a href="#">退出</a></li>
+            </ul>
+        </div>
+    </div>
+    <!-- main  -->
+    <div class="area row">
+        <!-- sidebar -->
+        <div th:include="sidebar"></div>
+        <!-- article -->
+        <div class="area grow-1" id="">
+            <h1>采购管理</h1>
+            <h2>添加新采购记录</h2>
+            <form id="purchase-form">
+                <label for="item">采购物品：</label>
+                <input type="text" name="item" id="item"><br>
+                <label for="quantity">采购数量：</label>
+                <input type="number" name="quantity" id="quantity"><br>
+                <label for="supplier">供应商名称：</label>
+                <input type="text" name="supplier" id="supplier"><br>
+                <input type="submit" value="添加">
+            </form>
+
+            <h2>采购记录列表</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>采购时间</th>
+                    <th>采购物品</th>
+                    <th>采购数量</th>
+                    <th>供应商名称</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody id="purchase-list">
+                <!-- 这里将会自动插入数据行 -->
+                </tbody>
+            </table>
+
+            <!-- jQuery和采购管理脚本 -->
+            <script src="/js/jquery-3.6.4.js"></script>
+            <script>
+                // 加载采购记录列表并更新页面
+                $.get('/api/purchase', function(data) {
+                    data.forEach(function(item) {
+                        var rowHTML = '<tr><td>' + new Date(item.time).toLocaleString() + '</td><td>' +
+                            item.item + '</td><td>' + item.quantity + '</td><td>' +
+                            item.supplier + '</td><td><button class="delete" data-id="' +
+                            item.id + '">删除</button></td></tr>';
+                        $('#purchase-list').append(rowHTML);
+                    });
+                });
+
+                // 监听添加采购记录表单提交事件
+                $('#purchase-form').submit(function(event) {
+                    event.preventDefault();  // 防止表单自动提交
+
+                    // 发送POST请求以添加新的采购记录数据
+                    var requestData = {
+                        item: $('#item').val(),
+                        quantity: $('#quantity').val(),
+                        supplier: $('#supplier').val()
+                    };
+                    $.post('/api/purchase', requestData, function(data) {
+                        // 添加新数据行到采购记录列表中
+                        var rowHTML = '<tr><td>' + new Date(data.time).toLocaleString() + '</td><td>' +
+                            data.item + '</td><td>' + data.quantity + '</td><td>' +
+                            data.supplier + '</td><td><button class="delete" data-id="' +
+                            data.id + '">删除</button></td></tr>';
+                        $('#purchase-list').append(rowHTML);
+
+                        // 提示用户添加成功
+                        showSuccess('采购记录添加成功');
+                    }).fail(function(xhr, status, error) {
+                        // 提示用户添加失败
+                        showAlert('采购记录添加失败：' + error);
+                    });
+                });
+
+                // 监听删除按钮的点击事件
+                $(document).on('click', '.delete', function() {
+                    if (confirm('确定要删除这条采购记录吗？')) {
+                        // 发送DELETE请求以删除对应的采购记录数据
+                        var id = $(this).data('id');
+                        $.ajax({
+                            url: '/api/purchase/' + id,
+                            type: 'DELETE',
+                            success: function(data) {
+                                // 移除对应的HTML数据行
+                                $(this).parent().parent().remove();
+
+                                // 提示用户删除成功
+                                showSuccess('采购记录删除成功');
+                            }.bind(this),
+                            error: function(xhr, status, error) {
+                                // 提示用户删除失败
+                                showAlert('采购记录删除失败：' + error);
+                            }
+                        });
+                    }
+                });
+
+                // 显示提示信息的帮助函数
+                function showAlert(message) {
+                    $('#alerts').append('<div class="alert">' + message + '</div>');
+                    window.setTimeout(function() {
+                        $('.alert').fadeOut('fast', function() {
+                            $(this).remove();
+                        });
+                    }, 3000);
+                }
+
+                function showSuccess(message) {
+                    $('#alerts').append('<div class="success">' + message + '</div>');
+                    window.setTimeout(function() {
+                        $('.success').fadeOut('fast', function() {
+                            $(this).remove();
+                        });
+                    }, 3000);
+                }
+            </script>
+        </div>
+    </div>
+    <!-- footer -->
+    <div class="area footer row">
+        <div class="col-md-12">
+            <p>东北林业大学<br>
+                软件工程专业</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

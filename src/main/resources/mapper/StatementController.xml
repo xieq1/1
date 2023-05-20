@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.graduationproject.dao.StatementController">
+  <resultMap id="BaseResultMap" type="com.graduationproject.po.Statement">
+    <id column="statementid" jdbcType="INTEGER" property="statementid" />
+    <result column="statementname" jdbcType="VARCHAR" property="statementname" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
+    <result column="statementcontent" jdbcType="VARCHAR" property="statementcontent" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    statementid, statementname, `time`, statementcontent
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from statement
+    where statementid = #{statementid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from statement
+    where statementid = #{statementid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="statementid" keyProperty="statementid" parameterType="com.graduationproject.po.Statement" useGeneratedKeys="true">
+    insert into statement (statementname, `time`, statementcontent
+      )
+    values (#{statementname,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}, #{statementcontent,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="statementid" keyProperty="statementid" parameterType="com.graduationproject.po.Statement" useGeneratedKeys="true">
+    insert into statement
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="statementname != null">
+        statementname,
+      </if>
+      <if test="time != null">
+        `time`,
+      </if>
+      <if test="statementcontent != null">
+        statementcontent,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="statementname != null">
+        #{statementname,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="statementcontent != null">
+        #{statementcontent,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.graduationproject.po.Statement">
+    update statement
+    <set>
+      <if test="statementname != null">
+        statementname = #{statementname,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        `time` = #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="statementcontent != null">
+        statementcontent = #{statementcontent,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where statementid = #{statementid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.graduationproject.po.Statement">
+    update statement
+    set statementname = #{statementname,jdbcType=VARCHAR},
+      `time` = #{time,jdbcType=TIMESTAMP},
+      statementcontent = #{statementcontent,jdbcType=VARCHAR}
+    where statementid = #{statementid,jdbcType=INTEGER}
+  </update>
+</mapper>

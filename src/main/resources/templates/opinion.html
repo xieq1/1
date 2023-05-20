@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link type="text/css" rel="stylesheet" href="/css/mycss.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="/js/jquery-3.6.4.js"></script>
+</head>
+<body>
+<div class="container">
+    <!-- header -->
+    <div class="area row">
+        <div class="col-md-12 nav">
+            <ul>
+                <li><a th:href="@{/topersonalinformation}">个人信息</a></li>
+                <li class="right"><a href="#">退出</a></li>
+            </ul>
+        </div>
+    </div>
+    <!-- main  -->
+    <div class="area row">
+        <!-- sidebar -->
+        <div th:include="sidebar"></div>
+        <!-- article -->
+        <div class="area grow-1" id="">
+            <h1>客户意见管理</h1>
+            <div class="customer-list">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>姓名</th>
+                        <th>电话</th>
+                        <th>预算</th>
+                        <th>需求</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- 这里需要使用服务器动态生成客户列表 -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function() {
+            // 发送 AJAX 请求获取后端服务器的客户数据
+            $.ajax({
+                method: 'get',
+                url: 'http://localhost/customer/list',
+                dataType: 'json',
+                success: function(data) {
+                    // 请求成功时动态生成表格
+                    var tbody = '';
+                    for (var i = 0; i < data.length; i++) {
+                        var row = data[i];
+                        tbody += '<tr>';
+                        tbody += '<td>' + row.name + '</td>';
+                        tbody += '<td>' + row.phone + '</td>';
+                        tbody += '<td>' + row.budget + '</td>';
+                        tbody += '<td>' + row.requirement + '</td>';
+                        tbody += '</tr>';
+                    }
+                    $('tbody').html(tbody);
+                },
+                error: function() {
+                    // 请求失败时打印错误信息
+                    console.log('Failed to fetch customer list.');
+                }
+            });
+
+            // 为表格中每个行元素添加点击事件，当用户选择某个客户时，跳转到该客户详情页面
+            $('tbody').on('click', 'tr', function() {
+                $(this).parent().find('tr').removeClass('selected');
+                $(this).addClass('selected');
+                window.location.href = 'customer-detail.html?customerId=' + $(this).index();
+            });
+        });
+    </script>
+    <!-- footer -->
+    <div class="area footer row">
+        <div class="col-md-12">
+            <p>东北林业大学<br>
+                软件工程专业</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

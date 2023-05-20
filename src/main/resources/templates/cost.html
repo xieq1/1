@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link type="text/css" rel="stylesheet" href="/css/mycss.css">
+    <script src="/js/jquery-3.6.4.js"></script>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <!-- header -->
+    <div class="area row">
+        <div class="col-md-12 nav">
+            <ul>
+                <li><a th:href="@{/topersonalinformation}">个人信息</a></li>
+                <li class="right"><a href="#">退出</a></li>
+            </ul>
+        </div>
+    </div>
+    <!-- main  -->
+    <div class="area row">
+        <!-- sidebar -->
+        <div th:include="sidebar"></div>
+        <!-- article -->
+        <div class="area grow-1" id="">
+            <h1>成本管理</h1>
+
+            <form id="projectForm">
+                <label for="name">项目名称：</label>
+                <input type="text" id="name" name="name"><br><br>
+                <button type="submit">添加项目</button>
+            </form>
+
+            <table>
+                <thead>
+                <tr>
+                    <th>名称</th>
+                    <th>单价</th>
+                    <th>数量</th>
+                    <th>总费用</th>
+                </tr>
+                </thead>
+                <tbody id="materials">
+                <!-- 这里可以用jQuery动态添加材料 -->
+                </tbody>
+            </table>
+
+            <table>
+                <thead>
+                <tr>
+                    <th>职位</th>
+                    <th>时间</th>
+                    <th>费用</th>
+                </tr>
+                </thead>
+                <tbody id="labor">
+                <!-- 这里可以用jQuery动态添加人工费用 -->
+                </tbody>
+            </table>
+
+            <table>
+                <thead>
+                <tr>
+                    <th>设备名称</th>
+                    <th>租赁费用</th>
+                </tr>
+                </thead>
+                <tbody id="equipment">
+                <!-- 这里可以用jQuery动态添加设备租赁费用 -->
+                </tbody>
+            </table>
+
+            <table>
+                <thead>
+                <tr>
+                    <th>名称</th>
+                    <th>费用</th>
+                </tr>
+                </thead>
+                <tbody id="others">
+                <!-- 这里可以用jQuery动态添加其他费用 -->
+                </tbody>
+            </table>
+
+            <h3>总成本: <span id="total"></span></h3>
+
+            <script type="text/javascript">
+
+                var materials = [
+                    { name: "地板", price: 20, quantity: 100, total: 2000 },
+                    { name: "墙纸", price: 15, quantity: 80, total: 1200 }
+                ];
+                var labor = [
+                    { position: "设计师", time: "20天", cost: 8000 },
+                    { position: "施工队长", time: "30天", cost: 12000 },
+                    { position: "木工", time: "50天", cost: 15000 }
+                ];
+                var equipment = [
+                    { name: "挖掘机", cost: 5000 },
+                    { name: "卡车", cost: 3000 }
+                ];
+                var others = [
+                    { name: "交通运输费", cost: 2000 },
+                    { name: "其他杂项费用", cost: 1000 }
+                ];
+
+                $(document).ready(function() {
+
+                    // 动态生成表格
+                    for (var i = 0; i < materials.length; i++) {
+                        var row = $("<tr>");
+                        row.append($("<td>").text(materials[i].name));
+                        row.append($("<td>").text(materials[i].price));
+                        row.append($("<td>").text(materials[i].quantity));
+                        row.append($("<td>").text(materials[i].total));
+                        $("#materials").append(row);
+                    }
+                    for (var i = 0; i < labor.length; i++) {
+                        var row = $("<tr>");
+                        row.append($("<td>").text(labor[i].position));
+                        row.append($("<td>").text(labor[i].time));
+                        row.append($("<td>").text(labor[i].cost));
+                        $("#labor").append(row);
+                    }
+                    for (var i = 0; i < equipment.length; i++) {
+                        var row = $("<tr>");
+                        row.append($("<td>").text(equipment[i].name));
+                        row.append($("<td>").text(equipment[i].cost));
+                        $("#equipment").append(row);
+                    }
+                    for (var i = 0; i < others.length; i++) {
+                        var row = $("<tr>");
+                        row.append($("<td>").text(others[i].name));
+                        row.append($("<td>").text(others[i].cost));
+                        $("#others").append(row);
+                    }
+
+                    // 添加项目
+                    $("#projectForm").submit(function(e) {
+                        e.preventDefault();
+                        var projectName = $("#name").val();
+                        if (projectName !== "") {
+                            // TODO: 添加项目代码
+                        }
+                    });
+
+                    // 计算总成本
+                    function calculateTotal() {
+                        var total = 0;
+                        for (var i = 0; i < materials.length; i++) {
+                            total += materials[i].total;
+                        }
+                        for (var i = 0; i < labor.length; i++) {
+                            total += labor[i].cost;
+                        }
+                        for (var i = 0; i < equipment.length; i++) {
+                            total += equipment[i].cost;
+                        }
+                        for (var i = 0; i < others.length; i++) {
+                            total += others[i].cost;
+                        }
+                        $("#total").text(total);
+                    }
+                    calculateTotal();
+                });
+            </script>
+        </div>
+    </div>
+    <!-- footer -->
+    <div class="area footer row">
+        <div class="col-md-12">
+            <p>东北林业大学<br>
+                软件工程专业</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

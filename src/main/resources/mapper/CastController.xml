@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.graduationproject.dao.CastController">
+  <resultMap id="BaseResultMap" type="com.graduationproject.po.Cast">
+    <id column="castid" jdbcType="INTEGER" property="castid" />
+    <result column="moon" jdbcType="VARCHAR" property="moon" />
+    <result column="amoutinarrear" jdbcType="VARCHAR" property="amoutinarrear" />
+    <result column="amoutissuoed" jdbcType="VARCHAR" property="amoutissuoed" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    castid, moon, amoutinarrear, amoutissuoed
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from cast
+    where castid = #{castid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from cast
+    where castid = #{castid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="castid" keyProperty="castid" parameterType="com.graduationproject.po.Cast" useGeneratedKeys="true">
+    insert into cast (moon, amoutinarrear, amoutissuoed
+      )
+    values (#{moon,jdbcType=VARCHAR}, #{amoutinarrear,jdbcType=VARCHAR}, #{amoutissuoed,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="castid" keyProperty="castid" parameterType="com.graduationproject.po.Cast" useGeneratedKeys="true">
+    insert into cast
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="moon != null">
+        moon,
+      </if>
+      <if test="amoutinarrear != null">
+        amoutinarrear,
+      </if>
+      <if test="amoutissuoed != null">
+        amoutissuoed,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="moon != null">
+        #{moon,jdbcType=VARCHAR},
+      </if>
+      <if test="amoutinarrear != null">
+        #{amoutinarrear,jdbcType=VARCHAR},
+      </if>
+      <if test="amoutissuoed != null">
+        #{amoutissuoed,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.graduationproject.po.Cast">
+    update cast
+    <set>
+      <if test="moon != null">
+        moon = #{moon,jdbcType=VARCHAR},
+      </if>
+      <if test="amoutinarrear != null">
+        amoutinarrear = #{amoutinarrear,jdbcType=VARCHAR},
+      </if>
+      <if test="amoutissuoed != null">
+        amoutissuoed = #{amoutissuoed,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where castid = #{castid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.graduationproject.po.Cast">
+    update cast
+    set moon = #{moon,jdbcType=VARCHAR},
+      amoutinarrear = #{amoutinarrear,jdbcType=VARCHAR},
+      amoutissuoed = #{amoutissuoed,jdbcType=VARCHAR}
+    where castid = #{castid,jdbcType=INTEGER}
+  </update>
+</mapper>

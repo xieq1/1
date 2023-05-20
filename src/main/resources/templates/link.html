@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link type="text/css" rel="stylesheet" href="/css/mycss.css">
+    <link type="text/css" rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="/js/jquery-3.6.4.js"></script>
+</head>
+<body>
+<div class="container">
+    <!-- header -->
+    <div class="area row">
+        <div class="col-md-12 nav">
+            <ul>
+                <li><a th:href="@{/topersonalinformation}">个人信息</a></li>
+                <li class="right"><a href="#">退出</a></li>
+            </ul>
+        </div>
+    </div>
+    <!-- main  -->
+    <div class="area row">
+        <!-- sidebar -->
+        <div th:include="sidebar"></div>
+        <!-- article -->
+        <div class="area grow-1" id="">
+            <h1>沟通记录管理</h1>
+            <div class="communication-list">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>沟通时间</th>
+                        <th>沟通地点</th>
+                        <th>沟通内容</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- 这里需要使用服务器动态生成沟通记录 -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <script>
+            $(function() {
+                // 发送 AJAX 请求获取后端服务器的沟通记录数据
+                $.ajax({
+                    method: 'get',
+                    url: 'http://localhost/communication/list',
+                    dataType: 'json',
+                    success: function(data) {
+                        // 请求成功时动态生成表格
+                        var tbody = '';
+                        for (var i = 0; i < data.length; i++) {
+                            var row = data[i];
+                            tbody += '<tr>';
+                            tbody += '<td>' + row.time + '</td>';
+                            tbody += '<td>' + row.location + '</td>';
+                            tbody += '<td>' + row.content + '</td>';
+                            tbody += '</tr>';
+                        }
+                        $('tbody').html(tbody);
+                    },
+                    error: function() {
+                        // 请求失败时打印错误信息
+                        console.log('Failed to fetch communication list.');
+                    }
+                });
+
+                // 为表格中每个行元素添加点击事件，当用户选择某个沟通记录时，在该页面展示该沟通记录详情
+                $('tbody').on('click', 'tr', function() {
+                    $(this).parent().find('tr').removeClass('selected');
+                    $(this).addClass('selected');
+                    // 打开该记录的详情页面
+                    window.location.href = 'communication-detail.html?communicationId=' + $(this).index();
+                });
+            });
+        </script>
+    </div>
+    <!-- footer -->
+    <div class="area footer row">
+        <div class="col-md-12">
+            <p>东北林业大学<br>
+                软件工程专业</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

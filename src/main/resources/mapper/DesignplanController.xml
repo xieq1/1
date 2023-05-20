@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.graduationproject.dao.DesignplanController">
+  <resultMap id="BaseResultMap" type="com.graduationproject.po.Designplan">
+    <id column="designplanid" jdbcType="INTEGER" property="designplanid" />
+    <result column="designsketch" jdbcType="VARCHAR" property="designsketch" />
+    <result column="consumable" jdbcType="VARCHAR" property="consumable" />
+    <result column="cast" jdbcType="VARCHAR" property="cast" />
+    <result column="auditstatus" jdbcType="VARCHAR" property="auditstatus" />
+    <result column="difficulty" jdbcType="VARCHAR" property="difficulty" />
+    <result column="quotation" jdbcType="VARCHAR" property="quotation" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    designplanid, designsketch, consumable, `cast`, auditstatus, difficulty, quotation
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from designplan
+    where designplanid = #{designplanid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from designplan
+    where designplanid = #{designplanid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="designplanid" keyProperty="designplanid" parameterType="com.graduationproject.po.Designplan" useGeneratedKeys="true">
+    insert into designplan (designsketch, consumable, `cast`, 
+      auditstatus, difficulty, quotation
+      )
+    values (#{designsketch,jdbcType=VARCHAR}, #{consumable,jdbcType=VARCHAR}, #{cast,jdbcType=VARCHAR}, 
+      #{auditstatus,jdbcType=VARCHAR}, #{difficulty,jdbcType=VARCHAR}, #{quotation,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="designplanid" keyProperty="designplanid" parameterType="com.graduationproject.po.Designplan" useGeneratedKeys="true">
+    insert into designplan
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="designsketch != null">
+        designsketch,
+      </if>
+      <if test="consumable != null">
+        consumable,
+      </if>
+      <if test="cast != null">
+        `cast`,
+      </if>
+      <if test="auditstatus != null">
+        auditstatus,
+      </if>
+      <if test="difficulty != null">
+        difficulty,
+      </if>
+      <if test="quotation != null">
+        quotation,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="designsketch != null">
+        #{designsketch,jdbcType=VARCHAR},
+      </if>
+      <if test="consumable != null">
+        #{consumable,jdbcType=VARCHAR},
+      </if>
+      <if test="cast != null">
+        #{cast,jdbcType=VARCHAR},
+      </if>
+      <if test="auditstatus != null">
+        #{auditstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="difficulty != null">
+        #{difficulty,jdbcType=VARCHAR},
+      </if>
+      <if test="quotation != null">
+        #{quotation,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.graduationproject.po.Designplan">
+    update designplan
+    <set>
+      <if test="designsketch != null">
+        designsketch = #{designsketch,jdbcType=VARCHAR},
+      </if>
+      <if test="consumable != null">
+        consumable = #{consumable,jdbcType=VARCHAR},
+      </if>
+      <if test="cast != null">
+        `cast` = #{cast,jdbcType=VARCHAR},
+      </if>
+      <if test="auditstatus != null">
+        auditstatus = #{auditstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="difficulty != null">
+        difficulty = #{difficulty,jdbcType=VARCHAR},
+      </if>
+      <if test="quotation != null">
+        quotation = #{quotation,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where designplanid = #{designplanid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.graduationproject.po.Designplan">
+    update designplan
+    set designsketch = #{designsketch,jdbcType=VARCHAR},
+      consumable = #{consumable,jdbcType=VARCHAR},
+      `cast` = #{cast,jdbcType=VARCHAR},
+      auditstatus = #{auditstatus,jdbcType=VARCHAR},
+      difficulty = #{difficulty,jdbcType=VARCHAR},
+      quotation = #{quotation,jdbcType=VARCHAR}
+    where designplanid = #{designplanid,jdbcType=INTEGER}
+  </update>
+</mapper>

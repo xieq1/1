@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.graduationproject.dao.MaterialsController">
+  <resultMap id="BaseResultMap" type="com.graduationproject.po.Materials">
+    <id column="materialsid" jdbcType="INTEGER" property="materialsid" />
+    <result column="materialsname" jdbcType="VARCHAR" property="materialsname" />
+    <result column="speciaficarion" jdbcType="VARCHAR" property="speciaficarion" />
+    <result column="inventory" jdbcType="VARCHAR" property="inventory" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="variety" jdbcType="VARCHAR" property="variety" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    materialsid, materialsname, speciaficarion, inventory, price, variety
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from materials
+    where materialsid = #{materialsid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from materials
+    where materialsid = #{materialsid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="materialsid" keyProperty="materialsid" parameterType="com.graduationproject.po.Materials" useGeneratedKeys="true">
+    insert into materials (materialsname, speciaficarion, inventory, 
+      price, variety)
+    values (#{materialsname,jdbcType=VARCHAR}, #{speciaficarion,jdbcType=VARCHAR}, #{inventory,jdbcType=VARCHAR}, 
+      #{price,jdbcType=DECIMAL}, #{variety,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="materialsid" keyProperty="materialsid" parameterType="com.graduationproject.po.Materials" useGeneratedKeys="true">
+    insert into materials
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="materialsname != null">
+        materialsname,
+      </if>
+      <if test="speciaficarion != null">
+        speciaficarion,
+      </if>
+      <if test="inventory != null">
+        inventory,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="variety != null">
+        variety,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="materialsname != null">
+        #{materialsname,jdbcType=VARCHAR},
+      </if>
+      <if test="speciaficarion != null">
+        #{speciaficarion,jdbcType=VARCHAR},
+      </if>
+      <if test="inventory != null">
+        #{inventory,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="variety != null">
+        #{variety,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.graduationproject.po.Materials">
+    update materials
+    <set>
+      <if test="materialsname != null">
+        materialsname = #{materialsname,jdbcType=VARCHAR},
+      </if>
+      <if test="speciaficarion != null">
+        speciaficarion = #{speciaficarion,jdbcType=VARCHAR},
+      </if>
+      <if test="inventory != null">
+        inventory = #{inventory,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="variety != null">
+        variety = #{variety,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where materialsid = #{materialsid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.graduationproject.po.Materials">
+    update materials
+    set materialsname = #{materialsname,jdbcType=VARCHAR},
+      speciaficarion = #{speciaficarion,jdbcType=VARCHAR},
+      inventory = #{inventory,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DECIMAL},
+      variety = #{variety,jdbcType=VARCHAR}
+    where materialsid = #{materialsid,jdbcType=INTEGER}
+  </update>
+</mapper>

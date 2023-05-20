@@ -1,0 +1,221 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+.container{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+.area {
+    padding: 10px;
+    border: 1px solid aliceblue;
+    background-color: white;
+    border-radius: 5px;
+}
+.row {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: nowrap;
+}
+.row .grow-1 {
+    flex-grow: 1;
+}
+
+/* ------ header ------- */
+.nav ul {
+    display: flex;
+    background: cadetblue;
+    list-style: none;
+}
+.nav ul a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    padding: 15px 25px;
+}
+.nav ul a:hover {
+    background-color: #3185bf;
+    color: black;
+    font-size: 150%;
+}
+.nav .right {
+    margin-left: auto;
+}
+/*-------------- sidebar ------------ */
+.sidebar {
+    min-width: 200px;
+}
+.sidebar-group {
+    background: #f1f1f1;
+}
+.sidebar-group > ul {
+    list-style:none;
+}
+.sidebar-group > h2 {
+    background: #3185bf;
+    color: white;
+    padding: 10px 20px;
+}
+.sidebar-group a{
+    display: block;
+    color: black;
+    text-decoration: none;
+    padding: 10px 20px;
+    transition: transform 1.0s;
+}
+.sidebar-group a:hover {
+    background: dodgerblue;
+    color: white;
+    transform: scale(1.1);
+}
+.footer {
+    margin: auto;
+    text-align: center;
+}
+/*-------- 12栅格 -----------  */
+.col-md-1 {width: 8.33%;}
+.col-md-2 {width: 16.67%;}
+.col-md-3 {width: 25%;}
+.col-md-4 {width: 33.33%;}
+.col-md-5 {width: 41.67%;}
+.col-md-6 {width: 50%;}
+.col-md-7 {width: 58.33%;}
+.col-md-8 {width: 66.67%;}
+.col-md-9 {width: 75%;}
+.col-md-10 {width: 83.33%;}
+.col-md-11 {width: 91.67%;}
+.col-md-12 {width: 100%;}
+
+h1 {
+    text-align: center;
+}
+
+.construction-process,
+.construction-step {
+    margin-bottom: 50px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2f2f2;
+    font-weight: normal;
+}
+
+tr:hover {
+    background-color: #f5f5f5;
+}
+
+.add-button {
+    display: block;
+    margin: 20px auto 0;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: dodgerblue;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 300ms ease-in-out;
+}
+
+.add-button:hover {
+    background-color: deepskyblue;
+}
+
+/* 添加对话框样式 */
+#add-dialog {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 999;
+}
+
+#add-dialog form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+#add-dialog label {
+    margin: 10px;
+}
+
+#add-dialog label input,
+#add-dialog label textarea {
+    width: 100%;
+    padding: 8px;
+    border-radius: 5px;
+    border: none;
+    font-size: 16px;
+    resize: none;
+}
+
+#add-dialog button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: dodgerblue;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 300ms ease-in-out;
+}
+
+#add-dialog button:hover {
+    background-color: deepskyblue;
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 8px;
+    font-size: 24px;
+    color: white;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.close-button:hover {
+    color: red;
+}
+
+/* 编辑和删除按钮样式 */
+.edit-button,
+.delete-button {
+    margin-right: 10px;
+    padding: 8px 16px;
+    font-size: 16px;
+    color: white;
+    background-color: dodgerblue;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 300ms ease-in-out;
+}
+
+.edit-button:hover,
+.delete-button:hover {
+    background-color: deepskyblue;
+}

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link type="text/css" rel="stylesheet" href="/css/mycss.css">
+    <link type="text/css" rel="stylesheet" href="/css/mycss1.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="/js/jquery-3.6.4.js"></script>
+</head>
+<body>
+<div class="container">
+    <!-- header -->
+    <div class="area row">
+        <div class="col-md-12 nav">
+            <ul>
+                <li><a th:href="@{/topersonalinformation}">个人信息</a></li>
+                <li class="right"><a href="#">退出</a></li>
+            </ul>
+        </div>
+    </div>
+    <!-- main  -->
+    <div class="area row">
+        <!-- sidebar -->
+        <div th:include="sidebar"></div>
+        <!-- article -->
+        <div class="area grow-1" id="">
+            <h1>施工验收管理</h1>
+
+            <div class="construction-checks">
+                <h2>未审核施工环节列表</h2>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>名称</th>
+                        <th>描述</th>
+                        <th>店面整体结构</th>
+                        <th>墙面</th>
+                        <th>水电</th>
+                        <th>装饰</th>
+                        <th>负责人</th>
+                        <th>施工人员</th>
+                        <th>完工时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>地基</td>
+                        <td>挖土、加固、回填等工作</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>张三</td>
+                        <td>10人</td>
+                        <td>2023-05-07</td>
+                        <td>
+                            <button class="approve-button">通过</button>
+                            <button class="reject-button">拒绝</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>结构施工</td>
+                        <td>钢筋焊接、混凝土浇注等工作</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>李四</td>
+                        <td>20人</td>
+                        <td>2023-05-09</td>
+                        <td>
+                            <button class="approve-button">通过</button>
+                            <button class="reject-button">拒绝</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="construction-checks">
+                <h2>已审核施工环节列表</h2>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>名称</th>
+                        <th>描述</th>
+                        <th>店面整体结构</th>
+                        <th>墙面</th>
+                        <th>水电</th>
+                        <th>装饰</th>
+                        <th>负责人</th>
+                        <th>施工人员</th>
+                        <th>完工时间</th>
+                        <th>状态</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>3</td>
+                        <td>开业前整理</td>
+                        <td>清洁、布置、检查等工作</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>王五</td>
+                        <td>5人</td>
+                        <td>2023-05-12</td>
+                        <td><span class="approved">已通过</span></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <script>
+            // 获取元素
+            const approveButtons = document.querySelectorAll('.approve-button');
+            const rejectButtons = document.querySelectorAll('.reject-button');
+
+            // 审核通过
+            function approveCheck(event) {
+                const tr = event.target.closest('tr');
+                tr.querySelector('td:last-child').innerHTML = '<span class="approved">已通过</span>';
+            }
+
+            // 拒绝审核
+            function rejectCheck(event) {
+                const tr = event.target.closest('tr');
+                tr.remove();
+            }
+
+            // 将审核通过和拒绝审核的事件分别绑定到每个按钮上
+            approveButtons.forEach(button => button.addEventListener('click', approveCheck));
+            rejectButtons.forEach(button => button.addEventListener('click', rejectCheck));
+
+        </script>
+    </div>
+    <!-- footer -->
+    <div class="area footer row">
+        <div class="col-md-12">
+            <p>东北林业大学<br>
+                软件工程专业</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

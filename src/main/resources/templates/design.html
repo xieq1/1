@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link type="text/css" rel="stylesheet" href="/css/mycss.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        form {
+            padding: 10px;
+            border: 1px solid black;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        input[type="submit"], input[type="reset"] {
+            background-color: #0077cc;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        img {
+            max-width: 300px;
+            max-height: 300px;
+            margin-top: 10px;
+        }
+        #design-form {
+            display: none;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        th {
+            background-color: #0077cc;
+            color: white;
+            font-weight: bold;
+        }
+    </style>
+    <script src="/js/jquery-3.6.4.js"></script>
+
+</head>
+<body>
+<div class="container">
+    <!-- header -->
+    <div class="area row">
+        <div class="col-md-12 nav">
+            <ul>
+                <li><a th:href="@{/topersonalinformation}">个人信息</a></li>
+                <li class="right"><a href="#">退出</a></li>
+            </ul>
+        </div>
+    </div>
+    <!-- main  -->
+    <div class="area row">
+        <!-- sidebar -->
+        <div th:include="sidebar"></div>
+        <!-- article -->
+        <div class="area grow-1" id="">
+            <h1>设计方案信息管理</h1>
+            <table>
+                <tr>
+                    <th>设计方案ID</th>
+                    <th>审核状态</th>
+                </tr>
+                <tr>
+                    <td>001</td>
+                    <td>已审核</td>
+                </tr>
+                <tr>
+                    <td>002</td>
+                    <td>待审核</td>
+                </tr>
+                <tr>
+                    <td>003</td>
+                    <td>已驳回</td>
+                </tr>
+            </table>
+            <form id="design-form" enctype="multipart/form-data">
+                <label for="design-id">设计方案ID：</label>
+                <input type="text" id="design-id" name="design-id"><br><br>
+                <label for="design-img">效果图：</label>
+                <input type="file" id="design-img" name="design-img"><br><br>
+                <label for="material-info">消耗材料信息：</label>
+                <textarea id="material-info" name="material-info"></textarea><br><br>
+                <label for="material-price">材料成本：</label>
+                <input type="number" min="0" step="0.01" id="material-price" name="material-price"><br><br>
+                <label for="audit-status">审核状态：</label>
+                <select id="audit-status" name="audit-status">
+                    <option value="unaudited">未审核</option>
+                    <option value="passed">已通过</option>
+                    <option value="rejected">已拒绝</option>
+                </select><br><br>
+                <label for="difficulty">施工难度：</label>
+                <select id="difficulty" name="difficulty">
+                    <option value="easy">容易</option>
+                    <option value="medium">一般</option>
+                    <option value="hard">困难</option>
+                </select><br><br>
+                <label for="quote-attribute">方案报价：</label>
+                <input type="text" id="quote-attribute" name="quote-attribute"><br><br>
+                <input type="submit" value="上传">
+                <input type="reset" value="重置">
+            </form>
+            <input type="submit" value="上传新方案" id="upload-btn">
+            <script>
+                $(document).ready(function() {
+                    // 提交表单
+                    $("#design-form").submit(function(event) {
+                        event.preventDefault(); // 阻止默认提交行为
+
+                        // 获取表单数据
+                        var designId = $("#design-id").val();
+                        var materialInfo = $("#material-info").val();
+                        var materialPrice = $("#material-price").val();
+                        var auditStatus = $("#audit-status").val();
+                        var difficulty = $("#difficulty").val();
+                        var quoteAttribute = $("#quote-attribute").val();
+
+                        // 构建 FormData 对象
+                        var formData = new FormData();
+                        formData.append("design-id", designId);
+                        formData.append("material-info", materialInfo);
+                        formData.append("material-price", materialPrice);
+                        formData.append("audit-status", auditStatus);
+                        formData.append("difficulty", difficulty);
+                        formData.append("quote-attribute", quoteAttribute);
+
+                        // 检查是否上传了图片
+                        var designImg = $("#design-img")[0].files[0];
+                        if (designImg) {
+                            formData.append("design-img", designImg);
+                        } else {
+                            alert("请上传设计方案效果图！");
+                            return;
+                        }
+
+                        // 发送 AJAX 请求提交表单
+                        $.ajax({
+                            url: "upload.php",
+                            type: "POST",
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            success: function(response) {
+                                alert("上传成功！");
+                                $("#design-form")[0].reset(); // 重置表单
+                                $("img").attr('src', ''); //清空效果图预览
+                            },
+                            error: function(xhr, status, error) {
+                                alert("上传失败：" + error);
+                            }
+                        });
+                    });
+
+                    // 预览图片
+                    $("#design-img").change(function(event) {
+                        var file = event.target.files[0];
+                        if (file) {
+                            var reader = new FileReader();
+                            reader.onload = function() {
+                                $("img").attr('src', reader.result);
+                            };
+                            reader.readAsDataURL(file);
+                        } else {
+                            $("img").attr('src', '');
+                        }
+                    });
+                });
+                var uploadBtn = document.getElementById('upload-btn');
+                var designForm = document.getElementById('design-form');
+
+                uploadBtn.onclick = function() {
+                    designForm.style.display = 'block';
+                };
+            </script>
+
+            <img src="" alt="效果图预览">
+        </div>
+    </div>
+    <!-- footer -->
+    <div class="area footer row">
+        <div class="col-md-12">
+            <p>东北林业大学<br>
+                软件工程专业</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
