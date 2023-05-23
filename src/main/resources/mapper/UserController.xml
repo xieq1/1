@@ -4,13 +4,13 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.graduationproject.dao.UserController">
     <insert id="UserInsert" parameterType="com.graduationproject.po.User">
-        insert into user (name,password,jurisdicion,job,salary) value (#{name},#{password},#{jurisdicion},#{job},#{salary})
+        insert into user (name,password,role,job,salary) value (#{name},#{password},#{role},#{job},#{salary})
     </insert>
-    <select id="selectall" parameterType="com.graduationproject.po.User">
+    <select id="selectall" parameterType="com.graduationproject.po.User" resultType="com.graduationproject.po.User">
         select * from user
     </select>
     <update id="updatebyuid" parameterType="com.graduationproject.po.User">
-        update user set phone=#{phone} where userid=#{userid}
+        update user set name=#{name},password=#{password},role=#{role},job=#{job},salary=#{salary} where userid=#{userid}
     </update>
     <select id="getUserCount" resultType="int">
         select count(*) from user

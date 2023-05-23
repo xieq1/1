@@ -7,10 +7,20 @@ public class User {
     String name;
     String password;
     String idnumber;
-    String jurisdicion;
+    String role;
     String phone;
     String job;
     String salary;
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    String sex;
     private List<String> permissions; // 用户权限列表
 
     public String getIdnumber() {
@@ -21,12 +31,12 @@ public class User {
         this.idnumber = idnumber;
     }
 
-    public String getJurisdicion() {
-        return jurisdicion;
+    public String getRole() {
+        return role;
     }
 
-    public void setJurisdicion(String jurisdicion) {
-        this.jurisdicion = jurisdicion;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getPhone() {

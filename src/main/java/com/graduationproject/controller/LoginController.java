@@ -55,7 +55,7 @@ public class LoginController {
             Cookie cookie = new Cookie("token", token);
             cookie.setMaxAge(300);
             response.addCookie(cookie);
-            System.out.print(token);
+            //System.out.print(token);
             // 跳转到首页，并将Token作为URL参数之一
             response.sendRedirect(request.getContextPath() +"/user/index?token=" + token);
         } else {

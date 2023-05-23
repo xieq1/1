@@ -14,7 +14,7 @@
     <div class="area row">
         <div class="col-md-12 nav">
             <ul>
-                <li><a th:href="@{/topersonalinformation}">个人信息</a></li>
+                <li><a th:href="@{/User/topersonalinformation(token=${#httpServletRequest.getParameter('token')})}">个人信息</a></li>
                 <li class="right"><a href="#">退出</a></li>
             </ul>
         </div>
@@ -36,53 +36,22 @@
                 </form>
             </header>
             <main>
-                <table>
+                <table class="employee-table">
                     <thead>
                     <tr>
                         <th>ID</th>
-                        <th>用户名</th>
-                        <th>性别</th>
+                        <td>姓名</td>
+                        <td>性别</td>
                         <th>操作</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>张三</td>
-                        <td>男</td>
-                        <td class="btn-group">
-                            <a href="#" class="btn delete">删除</a>
-                            <a href="#" class="btn update">修改</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>李四</td>
-                        <td>女</td>
-                        <td class="btn-group">
-                            <a href="#" class="btn delete">删除</a>
-                            <a href="#" class="btn update">修改</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>王五</td>
-                        <td>男</td>
-                        <td class="btn-group">
-                            <a href="#" class="btn delete">删除</a>
-                            <a href="#" class="btn update">修改</a>
-                        </td>
-                    </tr>
+                    <!-- 此处用 JavaScript 渲染表格 -->
                     </tbody>
                 </table>
-                <div class="pagination">
-                    <a href="#" class="page-link">&laquo;</a>
-                    <a href="#" class="page-link active">1</a>
-                    <a href="#" class="page-link">&laquo;</a>
-                </div>
             </main>
             <div class="modal fade" id="add-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <form id="add-form" th:action="@{/User/insert}" method="post">
+                <form id="add-form" th:action="@{/User/insert(token=${#httpServletRequest.getParameter('token')})}" method="post">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -103,7 +72,7 @@
 
                                     <tr>
                                         <td>权限等级</td>
-                                        <td><input id="jurisdicion" name="jurisdicion" value="" /></td>
+                                        <td><input id="role" name="role" value="" /></td>
                                     </tr>
                                     <tr>
                                         <td>职位</td>
@@ -123,10 +92,123 @@
                     </div>
                 </form>
             </div>
+            <!-- 修改员工记录的模态框 -->
+            <div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <form id="edit-form" th:action="@{/User/updatebyid(token=${#httpServletRequest.getParameter('token')})}" method="post">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span>&times;</span></button>
+                                <h4 class="modal-title" id="edit-modal-label">修改</h4>
+                            </div>
+                            <div class="modal-body">
+                                <!-- 表单数据项 -->
+                                <table>
+                                    <tr>
+                                        <td>用户ID</td>
+                                        <td><input id="employee-id" name="userid" value="" readonly="true"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>用户名</td>
+                                        <td><input id="employee-name" name="name" value="" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td>密码</td>
+                                        <td><input id="employee-password" name="password" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td>权限等级</td>
+                                        <td><input id="employee-role" name="role" value="" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td>职位</td>
+                                        <td><input id="employee-job" name="job" value="" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td>工资</td>
+                                        <td><input id="employee-salary" name="salary" value="" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td align="right"><input type="submit" value="提交"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        var employees = [];
+        // 发送 AJAX 请求时添加 Token 到 URL 中
+        var token = new URLSearchParams(window.location.search).get("token");
+        $.ajax({
+            type: 'GET',
+            url: '/User/getalluser?token=' + token,
+            data: {},
+            success: function(res) {
+                // 处理成功请求后的逻辑
+                employees = [];
+
+                if (res && res.length > 0) {
+                    var str = '';
+
+                    for (var i = 0; i < res.length; i++) {
+                        employees.push(res[i]);console.log(typeof res[i].userid);
+                        str += '<tr data-id="' + parseInt(res[i].userid) + '">' +
+                            '<td>' + res[i].userid + '</td>' +
+                            '<td>' + res[i].name + '</td>' +
+                            '<td>' + (res[i].sex == '1' ? '男' : '女') + '</td>' +
+                            '<td class="btn-group">' +
+                            '<a href="#" class="btn delete">删除</a>' +
+                            '<a href="#" class="btn update">修改</a>' +
+                            '</td>' +
+                            '</tr>';
+                    }
+                    $('.employee-table tbody').html(str); // 将表格内容替换为从后端获取的员工信息
+                } else {
+                    $('.employee-table tbody').html('暂无数据'); // 若未获取到任何员工信息，则在表格中显示暂无数据的提示
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                // 处理请求失败后的逻辑
+                console.error(errorThrown);
+            }
+        });
+        // 已经定义了名为 employees 的数组对象，每个元素包含 id, name, password, role, job, salary 字段
+        $('.employee-table').on('click', '.update', function() {
+            var tr = $(this).closest('tr'); // 获取所选员工记录的行元素
+            var id = tr.data('id'); // 获取员工记录的 ID
+
+            //console.log(tr);
+            console.log(id);
+
+            // 查找对应 ID 的员工记录
+            var employee = employees.find(function(e) {
+                return e.userid == id;  // 这里改为使用 id 属性进行判断
+            });
+
+            //console.log(employee);  // 输出找到的员工记录，调试用
+
+            if (employee) {
+                // 将员工记录的详细信息填充到模态框中
+                $('#employee-id').val(employee.userid);
+                $('#employee-name').val(employee.name);
+                $('#employee-password').val(employee.password);
+                $('#employee-role').val(employee.role);
+                $('#employee-job').val(employee.job);
+                $('#employee-salary').val(employee.salary);
+
+                // 弹出模态框以供用户修改员工记录
+                $('#edit-modal').modal('show');
+            }
+        });
+
+    </script>
     <!-- footer -->
     <div class="area footer row">
         <div class="col-md-12">

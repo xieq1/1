@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import com.google.common.collect.ImmutableMap;
+
 import java.util.List;
 
 @Service("UserService")
@@ -16,9 +17,14 @@ public class UserServiceImpl implements UserService{
     private UserController userservice;
     private SqlSessionTemplate sqlSession;
     @Override
-    public void UserInsert(String name,String password,String jurisdicion,String job,String salary) {
-        System.out.print(name);
-        userservice.UserInsert(name,password,jurisdicion,job,salary);
+    public void UserInsert(String name, String password, String role, String job, String salary) {
+        //System.out.print(name);
+        userservice.UserInsert(name,password, role,job,salary);
+    }
+
+    @Override
+    public void updatebyuid(int userid, String name, String password, String role, String job, String salary) {
+        userservice.updatebyuid(userid,name,password,role,job,salary);
     }
 
     @Override
@@ -35,5 +41,11 @@ public class UserServiceImpl implements UserService{
     @Override
     public User findById(int userId) {
         return userservice.findbyid(userId);
+    }
+
+    public List<User> getAllUsers() {
+        List<User> userList = userservice.selectall();
+        //System.out.println(userList);
+        return userList;
     }
 }
