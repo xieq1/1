@@ -1,15 +1,10 @@
-package com.graduationproject.dao;
+package com.graduationproject.service;
 
 import com.graduationproject.po.Materials;
-import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
-@Repository("materialsdao")
-@Mapper
-public interface MaterialsController {
+public interface MaterialsService {
     int deleteByPrimaryKey(Integer materialsid);
 
     int insert(Materials record);

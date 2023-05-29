@@ -1,12 +1,8 @@
-package com.graduationproject.dao;
+package com.graduationproject.service;
 
 import com.graduationproject.po.Schedule;
-import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
 
-@Repository("scheduledao")
-@Mapper
-public interface ScheduleController {
+public interface ScheduleService {
     int deleteByPrimaryKey(Integer scheduleid);
 
     int insert(Schedule record);

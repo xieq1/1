@@ -1,12 +1,8 @@
-package com.graduationproject.dao;
+package com.graduationproject.service;
 
 import com.graduationproject.po.Statement;
-import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
 
-@Repository("statementdao")
-@Mapper
-public interface StatementController {
+public interface StatementService {
     int deleteByPrimaryKey(Integer statementid);
 
     int insert(Statement record);

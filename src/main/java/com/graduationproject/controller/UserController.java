@@ -37,7 +37,6 @@ public class UserController {
     @GetMapping("/getalluser")
     @ResponseBody
     public List<User> getAllUsers() {
-
         return userService.getAllUsers();
     }
 

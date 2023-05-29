@@ -25,17 +25,9 @@
         <div th:include="sidebar"></div>
         <!-- article -->
         <div class="area grow-1" id="">
-            <!DOCTYPE html>
-            <html lang="zh-CN">
-            <head>
-                <meta charset="UTF-8">
-                <title>报表管理</title>
-                <script src="/js/jquery-3.6.4.js"></script>
-            </head>
-            <body>
-            <h1>报表管理</h1>
+            <h5>报表管理</h5>
 
-            <h2>上传报表</h2>
+            <h5>上传报表</h5>
             <form id="upload-form" action="/api/report" method="post" enctype="multipart/form-data">
                 <label for="file">选择文件：</label>
                 <input type="file" name="file" id="file"><br>
@@ -47,7 +39,7 @@
                 <input type="submit" value="上传">
             </form>
 
-            <h2>报表列表</h2>
+            <h5>报表列表</h5>
             <table>
                 <thead>
                 <tr>
@@ -126,8 +118,6 @@
                     }
                 });
             </script>
-            </body>
-            </html>
         </div>
     </div>
     <!-- footer -->

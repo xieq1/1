@@ -5,129 +5,7 @@
     <title>Title</title>
     <link type="text/css" rel="stylesheet" href="/css/mycss.css">
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <style>
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        h1 {
-            text-align: center;
-        }
-
-        .construction-process {
-            margin-bottom: 50px;
-        }
-
-        /* 表格样式 */
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-        th,
-        td {
-            border: 1px solid #ccc;
-            padding: 8px;
-            text-align: center;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        /* 操作按钮样式 */
-        .edit-button,
-        .add-button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 14px;
-            margin: 4px 2px;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-
-        .delete-button {
-            background-color: #f44336;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 14px;
-            margin: 4px 2px;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-
-        /* 添加对话框样式 */
-        #add-dialog {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4);
-        }
-
-        form {
-            background-color: #fefefe;
-            margin: 10% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 50%;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 10px;
-        }
-
-        input[type="text"],
-        textarea,
-        input[type="number"] {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-            font-size: 14px;
-            margin-top: 4px;
-            margin-bottom: 16px;
-            resize: vertical;
-        }
-
-        button[type="submit"],
-        .close-button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 14px;
-            margin: 4px 2px;
-            cursor: pointer;
-            border-radius: 4px;
-            float: right;
-        }
-
-        .close-button {
-            background-color: #f44336;
-            float: left;
-        }
-    </style>
-    <script src="/js/jquery-3.6.4.js"></script>
+    <link type="text/css" rel="stylesheet" href="/css/mycss4.css">
 </head>
 <body>
 <div class="container">
@@ -146,11 +24,11 @@
         <div th:include="sidebar"></div>
         <!-- article -->
         <div class="area grow-1" id="">
-            <h1>施工流程管理</h1>
+            <h5>施工流程管理</h5>
 
             <div class="construction-process">
-                <h2>施工环节</h2>
-                <table>
+                <h5>施工环节</h5>
+                <table class="table-striped">
                     <thead>
                     <tr>
                         <th>ID</th>
@@ -200,54 +78,99 @@
                         </td>
                     </tr>
                     </tbody>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-modal">新增施工环节</button>
                 </table>
-                <button class="add-button">添加新的施工环节</button>
             </div>
-
+            <div>
+            </div>
             <!-- 添加对话框 -->
-            <div id="add-dialog">
-                <form action="#">
-                    <label>
-                        名称：
-                        <input type="text" name="name" required>
-                    </label>
-                    <label>
-                        描述：
-                        <textarea name="description" rows="4"></textarea>
-                    </label>
-                    <label>
-                        店面整体结构：
-                        <input type="text" name="store_structure">
-                    </label>
-                    <label>
-                        墙面：
-                        <input type="text" name="wall">
-                    </label>
-                    <label>
-                        水电：
-                        <input type="text" name="hydraulic">
-                    </label>
-                    <label>
-                        装饰：
-                        <input type="text" name="decorative">
-                    </label>
-                    <label>
-                        负责人：
-                        <input type="text" name="manager">
-                    </label>
-                    <label>
-                        施工人员：
-                        <input type="text" name="worker">
-                    </label>
-                    <label>
-                        项目杂费：
-                        <input type="number" name="misc_expenses" min="0">
-                    </label>
-                    <button type="submit">添加</button>
-                    <button type="button" class="close-button">&times;</button>
+            <div class="modal fade" id="add-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <form id="add-form" th:action="@{/User/insert(token=${#httpServletRequest.getParameter('token')})}" method="post">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span>&times;</span></button>
+                                <h4 class="modal-title" id="myModalLabel">新增</h4>
+                            </div>
+                            <div class="modal-body">
+                                <!-- 表单数据项 -->
+                                <table>
+                                    <tr>
+                                        <td>用户名</td>
+                                        <td><input id="username" name="name" value="" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td>密码</td>
+                                        <td><input id="password" name="password" /></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>权限等级</td>
+                                        <td><input id="role" name="role" value="" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td>职位</td>
+                                        <td><input id="job" name="job" value="" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td>工资</td>
+                                        <td><input id="salary" name="salary" value="" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td align="right"><input type="submit" value="提交"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
+        <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script>
+            var materials = [];
+            // 发送 AJAX 请求时添加 Token 到 URL 中
+            var token = new URLSearchParams(window.location.search).get("token");
+            $.ajax({
+                type: 'post',
+                url: '/materials/getmaterialsall?token=' + token,
+                data: {},
+                success: function(res) {
+                    // 处理成功请求后的逻辑
+                    materials = [];
+
+                    if (res && res.length > 0) {
+                        var str = '';
+
+                        for (var i = 0; i < res.length; i++) {
+                            materials.push(res[i]);
+                            console.log(res[i])
+                            str += '<tr data-id="' + res[i].materialsid + '">' +
+                                '<td>' + res[i].materialsid+ '</td>' +
+                                '<td>' + res[i].materialsname + '</td>' +
+                                '<td>' + res[i].inventory + '</td>' +
+                                '<td>' + res[i].speciaficarion + '</td>' +
+                                '<td>' + res[i].variety + '</td>' +
+                                '<td>' + res[i].price + '</td>' +
+                                '<td class="btn-group">' +
+                                '<a href="#" class="btn update">编辑</a>' +
+                                '<a href="#" class="btn delete">删除</a>' +
+                                '</td>' +
+                                '</tr>';
+                        }
+                        $('.table-striped tbody').html(str); // 将表格内容替换为从后端获取的员工信息
+                    } else {
+                        $('.table-striped tbody').html('暂无数据'); // 若未获取到任何员工信息，则在表格中显示暂无数据的提示
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    // 处理请求失败后的逻辑
+                    console.error(errorThrown);
+                }
+            });
+        </script>
     </div>
     <!-- footer -->
     <div class="area footer row">

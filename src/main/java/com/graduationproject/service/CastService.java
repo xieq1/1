@@ -1,12 +1,8 @@
-package com.graduationproject.dao;
+package com.graduationproject.service;
 
 import com.graduationproject.po.Cast;
-import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
 
-@Repository("castdao")
-@Mapper
-public interface CastController {
+public interface CastService {
     int deleteByPrimaryKey(Integer castid);
 
     int insert(Cast record);

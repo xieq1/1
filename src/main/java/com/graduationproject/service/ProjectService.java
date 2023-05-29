@@ -1,12 +1,8 @@
-package com.graduationproject.dao;
+package com.graduationproject.service;
 
 import com.graduationproject.po.Project;
-import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
 
-@Repository("projectdao")
-@Mapper
-public interface ProjectController {
+public interface ProjectService {
     int deleteByPrimaryKey(Integer projectid);
 
     int insert(Project record);

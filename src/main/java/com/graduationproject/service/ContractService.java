@@ -1,12 +1,8 @@
-package com.graduationproject.dao;
+package com.graduationproject.service;
 
 import com.graduationproject.po.Contract;
-import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
 
-@Repository("contractdao")
-@Mapper
-public interface ContractController {
+public interface ContractService {
     int deleteByPrimaryKey(Integer contractid);
 
     int insert(Contract record);

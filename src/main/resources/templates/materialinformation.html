@@ -5,6 +5,7 @@
     <title>Title</title>
     <link type="text/css" rel="stylesheet" href="/css/mycss.css">
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="/css/mycss2.css">
     <script src="/js/jquery-3.6.4.js"></script>
 </head>
 <body>
@@ -25,16 +26,21 @@
         <!-- article -->
         <div class="container">
             <!-- 操作按钮 -->
+            <header>
             <div>
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-modal">新增</button>
-                <button type="button" class="btn btn-danger" id="delete-selected-btn">删除所选</button>
-            </div>
 
+            </div>
+            <form action="#" method="get">
+                <input type="text" name="search" placeholder="搜索">
+                <button type="submit">搜索</button>
+            </form>
+            </header>
             <!-- 表格 -->
-            <table class="table table-striped">
+            <main>
+            <table class="table-striped">
                 <thead>
                 <tr>
-                    <th><input type="checkbox" id="select-all"></th>
                     <th>ID</th>
                     <th>名称</th>
                     <th>库存数量</th>
@@ -48,7 +54,7 @@
                 <!-- 表格数据 -->
                 </tbody>
             </table>
-
+            </main>
             <!-- 分页 -->
             <ul class="pagination">
                 <li><a href="#">«</a></li>
@@ -58,7 +64,7 @@
 
         <!-- 新增/编辑材料信息的模态框 -->
         <div class="modal fade" id="add-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <form id="add-form">
+            <form id="add-form" th:action="@{/materials/add(token=${#httpServletRequest.getParameter('token')})}" method="post">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -69,37 +75,27 @@
                             <!-- 表单数据项 -->
                             <div class="form-group">
                                 <label for="id-input" class="control-label">ID:</label>
-                                <input type="text" class="form-control" id="id-input" placeholder="请输入材料ID">
+                                <input type="text" class="form-control" id="id-input" name="materialsid" placeholder="请输入材料ID">
                             </div>
                             <div class="form-group">
                                 <label for="name-input" class="control-label">名称:</label>
-                                <input type="text" class="form-control" id="name-input" placeholder="请输入材料名称">
+                                <input type="text" class="form-control" id="name-input" name="materialsname" placeholder="请输入材料名称">
                             </div>
                             <div class="form-group">
                                 <label for="amount-input" class="control-label">库存数量:</label>
-                                <input type="number" class="form-control" id="amount-input" placeholder="请输入材料库存数量">
+                                <input type="number" class="form-control" id="amount-input" name="inventory" placeholder="请输入材料库存数量">
                             </div>
                             <div class="form-group">
                                 <label for="spec-input" class="control-label">规格:</label>
-                                <input type="text" class="form-control" id="spec-input" placeholder="请输入材料规格">
+                                <input type="text" class="form-control" id="spec-input" name="speciaficarion" placeholder="请输入材料规格">
                             </div>
                             <div class="form-group">
-                                <label for="type-select" class="control-label">品种:</label>
-                                <select class="form-control" id="type-select">
-                                    <option value="普通螺纹钢">普通螺纹钢</option>
-                                    <option value="优质螺纹钢">优质螺纹钢</option>
-                                    <option value="普通硅酸盐水泥">普通硅酸盐水泥</option>
-                                    <option value="高强硅酸盐水泥">高强硅酸盐水泥</option>
-                                    <option value="白玻">白玻</option>
-                                    <option value="透明玻璃">透明玻璃</option>
-                                    <option value="丙烯酸">丙烯酸</option>
-                                    <option value="氟碳漆">氟碳漆</option>
-                                    <option value="丙烷酸">丙烷酸</option>
-                                </select>
+                                <label for="variety-input" class="control-label">品种:</label>
+                                <input type="text" class="form-control" id="variety-input" name="variety" placeholder="请输入材料品种">
                             </div>
                             <div class="form-group">
                                 <label for="price-input" class="control-label">价格(元):</label>
-                                <input type="text" class="form-control" id="price-input" placeholder="请输入材料价格">
+                                <input type="text" class="form-control" id="price-input" name="price" placeholder="请输入材料价格">
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -113,6 +109,48 @@
 
         <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script>
+            var materials = [];
+            // 发送 AJAX 请求时添加 Token 到 URL 中
+            var token = new URLSearchParams(window.location.search).get("token");
+            $.ajax({
+                type: 'post',
+                url: '/materials/getmaterialsall?token=' + token,
+                data: {},
+                success: function(res) {
+                    // 处理成功请求后的逻辑
+                    materials = [];
+
+                    if (res && res.length > 0) {
+                        var str = '';
+
+                        for (var i = 0; i < res.length; i++) {
+                            materials.push(res[i]);
+                            console.log(res[i])
+                            str += '<tr data-id="' + res[i].materialsid + '">' +
+                                '<td>' + res[i].materialsid+ '</td>' +
+                                '<td>' + res[i].materialsname + '</td>' +
+                                '<td>' + res[i].inventory + '</td>' +
+                                '<td>' + res[i].speciaficarion + '</td>' +
+                                '<td>' + res[i].variety + '</td>' +
+                                '<td>' + res[i].price + '</td>' +
+                                '<td class="btn-group">' +
+                                '<a href="#" class="btn delete">删除</a>' +
+                                '<a href="#" class="btn update">修改</a>' +
+                                '</td>' +
+                                '</tr>';
+                        }
+                        $('.table-striped tbody').html(str); // 将表格内容替换为从后端获取的员工信息
+                    } else {
+                        $('.table-striped tbody').html('暂无数据'); // 若未获取到任何员工信息，则在表格中显示暂无数据的提示
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    // 处理请求失败后的逻辑
+                    console.error(errorThrown);
+                }
+            });
+        </script>
     </div>
     <!-- footer -->
     <div class="area footer row">

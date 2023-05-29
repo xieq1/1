@@ -1,26 +1,26 @@
 <div class="area sidebar">
     <div class="sidebar-group">
-        <h2>人员管理</h2>
+        <h5>人员管理</h5>
         <ul>
             <li><a th:href="@{/tostaffinformation(token=${#httpServletRequest.getParameter('token')})}">员工信息管理</a></li>
         </ul>
     </div>
     <div class="sidebar-group">
-        <h2>材料管理</h2>
+        <h5>材料管理</h5>
         <ul>
             <li><a th:href="@{/tomaterialinformation(token=${#httpServletRequest.getParameter('token')})}">材料信息管理</a></li>
             <li><a th:href="@{/toinventorymanagement(token=${#httpServletRequest.getParameter('token')})}">材料库存管理</a></li>
         </ul>
     </div>
     <div class="sidebar-group">
-        <h2>设计方案管理</h2>
+        <h5>设计方案管理</h5>
         <ul>
             <li><a th:href="@{/todesign(token=${#httpServletRequest.getParameter('token')})}">设计方案信息管理</a></li>
             <li><a th:href="@{/tooffer(token=${#httpServletRequest.getParameter('token')})}">报价管理</a></li>
         </ul>
     </div>
     <div class="sidebar-group">
-        <h2>施工过程管理</h2>
+        <h5>施工过程管理</h5>
         <ul>
             <li><a th:href="@{/toprocess(token=${#httpServletRequest.getParameter('token')})}">施工流程管理</a></li>
             <li><a th:href="@{/toplan(token=${#httpServletRequest.getParameter('token')})}">进度管理</a></li>
@@ -29,7 +29,7 @@
         </ul>
     </div>
     <div class="sidebar-group">
-        <h2>财务管理</h2>
+        <h5>财务管理</h5>
         <ul>
             <li><a th:href="@{/toslary(token=${#httpServletRequest.getParameter('token')})}">工资管理</a></li>
             <li><a th:href="@{/topurchase(token=${#httpServletRequest.getParameter('token')})}">采购管理</a></li>
@@ -40,7 +40,7 @@
         </ul>
     </div>
     <div class="sidebar-group">
-        <h2>客户沟通管理</h2>
+        <h5>客户沟通管理</h5>
         <ul>
             <li><a th:href="@{/toopinion(token=${#httpServletRequest.getParameter('token')})}">客户意见管理</a></li>
             <li><a th:href="@{/tolink(token=${#httpServletRequest.getParameter('token')})}">沟通记录管理</a></li>
@@ -48,7 +48,7 @@
         </ul>
     </div>
     <div class="sidebar-group">
-        <h2>售后管理</h2>
+        <h5>售后管理</h5>
         <ul>
             <li><a th:href="@{/tomaintain1(token=${#httpServletRequest.getParameter('token')})}">维修管理</a></li>
             <li><a th:href="@{/tomaintain(token=${#httpServletRequest.getParameter('token')})}">维护管理</a></li>

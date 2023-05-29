@@ -1,12 +1,8 @@
-package com.graduationproject.dao;
+package com.graduationproject.service;
 
 import com.graduationproject.po.Designplan;
-import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
 
-@Repository("designplandao")
-@Mapper
-public interface DesignplanController {
+public interface DesignplanService {
     int deleteByPrimaryKey(Integer designplanid);
 
     int insert(Designplan record);

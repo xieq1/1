@@ -2,6 +2,8 @@ package com.graduationproject.po;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
+
 import lombok.Data;
 
 /**
@@ -21,6 +23,12 @@ public class Materials implements Serializable {
     private BigDecimal price;
 
     private String variety;
+
+    private Date interval;
+
+    private Integer orderpoint;
+
+    private Date lasttime;
 
     private static final long serialVersionUID = 1L;
 }

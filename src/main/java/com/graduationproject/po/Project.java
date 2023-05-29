@@ -21,5 +21,7 @@ public class Project implements Serializable {
 
     private Integer designplanid;
 
+    private Integer acresult;
+
     private static final long serialVersionUID = 1L;
 }

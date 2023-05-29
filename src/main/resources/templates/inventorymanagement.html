@@ -40,8 +40,8 @@
         <div th:include="sidebar"></div>
         <!-- article -->
         <div class="area grow-1" id="">
-            <h1>材料库存信息管理</h1>
-            <table>
+            <h5>材料库存信息管理</h5>
+            <table class="table-striped">
                 <thead>
                 <tr>
                     <th>材料名称</th>
@@ -53,43 +53,54 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>混凝土</td>
-                    <td>2000</td>
-                    <td>500</td>
-                    <td>14</td>
-                    <td>2023-05-01</td>
-                    <td>
-                        <button>设置订货点</button>
-                        <button>设置进货时间</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>钢筋</td>
-                    <td>3000</td>
-                    <td>800</td>
-                    <td>21</td>
-                    <td>2023-04-25</td>
-                    <td>
-                        <button>设置订货点</button>
-                        <button>设置进货时间</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>水泥</td>
-                    <td>1500</td>
-                    <td>400</td>
-                    <td>10</td>
-                    <td>2023-05-03</td>
-                    <td>
-                        <button>设置订货点</button>
-                        <button>设置进货时间</button>
-                    </td>
-                </tr>
+
                 </tbody>
             </table>
         </div>
     </div>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        var materials = [];
+        // 发送 AJAX 请求时添加 Token 到 URL 中
+        var token = new URLSearchParams(window.location.search).get("token");
+        $.ajax({
+            type: 'post',
+            url: '/materials/getmaterialsall?token=' + token,
+            data: {},
+            success: function(res) {
+                // 处理成功请求后的逻辑
+                materials = [];
+
+                if (res && res.length > 0) {
+                    var str = '';
+
+                    for (var i = 0; i < res.length; i++) {
+                        materials.push(res[i]);
+                        console.log(res[i])
+                        str += '<tr data-id="' + res[i].materialsid + '">' +
+                            '<td>' + res[i].materialsname + '</td>' +
+                            '<td>' + res[i].inventory + '</td>' +
+                            '<td>' + res[i].interval + '</td>' +
+                            '<td>' + res[i].orderpoint + '</td>' +
+                            '<td>' + res[i].lasttime + '</td>' +
+                            '<td class="btn-group">' +
+                            '<a href="#" class="btn update1">设置订货点</a>' +
+                            '<a href="#" class="btn update">设置进货时间</a>' +
+                            '</td>' +
+                            '</tr>';
+                    }
+                    $('.table-striped tbody').html(str); // 将表格内容替换为从后端获取的员工信息
+                } else {
+                    $('.table-striped tbody').html('暂无数据'); // 若未获取到任何员工信息，则在表格中显示暂无数据的提示
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                // 处理请求失败后的逻辑
+                console.error(errorThrown);
+            }
+        });
+    </script>
     <!-- footer -->
     <div class="area footer row">
         <div class="col-md-12">

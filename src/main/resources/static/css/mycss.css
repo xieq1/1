@@ -53,10 +53,11 @@
 .sidebar-group > ul {
     list-style:none;
 }
-.sidebar-group > h2 {
+.sidebar-group > h5{
     background: #3185bf;
     color: white;
     padding: 10px 20px;
+    text-align: center;
 }
 .sidebar-group a{
     display: block;
@@ -88,7 +89,7 @@
 .col-md-11 {width: 91.67%;}
 .col-md-12 {width: 100%;}
 
-h1 {
+h5 {
     text-align: center;
 }
 

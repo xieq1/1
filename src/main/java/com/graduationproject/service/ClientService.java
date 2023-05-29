@@ -1,12 +1,8 @@
-package com.graduationproject.dao;
+package com.graduationproject.service;
 
 import com.graduationproject.po.Client;
-import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
 
-@Repository("clientdao")
-@Mapper
-public interface ClientController {
+public interface ClientService {
     int deleteByPrimaryKey(Integer clientid);
 
     int insert(Client record);

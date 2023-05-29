@@ -24,9 +24,9 @@
         <div th:include="sidebar"></div>
         <!-- article -->
         <div class="area grow-1" id="">
-            <h1>支出统计</h1>
+            <h5>支出统计</h5>
 
-            <h2>添加支出</h2>
+            <h5>添加支出</h5>
             <form id="add-form" action="/api/expense" method="post">
                 <label for="date">日期：</label>
                 <input type="date" name="date" id="date"><br>
@@ -44,7 +44,7 @@
                 <input type="submit" value="添加">
             </form>
 
-            <h2>支出列表</h2>
+            <h5>支出列表</h5>
             <table>
                 <thead>
                 <tr>
@@ -58,7 +58,7 @@
                 </tbody>
             </table>
 
-            <h2>支出报表</h2>
+            <h5>支出报表</h5>
             <button id="generate-report">生成报表</button>
 
             <!-- jQuery和支出统计脚本 -->

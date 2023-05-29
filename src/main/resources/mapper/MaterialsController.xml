@@ -10,13 +10,16 @@
     <result column="variety" jdbcType="VARCHAR" property="variety" />
   </resultMap>
   <sql id="Base_Column_List">
-    materialsid, materialsname, speciaficarion, inventory, price, variety
+    materialsid, materialsname, speciaficarion, inventory, price, variety,interval,orderpoint,lasttime
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from materials
     where materialsid = #{materialsid,jdbcType=INTEGER}
+  </select>
+  <select id="selectall" resultType="com.graduationproject.po.Materials">
+    select * from materials;
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from materials

@@ -10,7 +10,7 @@
     <result column="designplanid" jdbcType="INTEGER" property="designplanid" />
   </resultMap>
   <sql id="Base_Column_List">
-    projectid, projectname, projectcast, principal, buiders, designplanid
+    projectid, projectname, projectcast, principal, buiders, designplanid, acresult
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
