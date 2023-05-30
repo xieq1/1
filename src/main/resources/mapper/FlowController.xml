@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.graduationproject.dao.FlowController">
+  <resultMap id="BaseResultMap" type="com.graduationproject.po.Flow">
+    <id column="flowid" jdbcType="INTEGER" property="flowid" />
+    <result column="flowname" jdbcType="VARCHAR" property="flowname" />
+    <result column="projectid" jdbcType="INTEGER" property="projectid" />
+    <result column="projectcast" jdbcType="INTEGER" property="projectcast" />
+    <result column="builders" jdbcType="VARCHAR" property="builders" />
+    <result column="describe" jdbcType="VARCHAR" property="describe" />
+    <result column="cstrinfo" jdbcType="VARCHAR" property="cstrinfo" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    flowid, flowname, projectid, projectcast, builders, `describe`, cstrinfo
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from flow
+    where flowid = #{flowid,jdbcType=INTEGER}
+  </select>
+  <select id="selectall" resultType="com.graduationproject.po.Flow">
+    select * from flow;
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from flow
+    where flowid = #{flowid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="flowid" keyProperty="flowid" parameterType="com.graduationproject.po.Flow" useGeneratedKeys="true">
+    insert into flow (flowname, projectid, projectcast, 
+      builders, `describe`, cstrinfo
+      )
+    values (#{flowname,jdbcType=VARCHAR}, #{projectid,jdbcType=INTEGER}, #{projectcast,jdbcType=INTEGER}, 
+      #{builders,jdbcType=VARCHAR}, #{describe,jdbcType=VARCHAR}, #{cstrinfo,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="flowid" keyProperty="flowid" parameterType="com.graduationproject.po.Flow" useGeneratedKeys="true">
+    insert into flow
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="flowname != null">
+        flowname,
+      </if>
+      <if test="projectid != null">
+        projectid,
+      </if>
+      <if test="projectcast != null">
+        projectcast,
+      </if>
+      <if test="builders != null">
+        builders,
+      </if>
+      <if test="describe != null">
+        `describe`,
+      </if>
+      <if test="cstrinfo != null">
+        cstrinfo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="flowname != null">
+        #{flowname,jdbcType=VARCHAR},
+      </if>
+      <if test="projectid != null">
+        #{projectid,jdbcType=INTEGER},
+      </if>
+      <if test="projectcast != null">
+        #{projectcast,jdbcType=INTEGER},
+      </if>
+      <if test="builders != null">
+        #{builders,jdbcType=VARCHAR},
+      </if>
+      <if test="describe != null">
+        #{describe,jdbcType=VARCHAR},
+      </if>
+      <if test="cstrinfo != null">
+        #{cstrinfo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.graduationproject.po.Flow">
+    update flow
+    <set>
+      <if test="flowname != null">
+        flowname = #{flowname,jdbcType=VARCHAR},
+      </if>
+      <if test="projectid != null">
+        projectid = #{projectid,jdbcType=INTEGER},
+      </if>
+      <if test="projectcast != null">
+        projectcast = #{projectcast,jdbcType=INTEGER},
+      </if>
+      <if test="builders != null">
+        builders = #{builders,jdbcType=VARCHAR},
+      </if>
+      <if test="describe != null">
+        `describe` = #{describe,jdbcType=VARCHAR},
+      </if>
+      <if test="cstrinfo != null">
+        cstrinfo = #{cstrinfo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where flowid = #{flowid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.graduationproject.po.Flow">
+    update flow
+    set flowname = #{flowname,jdbcType=VARCHAR},
+      projectid = #{projectid,jdbcType=INTEGER},
+      projectcast = #{projectcast,jdbcType=INTEGER},
+      builders = #{builders,jdbcType=VARCHAR},
+      `describe` = #{describe,jdbcType=VARCHAR},
+      cstrinfo = #{cstrinfo,jdbcType=VARCHAR}
+    where flowid = #{flowid,jdbcType=INTEGER}
+  </update>
+</mapper>
