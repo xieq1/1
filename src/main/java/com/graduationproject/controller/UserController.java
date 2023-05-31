@@ -34,6 +34,13 @@ public class UserController {
         return "staffinformation";
     }
 
+    @PostMapping(value = "/delectbyid")
+    public String delectbyuid(HttpServletRequest request,User u)
+    {
+        userService.delectbyuid(u.getUserid());
+        return "staffinformation";
+    }
+
     @GetMapping("/getalluser")
     @ResponseBody
     public List<User> getAllUsers() {

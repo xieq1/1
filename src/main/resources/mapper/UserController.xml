@@ -6,6 +6,7 @@
     <insert id="UserInsert" parameterType="com.graduationproject.po.User">
         insert into user (name,password,role,job,salary) value (#{name},#{password},#{role},#{job},#{salary})
     </insert>
+    <delete id="delectbyuid">delete from user where userid=#{userid}</delete>
     <select id="selectall" parameterType="com.graduationproject.po.User" resultType="com.graduationproject.po.User">
         select * from user
     </select>

@@ -20,6 +20,9 @@
     from client
     where clientid = #{clientid,jdbcType=INTEGER}
   </select>
+  <select id="selectall" resultType="com.graduationproject.po.Client">
+    select * from client;
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from client
     where clientid = #{clientid,jdbcType=INTEGER}

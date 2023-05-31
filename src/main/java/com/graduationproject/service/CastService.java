@@ -2,6 +2,8 @@ package com.graduationproject.service;
 
 import com.graduationproject.po.Cast;
 
+import java.util.List;
+
 public interface CastService {
     int deleteByPrimaryKey(Integer castid);
 
@@ -14,4 +16,6 @@ public interface CastService {
     int updateByPrimaryKeySelective(Cast record);
 
     int updateByPrimaryKey(Cast record);
+
+    List<Cast> selectall();
 }

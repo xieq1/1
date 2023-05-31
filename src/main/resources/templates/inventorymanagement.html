@@ -58,7 +58,7 @@
             </table>
         </div>
     </div>
-    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script>
         var materials = [];
@@ -81,8 +81,8 @@
                         str += '<tr data-id="' + res[i].materialsid + '">' +
                             '<td>' + res[i].materialsname + '</td>' +
                             '<td>' + res[i].inventory + '</td>' +
-                            '<td>' + res[i].interval + '</td>' +
-                            '<td>' + res[i].orderpoint + '</td>' +
+                            '<td class="orderpoint">' + res[i].orderpoint + '</td>' +
+                            '<td class="interval">' + res[i].interval + '</td>' +
                             '<td>' + res[i].lasttime + '</td>' +
                             '<td class="btn-group">' +
                             '<a href="#" class="btn update1">设置订货点</a>' +
@@ -99,6 +99,112 @@
                 // 处理请求失败后的逻辑
                 console.error(errorThrown);
             }
+        });
+        //设置订货点
+        $('.table-striped').on('click', '.update1', function() {
+            // 找到当前行
+            var tr = $(this).closest('tr');
+
+            // 获取当前行订货点单元格
+            var orderpointTd = tr.find('.orderpoint');
+
+            // 将订货点转换为可编辑状态
+            orderpointTd.prop('contenteditable', true);
+            orderpointTd.focus();
+            // 保存当前的订货点值
+            var oldValue = orderpointTd.text();
+
+            // 捕获 Enter 键事件，并防止触发默认事件（即回车换行）
+            orderpointTd.keydown(function(event) {
+                if (event.keyCode === 13) {
+                    event.preventDefault();
+                    event.target.blur(); // 关闭编辑状态
+                }
+            });
+
+            // 当失去焦点时，将新的订货点值发送到服务器保存，并更新表格
+            orderpointTd.on('blur', function() {
+                newOrderpoint = orderpointTd.text();
+                // 发送 Ajax 请求，将新的订货点保存到数据库中
+                $.ajax({
+                    type: 'post',
+                    url: '/materials/setorderpoint?token=' + token,
+                    data: {materialsid: tr.data('id'), orderpoint: newOrderpoint},
+                    success: function(res) {
+                        // 更新表格中订货点单元格的值
+                        orderpointTd.text(newOrderpoint);
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        // 处理请求失败后的逻辑
+                        console.error(errorThrown);
+                        alert('设置订货点失败！');
+                    }
+                });
+
+                // 将单元格重置为不可编辑状态
+                orderpointTd.prop('contenteditable', false);
+
+                // 如果订货点值没有更改，则无需更新表格
+                if (newOrderpoint === oldValue) {
+                    return;
+                }
+
+                // 否则，更新表格的信息
+                // ...
+            });
+        });
+        //设置订货时间
+        $('.table-striped').on('click', '.update', function() {
+            // 找到当前行
+            var tr = $(this).closest('tr');
+
+            // 获取当前行订货点单元格
+            var intervalTd = tr.find('.interval');
+
+            // 将订货点转换为可编辑状态
+            intervalTd.prop('contenteditable', true);
+            intervalTd.focus();
+            // 保存当前的订货点值
+            var oldValue = intervalTd.text();
+
+            // 捕获 Enter 键事件，并防止触发默认事件（即回车换行）
+            intervalTd.keydown(function(event) {
+                if (event.keyCode === 13) {
+                    event.preventDefault();
+                    event.target.blur(); // 关闭编辑状态
+                }
+            });
+
+            // 当失去焦点时，将新的订货点值发送到服务器保存，并更新表格
+            intervalTd.on('blur', function() {
+                newinterval = intervalTd.text();
+                // 发送 Ajax 请求，将新的订货点保存到数据库中
+                $.ajax({
+                    type: 'post',
+                    url: '/materials/setorderpoint?token=' + token,
+                    data: {materialsid: tr.data('id'), interval: newinterval},
+                    success: function(res) {
+                        // 更新表格中订货点单元格的值
+                        intervalTd.text(newinterval);
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        // 处理请求失败后的逻辑
+                        console.error(errorThrown);
+                        alert('设置订货时间失败！');
+                    }
+                });
+
+                // 将单元格重置为不可编辑状态
+                intervalTd.prop('contenteditable', false);
+
+                // 如果订货点值没有更改，则无需更新表格
+                if (newinterval === oldValue) {
+                    return;
+                }
+
+                // 否则，更新表格的信息
+                // ...
+            });
         });
     </script>
     <!-- footer -->

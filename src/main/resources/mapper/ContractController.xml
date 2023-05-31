@@ -16,6 +16,9 @@
     from contract
     where contractid = #{contractid,jdbcType=INTEGER}
   </select>
+  <select id="selectall" resultType="com.graduationproject.po.Contract">
+    select * from contract
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from contract
     where contractid = #{contractid,jdbcType=INTEGER}

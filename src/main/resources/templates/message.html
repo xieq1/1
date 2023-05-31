@@ -36,7 +36,7 @@
             </form>
 
             <h5>客户信息列表</h5>
-            <table>
+            <table class="table-striped">
                 <thead>
                 <tr>
                     <th>客户姓名</th>
@@ -53,84 +53,43 @@
             <!-- jQuery和客户沟通信息管理脚本 -->
             <script src="/js/jquery-3.6.4.js"></script>
             <script>
-                // 加载客户沟通信息列表并更新页面
-                $.get('/api/communication', function(data) {
-                    data.forEach(function(item) {
-                        var rowHTML = '<tr><td>' + item.customer + '</td><td>' +
-                            item.contact + '</td><td>' + new Date(item.time).toLocaleString() + '</td><td>' +
-                            item.content + '</td><td><button class="delete" data-id="' +
-                            item.id + '">删除</button></td></tr>';
-                        $('#communication-list').append(rowHTML);
-                    });
-                });
+                var client = [];
+                // 发送 AJAX 请求时添加 Token 到 URL 中
+                var token = new URLSearchParams(window.location.search).get("token");
+                $.ajax({
+                    type: 'post',
+                    url: '/client/getclientall?token=' + token,
+                    data: {},
+                    success: function(res) {
+                        // 处理成功请求后的逻辑
+                        client = [];
 
-                // 监听添加新客户沟通信息表单提交事件
-                $('#communication-form').submit(function(event) {
-                    event.preventDefault();  // 防止表单自动提交
+                        if (res && res.length > 0) {
+                            var str = '';
 
-                    // 发送POST请求以添加新的客户沟通信息数据
-                    var requestData = {
-                        customer: $('#customer').val(),
-                        contact: $('#contact').val(),
-                        time: new Date($('#time').val()).toISOString(),
-                        content: $('#content').val()
-                    };
-                    $.post('/api/communication', requestData, function(data) {
-                        // 添加新数据行到客户沟通信息列表中
-                        var rowHTML = '<tr><td>' + data.customer + '</td><td>' +
-                            data.contact + '</td><td>' + new Date(data.time).toLocaleString() + '</td><td>' +
-                            data.content + '</td><td><button class="delete" data-id="' +
-                            data.id + '">删除</button></td></tr>';
-                        $('#communication-list').append(rowHTML);
-
-                        // 提示用户添加成功
-                        showSuccess('客户沟通信息添加成功');
-                    }).fail(function(xhr, status, error) {
-                        // 提示用户添加失败
-                        showAlert('客户沟通信息添加失败：' + error);
-                    });
-                });
-
-                // 监听删除按钮的点击事件
-                $(document).on('click', '.delete', function() {
-                    if (confirm('确定要删除这条客户沟通信息吗？')) {
-                        // 发送DELETE请求以删除对应的客户沟通信息数据
-                        var id = $(this).data('id');
-                        $.ajax({
-                            url: '/api/communication/' + id,
-                            type: 'DELETE',
-                            success: function(data) {
-                                // 移除对应的HTML数据行
-                                $(this).parent().parent().remove();
-
-                                // 提示用户删除成功
-                                showSuccess('客户沟通信息删除成功');
-                            }.bind(this),
-                            error: function(xhr, status, error) {
-                                // 提示用户删除失败                        showAlert('客户沟通信息删除失败：' + error);
+                            for (var i = 0; i < res.length; i++) {
+                                client.push(res[i]);
+                                console.log(res[i])
+                                str += '<tr data-id="' + res[i].clientid + '">' +
+                                    '<td>' + res[i].clientname + '</td>' +
+                                    '<td>' + res[i].phone + '</td>' +
+                                    '<td>' + res[i].shopname + '</td>' +
+                                    '<td class="btn-group">' +
+                                    '<a href="#" class="btn update">编辑</a>' +
+                                    '<a href="#" class="btn delete">删除</a>' +
+                                    '</td>' +
+                                    '</tr>';
                             }
-                        });
+                            $('.table-striped tbody').html(str); // 将表格内容替换为从后端获取的员工信息
+                        } else {
+                            $('.table-striped tbody').html('暂无数据'); // 若未获取到任何员工信息，则在表格中显示暂无数据的提示
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        // 处理请求失败后的逻辑
+                        console.error(errorThrown);
                     }
                 });
-
-                // 显示提示信息的帮助函数
-                function showAlert(message) {
-                    $('#alerts').append('<div class="alert">' + message + '</div>');
-                    window.setTimeout(function() {
-                        $('.alert').fadeOut('fast', function() {
-                            $(this).remove();
-                        });
-                    }, 3000);
-                }
-
-                function showSuccess(message) {
-                    $('#alerts').append('<div class="success">' + message + '</div>');
-                    window.setTimeout(function() {
-                        $('.success').fadeOut('fast', function() {
-                            $(this).remove();
-                        });
-                    }, 3000);
-                }
             </script>
         </div>
     </div>

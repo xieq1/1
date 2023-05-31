@@ -10,7 +10,7 @@
     <result column="variety" jdbcType="VARCHAR" property="variety" />
   </resultMap>
   <sql id="Base_Column_List">
-    materialsid, materialsname, speciaficarion, inventory, price, variety,interval,orderpoint,lasttime
+    materialsid, materialsname, speciaficarion, inventory, price, variety, interval, orderpoint, lasttime
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -23,7 +23,7 @@
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from materials
-    where materialsid = #{materialsid,jdbcType=INTEGER}
+    where materialsid = #{materialsid}
   </delete>
   <insert id="insert" keyColumn="materialsid" keyProperty="materialsid" parameterType="com.graduationproject.po.Materials" useGeneratedKeys="true">
     insert into materials (materialsname, speciaficarion, inventory, 
@@ -86,8 +86,14 @@
       <if test="variety != null">
         variety = #{variety,jdbcType=VARCHAR},
       </if>
+      <if test="orderpoint != null">
+        orderpoint = #{orderpoint},
+      </if>
+      <if test="interval != null">
+        `interval` = #{interval},
+      </if>
     </set>
-    where materialsid = #{materialsid,jdbcType=INTEGER}
+    where materialsid = #{materialsid}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.graduationproject.po.Materials">
     update materials

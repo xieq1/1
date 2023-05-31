@@ -23,9 +23,28 @@ public class MaterialsController {
         return "materialinformation";
     }
 
+    @PostMapping(value = "update")
+    public String updatebyid(Materials material){
+        materialsService.updateByPrimaryKey(material);
+        return "materialinformation";
+    }
+
+    @PostMapping(value = "setorderpoint")
+    public String updateordbyid(Materials material){
+        materialsService.updateByPrimaryKeySelective(material);
+        return "materialinformation";
+    }
     @PostMapping(value="getmaterialsall")
     @ResponseBody
     public List<Materials> selectall(Materials materials){
         return materialsService.selectall();
+    }
+
+    @PostMapping(value = "delectbyid")
+    public String delectbyid(Materials material){
+        System.out.println(material);
+        materialsService.deleteByPrimaryKey(material.getMaterialsid());
+        System.out.println(material.getMaterialsid());
+        return "materialinformation";
     }
 }

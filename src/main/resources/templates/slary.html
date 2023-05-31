@@ -36,21 +36,14 @@
                 </form>
             </header>
             <main>
-                <table>
+                <table class="table-striped">
                     <thead>
                     <tr>
+                        <th>ID</th>
                         <th>月份</th>
                         <th>已发工资</th>
                         <th>欠发工资</th>
-                    </tr>
-                    <tr>
-                        <th>2023-7</th>
-                        <th>100000</th>
-                        <th>20000</th>
-                        <td class="btn-group">
-                            <a href="#" class="btn delete">删除</a>
-                            <a href="#" class="btn update">修改</a>
-                        </td>
+                        <th>操作</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -97,6 +90,46 @@
     </div>
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        var cast = [];
+        // 发送 AJAX 请求时添加 Token 到 URL 中
+        var token = new URLSearchParams(window.location.search).get("token");
+        $.ajax({
+            type: 'post',
+            url: '/cast/getcastall?token=' + token,
+            data: {},
+            success: function(res) {
+                // 处理成功请求后的逻辑
+                cast = [];
+
+                if (res && res.length > 0) {
+                    var str = '';
+
+                    for (var i = 0; i < res.length; i++) {
+                        cast.push(res[i]);
+                        console.log(res[i])
+                        str += '<tr data-id="' + res[i].castid + '">' +
+                            '<td>' + res[i].castid+ '</td>' +
+                            '<td>' + res[i].moon+ '</td>' +
+                            '<td>' + res[i].amoutinarrear + '</td>' +
+                            '<td>' + res[i].amoutissuoed + '</td>' +
+                            '<td class="btn-group">' +
+                            '<a href="#" class="btn update">编辑</a>' +
+                            '<a href="#" class="btn delete">删除</a>' +
+                            '</td>' +
+                            '</tr>';
+                    }
+                    $('.table-striped tbody').html(str); // 将表格内容替换为从后端获取的员工信息
+                } else {
+                    $('.table-striped tbody').html('暂无数据'); // 若未获取到任何员工信息，则在表格中显示暂无数据的提示
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                // 处理请求失败后的逻辑
+                console.error(errorThrown);
+            }
+        });
+    </script>
     <!-- footer -->
     <div class="area footer row">
         <div class="col-md-12">

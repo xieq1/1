@@ -1,10 +1,18 @@
 package com.graduationproject.service;
 
+import com.graduationproject.dao.ContractController;
 import com.graduationproject.po.Contract;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service("ContractService")
 public class ContractServiceImpl implements ContractService{
+    @Qualifier("contractdao")
+    @Autowired
+    private ContractController contractService;
     @Override
     public int deleteByPrimaryKey(Integer contractid) {
         return 0;
@@ -33,5 +41,11 @@ public class ContractServiceImpl implements ContractService{
     @Override
     public int updateByPrimaryKey(Contract record) {
         return 0;
+    }
+    @Override
+    public List<Contract> selectall() {
+        List<Contract> contractList = contractService.selectall();
+        System.out.println(contractList);
+        return contractList;
     }
 }

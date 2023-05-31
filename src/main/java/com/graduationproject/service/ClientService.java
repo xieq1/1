@@ -2,6 +2,8 @@ package com.graduationproject.service;
 
 import com.graduationproject.po.Client;
 
+import java.util.List;
+
 public interface ClientService {
     int deleteByPrimaryKey(Integer clientid);
 
@@ -14,4 +16,6 @@ public interface ClientService {
     int updateByPrimaryKeySelective(Client record);
 
     int updateByPrimaryKey(Client record);
+
+    List<Client> selectall();
 }

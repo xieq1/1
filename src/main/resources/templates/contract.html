@@ -28,11 +28,11 @@
 
             <h5>上传合同</h5>
             <form id="contract-form">
-                <input type="file" name="contract-file"><br>
-                <label for="client">客户名称：</label>
-                <input type="text" name="client" id="client"><br>
-                <label for="date">签订日期：</label>
-                <input type="date" name="date" id="date"><br>
+                <input type="file" name="contractcontent"><br>
+                <label for="contractcontentname">合同名称：</label>
+                <input type="text" name="contractcontentname" id="contractcontentname"><br>
+                <label for="contracslary">合同收益：</label>
+                <input type="text" name="contracslary" id="contracslary"><br>
                 <input type="submit" value="上传">
             </form>
 
@@ -40,9 +40,8 @@
             <table>
                 <thead>
                 <tr>
-                    <th>文件名</th>
-                    <th>客户名称</th>
-                    <th>签订日期</th>
+                    <th>合同名称</th>
+                    <th>合同收益</th>
                     <th>操作</th>
                 </tr>
                 </thead>
@@ -54,12 +53,12 @@
             <!-- jQuery和合同管理脚本 -->
             <script src="/js/jquery-3.6.4.js"></script>
             <script>
+                var token = new URLSearchParams(window.location.search).get("token");
                 // 加载合同列表并更新页面
-                $.get('/api/contract', function(data) {
+                $.post('/contract/selectall?token=' + token, function(data) {
                     data.forEach(function(item) {
-                        var rowHTML = '<tr><td>' + item.filename + '</td><td>' +
-                            item.client + '</td><td>' + new Date(item.date).toLocaleDateString() +
-                            '</td><td><a href="' + item.url + '" target="_blank">查看</a> <button class="delete" data-id="' +
+                        var rowHTML = '<tr><td>' + item.contractcontentname + '</td><td>' +
+                            item.contracslary + '</td><td><a href="' + item.url + '" target="_blank">查看</a> <button class="delete" data-id="' +
                             item.id + '">删除</button></td></tr>';
                         $('#contract-list').append(rowHTML);
                     });
@@ -71,19 +70,18 @@
 
                     // 使用FormData对象异步上传合同文件，并添加请求参数以创建新的合同数据
                     var formData = new FormData(this);
-                    formData.append('client', $('#client').val());
-                    formData.append('date', $('#date').val());
+                    formData.append('contractcontentname', $('#contractcontentname').val());
+                    formData.append('contracslary', $('#contracslary').val());
                     $.ajax({
-                        url: '/api/contract',
+                        url: '/contract/insert?token=' + token,
                         type: 'POST',
                         data: formData,
                         processData: false,
                         contentType: false,
                         success: function(data) {
                             // 添加新数据行到合同列表中
-                            var rowHTML = '<tr><td>' + data.filename + '</td><td>' +
-                                data.client + '</td><td>' + new Date(data.date).toLocaleDateString() +
-                                '</td><td><a href="' + data.url + '" target="_blank">查看</a> <button class="delete" data-id="' +
+                            var rowHTML = '<tr><td>' + data.contractcontentname + '</td><td>' +
+                                data.contracslary + '</td><td><a href="' + data.url + '" target="_blank">查看</a> <button class="delete" data-id="' +
                                 data.id + '">删除</button></td></tr>';
                             $('#contract-list').append(rowHTML);
 

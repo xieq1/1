@@ -16,6 +16,8 @@ public class MaterialsServiceImpl implements MaterialsService{
     private MaterialsController materialsService;
     @Override
     public int deleteByPrimaryKey(Integer materialsid) {
+        System.out.println(materialsid);
+        materialsService.deleteByPrimaryKey(materialsid);
         return 0;
     }
 
@@ -37,11 +39,15 @@ public class MaterialsServiceImpl implements MaterialsService{
 
     @Override
     public int updateByPrimaryKeySelective(Materials record) {
+        System.out.println(record);
+        materialsService.updateByPrimaryKeySelective(record);
         return 0;
     }
 
     @Override
     public int updateByPrimaryKey(Materials record) {
+        System.out.println(record);
+        materialsService.updateByPrimaryKey(record);
         return 0;
     }
 

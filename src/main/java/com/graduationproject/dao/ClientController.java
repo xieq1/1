@@ -4,6 +4,8 @@ import com.graduationproject.po.Client;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository("clientdao")
 @Mapper
 public interface ClientController {
@@ -18,4 +20,6 @@ public interface ClientController {
     int updateByPrimaryKeySelective(Client record);
 
     int updateByPrimaryKey(Client record);
+
+    List<Client> selectall();
 }

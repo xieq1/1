@@ -24,7 +24,7 @@ public class Materials implements Serializable {
 
     private String variety;
 
-    private Date interval;
+    private Integer interval;
 
     private Integer orderpoint;
 

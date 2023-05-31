@@ -4,6 +4,8 @@ import com.graduationproject.po.Schedule;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository("scheduledao")
 @Mapper
 public interface ScheduleController {
@@ -18,4 +20,6 @@ public interface ScheduleController {
     int updateByPrimaryKeySelective(Schedule record);
 
     int updateByPrimaryKey(Schedule record);
+
+    List<Schedule> selectall();
 }

@@ -16,6 +16,9 @@
     from cast
     where castid = #{castid,jdbcType=INTEGER}
   </select>
+  <select id="selectall" resultType="com.graduationproject.po.Cast">
+    select * from cast
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from cast
     where castid = #{castid,jdbcType=INTEGER}

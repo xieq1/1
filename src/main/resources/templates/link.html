@@ -27,12 +27,12 @@
         <div class="area grow-1" id="">
             <h5>沟通记录管理</h5>
             <div class="communication-list">
-                <table>
+                <table class="table-striped">
                     <thead>
                     <tr>
-                        <th>沟通时间</th>
-                        <th>沟通地点</th>
+                        <th>客户名称</th>
                         <th>沟通内容</th>
+                        <th>操作</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -42,38 +42,41 @@
             </div>
         </div>
         <script>
-            $(function() {
-                // 发送 AJAX 请求获取后端服务器的沟通记录数据
-                $.ajax({
-                    method: 'get',
-                    url: 'http://localhost/communication/list',
-                    dataType: 'json',
-                    success: function(data) {
-                        // 请求成功时动态生成表格
-                        var tbody = '';
-                        for (var i = 0; i < data.length; i++) {
-                            var row = data[i];
-                            tbody += '<tr>';
-                            tbody += '<td>' + row.time + '</td>';
-                            tbody += '<td>' + row.location + '</td>';
-                            tbody += '<td>' + row.content + '</td>';
-                            tbody += '</tr>';
-                        }
-                        $('tbody').html(tbody);
-                    },
-                    error: function() {
-                        // 请求失败时打印错误信息
-                        console.log('Failed to fetch communication list.');
-                    }
-                });
+            var client = [];
+            // 发送 AJAX 请求时添加 Token 到 URL 中
+            var token = new URLSearchParams(window.location.search).get("token");
+            $.ajax({
+                type: 'post',
+                url: '/client/getclientall?token=' + token,
+                data: {},
+                success: function(res) {
+                    // 处理成功请求后的逻辑
+                    client = [];
 
-                // 为表格中每个行元素添加点击事件，当用户选择某个沟通记录时，在该页面展示该沟通记录详情
-                $('tbody').on('click', 'tr', function() {
-                    $(this).parent().find('tr').removeClass('selected');
-                    $(this).addClass('selected');
-                    // 打开该记录的详情页面
-                    window.location.href = 'communication-detail.html?communicationId=' + $(this).index();
-                });
+                    if (res && res.length > 0) {
+                        var str = '';
+
+                        for (var i = 0; i < res.length; i++) {
+                            client.push(res[i]);
+                            console.log(res[i])
+                            str += '<tr data-id="' + res[i].clientid + '">' +
+                                '<td>' + res[i].clientname + '</td>' +
+                                '<td>' + res[i].communicationrecord + '</td>' +
+                                '<td class="btn-group">' +
+                                '<a href="#" class="btn update">编辑</a>' +
+                                '<a href="#" class="btn delete">删除</a>' +
+                                '</td>' +
+                                '</tr>';
+                        }
+                        $('.table-striped tbody').html(str); // 将表格内容替换为从后端获取的员工信息
+                    } else {
+                        $('.table-striped tbody').html('暂无数据'); // 若未获取到任何员工信息，则在表格中显示暂无数据的提示
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    // 处理请求失败后的逻辑
+                    console.error(errorThrown);
+                }
             });
         </script>
     </div>

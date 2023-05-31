@@ -107,6 +107,50 @@
             </form>
         </div>
 
+        <div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <form id="edit-form" th:action="@{/materials/update(token=${#httpServletRequest.getParameter('token')})}" method="post">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span>&times;</span></button>
+                            <h4 class="modal-title" id="edit-modal-label">修改材料信息</h4>
+                        </div>
+                        <div class="modal-body">
+                            <!-- 表单数据项 -->
+                            <div class="form-group">
+                                <label for="id-input" class="control-label">ID:</label>
+                                <input type="text" class="form-control" id="id" name="materialsid" placeholder="请输入材料ID">
+                            </div>
+                            <div class="form-group">
+                                <label for="name-input" class="control-label">名称:</label>
+                                <input type="text" class="form-control" id="name" name="materialsname" placeholder="请输入材料名称">
+                            </div>
+                            <div class="form-group">
+                                <label for="amount-input" class="control-label">库存数量:</label>
+                                <input type="number" class="form-control" id="amount" name="inventory" placeholder="请输入材料库存数量">
+                            </div>
+                            <div class="form-group">
+                                <label for="spec-input" class="control-label">规格:</label>
+                                <input type="text" class="form-control" id="spec" name="speciaficarion" placeholder="请输入材料规格">
+                            </div>
+                            <div class="form-group">
+                                <label for="variety-input" class="control-label">品种:</label>
+                                <input type="text" class="form-control" id="variety" name="variety" placeholder="请输入材料品种">
+                            </div>
+                            <div class="form-group">
+                                <label for="price-input" class="control-label">价格(元):</label>
+                                <input type="text" class="form-control" id="price" name="price" placeholder="请输入材料价格">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">保存</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
         <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script>
@@ -148,6 +192,55 @@
                 error: function(jqXHR, textStatus, errorThrown) {
                     // 处理请求失败后的逻辑
                     console.error(errorThrown);
+                }
+            });
+
+            $('.table-striped').on('click', '.update', function() {
+                var tr = $(this).closest('tr');
+                var id = tr.data('id');
+                console.log(id);
+
+                var material = materials.find(function(e) {
+                    return e.materialsid == id;
+                });
+
+                if (materials) {
+                    // 将员工记录的详细信息填充到模态框中
+                    $('#id').val(material.materialsid);
+                    $('#name').val(material.materialsname);
+                    $('#amount').val(material.inventory);
+                    $('#spec').val(material.speciaficarion);
+                    $('#variety').val(material.variety);
+                    $('#price').val(material.price);
+
+                    // 弹出模态框以供用户修改员工记录
+                    $('#edit-modal').modal('show');
+                }
+            });
+
+            $('.table-striped').on('click', '.delete', function() {
+                var tr = $(this).closest('tr'); // 获取所选员工记录的行元素
+                var id = tr.data('id'); // 获取员工记录的 ID
+
+                if (confirm('确认要删除该材料信息吗？')) {
+                    // 发送 AJAX 请求删除员工记录
+                    $.ajax({
+                        type: 'POST',
+                        url: '/materials/delectbyid',
+                        data: {
+                            materialsid: id,
+                            token: token
+                        },
+                        success: function(res) {
+                            // 处理成功请求后的逻辑
+                            console.log('删除成功！');
+                            tr.remove(); // 在表格中将已删除的员工记录从 DOM 中移除
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            // 处理请求失败后的逻辑
+                            console.error(errorThrown);
+                        }
+                    });
                 }
             });
         </script>

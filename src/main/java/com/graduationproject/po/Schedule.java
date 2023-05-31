@@ -12,11 +12,11 @@ import lombok.Data;
 public class Schedule implements Serializable {
     private Integer scheduleid;
 
-    private String projectname;
+    private Integer flowid;
 
     private Date timescaleplan;
 
-    private String practicalscale;
+    private Date practicalscale;
 
     private String cause;
 

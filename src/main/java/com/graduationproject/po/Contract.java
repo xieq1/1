@@ -17,5 +17,9 @@ public class Contract implements Serializable {
 
     private String contracslary;
 
+    private String fileType;
+    private Long fileSize;
+    private String filePath;
+
     private static final long serialVersionUID = 1L;
 }

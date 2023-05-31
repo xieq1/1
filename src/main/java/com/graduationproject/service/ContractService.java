@@ -2,6 +2,8 @@ package com.graduationproject.service;
 
 import com.graduationproject.po.Contract;
 
+import java.util.List;
+
 public interface ContractService {
     int deleteByPrimaryKey(Integer contractid);
 
@@ -14,4 +16,7 @@ public interface ContractService {
     int updateByPrimaryKeySelective(Contract record);
 
     int updateByPrimaryKey(Contract record);
+
+    List<Contract> selectall();
+
 }

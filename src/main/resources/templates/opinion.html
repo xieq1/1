@@ -27,13 +27,14 @@
         <div class="area grow-1" id="">
             <h5>客户意见管理</h5>
             <div class="customer-list">
-                <table>
+                <table class="table-striped">
                     <thead>
                     <tr>
+                        <th>客户ID</th>
                         <th>姓名</th>
                         <th>电话</th>
-                        <th>预算</th>
-                        <th>需求</th>
+                        <th>反馈</th>
+                        <th>操作</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -43,39 +44,46 @@
             </div>
         </div>
     </div>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script>
-        $(function() {
-            // 发送 AJAX 请求获取后端服务器的客户数据
-            $.ajax({
-                method: 'get',
-                url: 'http://localhost/customer/list',
-                dataType: 'json',
-                success: function(data) {
-                    // 请求成功时动态生成表格
-                    var tbody = '';
-                    for (var i = 0; i < data.length; i++) {
-                        var row = data[i];
-                        tbody += '<tr>';
-                        tbody += '<td>' + row.name + '</td>';
-                        tbody += '<td>' + row.phone + '</td>';
-                        tbody += '<td>' + row.budget + '</td>';
-                        tbody += '<td>' + row.requirement + '</td>';
-                        tbody += '</tr>';
-                    }
-                    $('tbody').html(tbody);
-                },
-                error: function() {
-                    // 请求失败时打印错误信息
-                    console.log('Failed to fetch customer list.');
-                }
-            });
+        var client = [];
+        // 发送 AJAX 请求时添加 Token 到 URL 中
+        var token = new URLSearchParams(window.location.search).get("token");
+        $.ajax({
+            type: 'post',
+            url: '/client/getclientall?token=' + token,
+            data: {},
+            success: function(res) {
+                // 处理成功请求后的逻辑
+                client = [];
 
-            // 为表格中每个行元素添加点击事件，当用户选择某个客户时，跳转到该客户详情页面
-            $('tbody').on('click', 'tr', function() {
-                $(this).parent().find('tr').removeClass('selected');
-                $(this).addClass('selected');
-                window.location.href = 'customer-detail.html?customerId=' + $(this).index();
-            });
+                if (res && res.length > 0) {
+                    var str = '';
+
+                    for (var i = 0; i < res.length; i++) {
+                        client.push(res[i]);
+                        console.log(res[i])
+                        str += '<tr data-id="' + res[i].clientid + '">' +
+                            '<td>' + res[i].clientid+ '</td>' +
+                            '<td>' + res[i].clientname + '</td>' +
+                            '<td>' + res[i].phone + '</td>' +
+                            '<td>' + res[i].feedback + '</td>' +
+                            '<td class="btn-group">' +
+                            '<a href="#" class="btn update">编辑</a>' +
+                            '<a href="#" class="btn delete">删除</a>' +
+                            '</td>' +
+                            '</tr>';
+                    }
+                    $('.table-striped tbody').html(str); // 将表格内容替换为从后端获取的员工信息
+                } else {
+                    $('.table-striped tbody').html('暂无数据'); // 若未获取到任何员工信息，则在表格中显示暂无数据的提示
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                // 处理请求失败后的逻辑
+                console.error(errorThrown);
+            }
         });
     </script>
     <!-- footer -->

@@ -4,6 +4,8 @@ import com.graduationproject.po.Cast;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository("castdao")
 @Mapper
 public interface CastController {
@@ -18,4 +20,6 @@ public interface CastController {
     int updateByPrimaryKeySelective(Cast record);
 
     int updateByPrimaryKey(Cast record);
+
+    List<Cast> selectall();
 }

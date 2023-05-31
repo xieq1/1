@@ -16,4 +16,6 @@ public interface UserService {
     User findById(int userId);
 
     List<User> getAllUsers();
+
+    void delectbyuid(int userid);
 }

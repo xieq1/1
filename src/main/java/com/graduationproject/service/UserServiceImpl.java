@@ -48,4 +48,9 @@ public class UserServiceImpl implements UserService{
         //System.out.println(userList);
         return userList;
     }
+
+    @Override
+    public void delectbyuid(int userid) {
+        userservice.delectbyuid(userid);
+    }
 }

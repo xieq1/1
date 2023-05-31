@@ -17,4 +17,6 @@ public interface UserController {
     List<User> getallUsers();
     public void updatebyuid(@Param("userid")int userid,@Param("name")String name, @Param("password")String password, @Param("role")String role, @Param("job")String job, @Param("salary")String slary);
     List<User> selectall();
+
+    void delectbyuid(int userid);
 }
