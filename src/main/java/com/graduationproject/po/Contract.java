@@ -3,6 +3,8 @@ package com.graduationproject.po;
 import java.io.Serializable;
 import lombok.Data;
 
+import javax.persistence.Lob;
+
 /**
  * contract
  * @author 
@@ -11,15 +13,14 @@ import lombok.Data;
 public class Contract implements Serializable {
     private Integer contractid;
 
-    private String contractcontent;
+    @Lob
+    private byte[] contractcontent;
 
     private String contractcontentname;
 
     private String contracslary;
 
-    private String fileType;
-    private Long fileSize;
-    private String filePath;
+    private String type;
 
     private static final long serialVersionUID = 1L;
 }

@@ -2,6 +2,8 @@ package com.graduationproject.service;
 
 import com.graduationproject.po.Project;
 
+import java.util.List;
+
 public interface ProjectService {
     int deleteByPrimaryKey(Integer projectid);
 
@@ -14,4 +16,6 @@ public interface ProjectService {
     int updateByPrimaryKeySelective(Project record);
 
     int updateByPrimaryKey(Project record);
+
+    List<Project> selectall();
 }

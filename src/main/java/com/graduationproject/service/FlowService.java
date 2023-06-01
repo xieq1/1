@@ -18,5 +18,5 @@ public interface FlowService {
 
     int updateByPrimaryKey(Flow record);
 
-    List<Flow> selectall();
+    List<Flow> selectall(int id);
 }

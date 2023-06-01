@@ -21,5 +21,5 @@ public interface ScheduleController {
 
     int updateByPrimaryKey(Schedule record);
 
-    List<Schedule> selectall();
+    List<Schedule> selectall(int id);
 }

@@ -18,7 +18,7 @@ public class FlowController {
 
     @PostMapping(value = "getflowall")
     @ResponseBody
-    public List<Flow> selectall(Flow flow){
-        return flowService.selectall();
+    public List<Flow> selectall(Integer id){
+        return flowService.selectall(id);
     }
 }

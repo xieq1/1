@@ -91,8 +91,6 @@
             <form id="design-form" enctype="multipart/form-data">
                 <label for="design-id">设计方案ID：</label>
                 <input type="text" id="design-id" name="design-id"><br><br>
-                <label for="design-bim">BIM模型：</label>
-                <input type="file" id="design-bim" name="design-bim"><br><br>
                 <label for="design-img">效果图：</label>
                 <input type="file" id="design-img" name="design-img"><br><br>
                 <label for="material-info">消耗材料信息：</label>
@@ -140,19 +138,13 @@
                         formData.append("difficulty", difficulty);
                         formData.append("quote-attribute", quoteAttribute);
 
-                        // 检查是否上传了BIM模型文件
-                        var designBim = $("#design-bim")[0].files[0];
-                        if (designBim) {
-                            formData.append("design-bim", designBim);
-                        } else {
-                            alert("请上传BIM模型文件！");
-                            return;
-                        }
-
-                        // 检查是否上传了效果图
+                        // 检查是否上传了图片
                         var designImg = $("#design-img")[0].files[0];
                         if (designImg) {
                             formData.append("design-img", designImg);
+                        } else {
+                            alert("请上传设计方案效果图！");
+                            return;
                         }
 
                         // 发送 AJAX 请求提交表单
@@ -165,8 +157,7 @@
                             success: function(response) {
                                 alert("上传成功！");
                                 $("#design-form")[0].reset(); // 重置表单
-                                $("img").attr('src', ''); // 清空效果图预览
-                                $("model-viewer").attr('src', ''); // 清空BIM模型预览
+                                $("img").attr('src', ''); //清空效果图预览
                             },
                             error: function(xhr, status, error) {
                                 alert("上传失败：" + error);
@@ -174,7 +165,7 @@
                         });
                     });
 
-                    // 预览效果图
+                    // 预览图片
                     $("#design-img").change(function(event) {
                         var file = event.target.files[0];
                         if (file) {
@@ -187,22 +178,7 @@
                             $("img").attr('src', '');
                         }
                     });
-
-                    // 预览BIM模型
-                    $("#design-bim").change(function(event) {
-                        var file = event.target.files[0];
-                        if (file) {
-                            var viewer = document.createElement('model-viewer');
-                            viewer.setAttribute('src', URL.createObjectURL(file));
-                            viewer.setAttribute('camera-controls', '');
-                            viewer.setAttribute('style', 'height:300px');
-                            $('model-viewer').replaceWith(viewer);
-                        } else {
-                            $("model-viewer").attr('src', ''); // 清空BIM模型预览
-                        }
-                    });
                 });
-
                 var uploadBtn = document.getElementById('upload-btn');
                 var designForm = document.getElementById('design-form');
 
@@ -212,7 +188,6 @@
             </script>
 
             <img src="" alt="效果图预览">
-            <model-viewer></model-viewer>
         </div>
     </div>
     <!-- footer -->

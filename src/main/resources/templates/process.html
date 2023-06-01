@@ -25,10 +25,27 @@
         <!-- article -->
         <div class="area grow-1" id="">
             <h5>施工流程管理</h5>
+            <table class="Table" id="Table" th:fragment="table1">
+                <thead>
+                <tr>
+                    <th>编号</th>
+                    <th>项目名称</th>
+                    <th>项目花费</th>
+                    <th>负责人</th>
+                    <th>施工人员</th>
+                    <th>设计方案id</th>
+                    <th>验收结果</th>
+                    <th>查看流程</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- 施工项目数据行 -->
+                </tbody>
+            </table>
 
             <div class="construction-process">
                 <h5>施工环节</h5>
-                <table class="table-striped">
+                <table class="table-striped" id="table-striped" style="display: none">
                     <thead>
                     <tr>
                         <th>ID</th>
@@ -94,21 +111,63 @@
         </div>
         <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script th:fragment="js">
+        var project = [];
+        // 发送 AJAX 请求时添加 Token 到 URL 中
+        var token = new URLSearchParams(window.location.search).get("token");
+        $.ajax({
+            type: 'post',
+            url: '/project/getprojectall?token=' + token,
+            data: {},
+            success: function(res) {
+                // 处理成功请求后的逻辑
+                project = [];
+                if (res && res.length > 0) {
+                    var str = '';
+                    for (var i = 0; i < res.length; i++) {
+                        project.push(res[i]);
+                        console.log(res[i])
+                        str += '<tr data-id="' + res[i].projectid + '">' +
+                            '<td>' + res[i].projectid+ '</td>' +
+                            '<td>' + res[i].projectname + '</td>' +
+                            '<td>' + res[i].projectcast + '</td>' +
+                            '<td>' + res[i].principal + '</td>' +
+                            '<td>' + res[i].buiders + '</td>' +
+                            '<td>' + res[i].designplanid + '</td>' +
+                            '<td>' + res[i].acresult + '</td>' +
+                            '<td class="btn-group">' +
+                            '<a href="#" class="btn selectbypid">查看</a>' +
+                            '</td>' +
+                            '</tr>';
+                    }
+                    $('.Table tbody').html(str); // 将表格内容替换为从后端获取的员工信息
+                } else {
+                    $('.Table tbody').html('暂无数据'); // 若未获取到任何员工信息，则在表格中显示暂无数据的提示
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                // 处理请求失败后的逻辑
+                console.error(errorThrown);
+            }
+        });
+        </script>
         <script>
+        $('.Table').on('click', '.selectbypid', function() {
+            var tr = $(this).closest('tr');
+            var id = tr.data('id');
+            console.log(id);
             var flow = [];
-            // 发送 AJAX 请求时添加 Token 到 URL 中
-            var token = new URLSearchParams(window.location.search).get("token");
             $.ajax({
                 type: 'post',
                 url: '/flow/getflowall?token=' + token,
-                data: {},
+                data: {id},
                 success: function(res) {
+                    $('#Table').hide();
+                    $('#table-striped').show();
                     // 处理成功请求后的逻辑
                     flow = [];
-
                     if (res && res.length > 0) {
                         var str = '';
-
                         for (var i = 0; i < res.length; i++) {
                             flow.push(res[i]);
                             console.log(res[i])
@@ -116,7 +175,7 @@
                                 '<td>' + res[i].flowid+ '</td>' +
                                 '<td>' + res[i].flowname + '</td>' +
                                 '<td>' + res[i].describe + '</td>' +
-                                '<td>' + res[i].cstinfo + '</td>' +
+                                '<td>' + res[i].cstrinfo + '</td>' +
                                 '<td>' + res[i].builders + '</td>' +
                                 '<td>' + res[i].projectcast + '</td>' +
                                 '<td class="btn-group">' +
@@ -135,7 +194,8 @@
                     console.error(errorThrown);
                 }
             });
-        </script>
+        });
+    </script>
     </div>
     <!-- footer -->
     <div class="area footer row">

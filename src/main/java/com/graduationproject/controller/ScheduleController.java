@@ -19,7 +19,8 @@ public class ScheduleController {
 
     @PostMapping(value="/getscheduleall")
     @ResponseBody
-    public List<Schedule> selectall(Schedule schedule){
-        return scheduleService.selectall();
+    public List<Schedule> selectall(Integer id){
+        System.out.println(id);
+         return scheduleService.selectall(id);
     }
 }

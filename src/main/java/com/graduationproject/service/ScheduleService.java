@@ -17,5 +17,5 @@ public interface ScheduleService {
 
     int updateByPrimaryKey(Schedule record);
 
-    List<Schedule> selectall();
+    List<Schedule> selectall(int id);
 }

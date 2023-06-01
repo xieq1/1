@@ -4,6 +4,8 @@ import com.graduationproject.po.Project;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository("projectdao")
 @Mapper
 public interface ProjectController {
@@ -18,4 +20,6 @@ public interface ProjectController {
     int updateByPrimaryKeySelective(Project record);
 
     int updateByPrimaryKey(Project record);
+
+    List<Project> selectall();
 }

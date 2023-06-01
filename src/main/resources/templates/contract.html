@@ -27,21 +27,49 @@
             <h5>合同管理</h5>
 
             <h5>上传合同</h5>
-            <form id="contract-form">
-                <input type="file" name="contractcontent"><br>
-                <label for="contractcontentname">合同名称：</label>
-                <input type="text" name="contractcontentname" id="contractcontentname"><br>
-                <label for="contracslary">合同收益：</label>
-                <input type="text" name="contracslary" id="contracslary"><br>
-                <input type="submit" value="上传">
+            <form id="uploadForm" enctype="multipart/form-data">
+                <input type="file" name="file" id="fileInput"/>
+                <button type="submit">上传文件</button>
             </form>
+            <div id="result"></div>
+
+            <script>
+                var token = new URLSearchParams(window.location.search).get("token");
+                const uploadForm = document.querySelector('#uploadForm');
+                const fileInput = document.querySelector('#fileInput');
+                const resultDiv = document.querySelector('#result');
+
+                uploadForm.addEventListener('submit', event => {
+                    event.preventDefault();
+
+                    const formData = new FormData(uploadForm);
+                    const xhr = new XMLHttpRequest();
+
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === XMLHttpRequest.DONE) {
+                            if (xhr.status === 200) {
+                                // 成功上传文件，处理响应结果
+                                const responseText = xhr.responseText;
+                                resultDiv.textContent = responseText;
+                            } else {
+                                // 上传文件失败，处理错误信息
+                                const error = `上传文件失败(${xhr.status}): ${xhr.statusText}`;
+                                resultDiv.textContent = error;
+                            }
+                        }
+                    };
+
+                    xhr.open('POST', '/contract/upload?token=' + token);
+                    xhr.send(formData);
+                });
+            </script>
 
             <h5>合同列表</h5>
-            <table>
+            <table class="table-striped">
                 <thead>
                 <tr>
+                    <th>合同id</th>
                     <th>合同名称</th>
-                    <th>合同收益</th>
                     <th>操作</th>
                 </tr>
                 </thead>
@@ -55,87 +83,107 @@
             <script>
                 var token = new URLSearchParams(window.location.search).get("token");
                 // 加载合同列表并更新页面
-                $.post('/contract/selectall?token=' + token, function(data) {
-                    data.forEach(function(item) {
-                        var rowHTML = '<tr><td>' + item.contractcontentname + '</td><td>' +
-                            item.contracslary + '</td><td><a href="' + item.url + '" target="_blank">查看</a> <button class="delete" data-id="' +
-                            item.id + '">删除</button></td></tr>';
-                        $('#contract-list').append(rowHTML);
-                    });
-                });
-
-                // 监听上传合同表单提交事件
-                $('#contract-form').submit(function(event) {
-                    event.preventDefault();  // 防止表单自动提交
-
-                    // 使用FormData对象异步上传合同文件，并添加请求参数以创建新的合同数据
-                    var formData = new FormData(this);
-                    formData.append('contractcontentname', $('#contractcontentname').val());
-                    formData.append('contracslary', $('#contracslary').val());
-                    $.ajax({
-                        url: '/contract/insert?token=' + token,
-                        type: 'POST',
-                        data: formData,
-                        processData: false,
-                        contentType: false,
-                        success: function(data) {
-                            // 添加新数据行到合同列表中
-                            var rowHTML = '<tr><td>' + data.contractcontentname + '</td><td>' +
-                                data.contracslary + '</td><td><a href="' + data.url + '" target="_blank">查看</a> <button class="delete" data-id="' +
-                                data.id + '">删除</button></td></tr>';
-                            $('#contract-list').append(rowHTML);
-
-                            // 提示用户上传成功
-                            showSuccess('合同上传成功');
-                        },
-                        error: function(xhr, status, error) {
-                            // 提示用户上传失败
-                            showAlert('合同上传失败：' + error);
+                $.ajax({
+                    type: 'post',
+                    url: '/contract/selectall?token=' + token,
+                    data: {},
+                    success: function(res) {
+                        // 处理成功请求后的逻辑
+                        if (res && res.length > 0) {
+                            var str = '';
+                            for (var i = 0; i < res.length; i++) {
+                                str += '<tr data-id="' + res[i].contractid + '">' +
+                                    '<td>' + res[i].contractid+ '</td>' +
+                                    '<td class="filename" >' + res[i].contractcontentname+ '</td>' +
+                                    '<td class="btn-group">' +
+                                    '<a href="#" class="btn view">查看</a>' +
+                                    '<a href="#" class="btn delete">删除</a>' +
+                                    '<a href="#" class="btn download">下载</a>' +
+                                    '</td>' +
+                                    '</tr>';
+                            }
+                            $('.table-striped tbody').html(str); // 将表格内容替换为从后端获取的信息
+                        } else {
+                            $('.table-striped tbody').html('暂无数据'); // 若未获取到任何信息，则在表格中显示暂无数据的提示
                         }
-                    });
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        // 处理请求失败后的逻辑
+                        console.error(errorThrown);
+                    }
                 });
+                $('.table-striped').on('click', '.delete', function() {
+                    var tr = $(this).closest('tr');
+                    var id = tr.data('id'); // 获取 ID
 
-                // 监听删除按钮的点击事件
-                $(document).on('click', '.delete', function() {
-                    if (confirm('确定要删除这个合同吗？')) {
-                        // 发送DELETE请求以删除对应的合同数据
-                        var id = $(this).data('id');
+                    if (confirm('确认要删除该合同文件吗？')) {
+                        // 发送 AJAX 请求删除
                         $.ajax({
-                            url: '/api/contract/' + id,
-                            type: 'DELETE',
-                            success: function(data) {
-                                // 移除对应的HTML数据行
-                                $(this).parent().parent().remove();
-
-                                // 提示用户删除成功
-                                showSuccess('合同删除成功');
-                            }.bind(this),
-                            error: function(xhr, status, error) {
-                                // 提示用户删除失败
-                                showAlert('合同删除失败：' + error);
+                            type: 'POST',
+                            url: '/contract/delectbyid',
+                            data: {
+                                contractid: id,
+                                token: token
+                            },
+                            success: function(res) {
+                                // 处理成功请求后的逻辑
+                                console.log('删除成功！');
+                                tr.remove(); // 在表格中将已删除的从 DOM 中移除
+                            },
+                            error: function(jqXHR, textStatus, errorThrown) {
+                                // 处理请求失败后的逻辑
+                                console.error(errorThrown);
                             }
                         });
                     }
                 });
+                $('.table-striped').on('click', '.download', function() {
+                    var tr = $(this).closest('tr');
+                    var id = tr.data('id'); // 获取 ID
+                    var name = tr.find('.filename').text(); // 获取文件名
 
-                // 显示提示信息的帮助函数
-                function showAlert(message) {
-                    $('#alerts').append('<div class="alert">' + message +'</div>');
-                    window.setTimeout(function() {
-                        $('.alert').fadeOut('fast', function() {
-                            $(this).remove();
-                        });
-                    }, 3000);
-                }
+                    $.ajax({
+                        type: 'POST',
+                        url: '/contract/getContractContent',
+                        data: {
+                            id: id,
+                            token: token
+                        },
+                        responseType: 'arraybuffer', // 设置响应类型为二进制数据流
+                        success: function (result) {
+                            var contentType = '';
+                            var contentDisposition = '';
+                            if (result && result.byteLength > 0) {
+                                // 解析响应头信息，获取Content-Type和Content-Disposition等字段
+                                var headers = new Headers();
+                                headers.set('Content-Type', 'application/octet-stream');
+                                var blob = new Blob([result], {type: 'application/octet-stream'});
+                                var response = new Response(blob, {headers});
+                                contentType = response.headers.get('Content-Type');
+                                contentDisposition = response.headers.get('Content-Disposition');
+                            }
+                            var fileName = name;
+                            if (contentDisposition) {
+                                var match = /filename\*?=(.*)/ig.exec(contentDisposition);
+                                if (match != null && match[1]) {
+                                    fileName = decodeURIComponent(match[1].trim());
+                                }
+                            }
 
-                function showSuccess(message) {
-                    $('#alerts').append('<div class="success">' + message + '</div>');
-                    window.setTimeout(function() {
-                        $('.success').fadeOut('fast', function() {
-                            $(this).remove();
-                        });
-                    }, 3000);
-                }
+                            // 创建并点击一个下载链接，让浏览器自动下载文件
+                            var blob = new Blob([result], {type: contentType});
+                            var link = document.createElement("a");
+                            link.href = window.URL.createObjectURL(blob);
+                            link.download = fileName;
+                            link.click();
+                        },
+                        error: function (xhr, status, error) {
+                            alert("下载合同文件失败：" + xhr.responseText);
+                        }
+                    });
+                });
+
+
             </script>
         </div>
     </div>

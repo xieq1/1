@@ -45,8 +45,8 @@ public class FlowServiceImpl implements FlowService{
     }
 
     @Override
-    public List<Flow> selectall() {
-        List<Flow> flowList = flowService.selectall();
+    public List<Flow> selectall(int id) {
+        List<Flow> flowList = flowService.selectall(id);
         System.out.println(flowList);
         return flowList;
     }

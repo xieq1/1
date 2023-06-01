@@ -15,6 +15,7 @@ public class ContractServiceImpl implements ContractService{
     private ContractController contractService;
     @Override
     public int deleteByPrimaryKey(Integer contractid) {
+        contractService.deleteByPrimaryKey(contractid);
         return 0;
     }
 
@@ -30,7 +31,7 @@ public class ContractServiceImpl implements ContractService{
 
     @Override
     public Contract selectByPrimaryKey(Integer contractid) {
-        return null;
+        return contractService.selectByPrimaryKey(contractid);
     }
 
     @Override
@@ -45,7 +46,12 @@ public class ContractServiceImpl implements ContractService{
     @Override
     public List<Contract> selectall() {
         List<Contract> contractList = contractService.selectall();
-        System.out.println(contractList);
+        //System.out.println(contractList);
         return contractList;
+    }
+
+    @Override
+    public void save(Contract contract) {
+        contractService.save(contract);
     }
 }

@@ -18,6 +18,9 @@
     from project
     where projectid = #{projectid,jdbcType=INTEGER}
   </select>
+  <select id="selectall" resultType="com.graduationproject.po.Project">
+    select * from project
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from project
     where projectid = #{projectid,jdbcType=INTEGER}

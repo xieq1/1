@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+
 @Repository("contractdao")
 @Mapper
 public interface ContractController {
@@ -20,6 +21,8 @@ public interface ContractController {
     int updateByPrimaryKeySelective(Contract record);
 
     int updateByPrimaryKey(Contract record);
+
+    void save(Contract contract);
 
     List<Contract> selectall();
 }

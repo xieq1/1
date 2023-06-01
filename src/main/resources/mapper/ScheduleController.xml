@@ -19,8 +19,11 @@
     from schedule
     where scheduleid = #{scheduleid,jdbcType=INTEGER}
   </select>
-  <select id="selectall" resultType="com.graduationproject.po.Schedule">
-    select * from schedule
+  <select id="selectall" parameterType="java.lang.Integer" resultType="com.graduationproject.po.Schedule">
+    SELECT *
+    FROM flow
+    JOIN schedule ON flow.flowid = schedule.flowid
+    WHERE flow.projectid = #{id};
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from schedule

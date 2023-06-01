@@ -8,7 +8,7 @@
     <result column="contracslary" jdbcType="VARCHAR" property="contracslary" />
   </resultMap>
   <sql id="Base_Column_List">
-    contractid, contractcontent, contractcontentname, contracslary
+    contractid, contractcontent, contractcontentname, contracslary, type
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -21,7 +21,7 @@
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from contract
-    where contractid = #{contractid,jdbcType=INTEGER}
+    where contractid = #{contractid}
   </delete>
   <insert id="insert" keyColumn="contractid" keyProperty="contractid" parameterType="com.graduationproject.po.Contract" useGeneratedKeys="true">
     insert into contract (contractcontent, contractcontentname, 
@@ -53,6 +53,10 @@
         #{contracslary,jdbcType=VARCHAR},
       </if>
     </trim>
+  </insert>
+  <insert id="save">
+    insert into contract (contractcontentname, type, contractcontent)
+    values (#{contractcontentname}, #{type}, #{contractcontent})
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.graduationproject.po.Contract">
     update contract

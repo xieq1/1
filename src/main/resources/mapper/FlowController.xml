@@ -20,7 +20,7 @@
     where flowid = #{flowid,jdbcType=INTEGER}
   </select>
   <select id="selectall" resultType="com.graduationproject.po.Flow">
-    select * from flow;
+    select * from flow where projectid=#{id};
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from flow

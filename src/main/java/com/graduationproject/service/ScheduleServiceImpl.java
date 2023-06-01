@@ -1,7 +1,6 @@
 package com.graduationproject.service;
 
 import com.graduationproject.dao.ScheduleController;
-import com.graduationproject.po.Materials;
 import com.graduationproject.po.Schedule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -45,8 +44,8 @@ public class ScheduleServiceImpl implements ScheduleService{
     }
 
     @Override
-    public List<Schedule> selectall() {
-        List<Schedule> schedulesList = scheduleService.selectall();
+    public List<Schedule> selectall(int id) {
+        List<Schedule> schedulesList = scheduleService.selectall(id);
         System.out.println(schedulesList);
         return schedulesList;
     }

@@ -21,5 +21,5 @@ public interface FlowController {
 
     int updateByPrimaryKey(Flow record);
 
-    List<Flow> selectall();
+    List<Flow> selectall(Integer id);
 }

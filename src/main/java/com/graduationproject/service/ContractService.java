@@ -19,4 +19,5 @@ public interface ContractService {
 
     List<Contract> selectall();
 
+    void save(Contract contract);
 }
