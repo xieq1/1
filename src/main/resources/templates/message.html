@@ -7,6 +7,7 @@
     <link type="text/css" rel="stylesheet" href="/css/mycss3.css">
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="/js/jquery-3.6.4.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
 <div class="container">
@@ -27,14 +28,15 @@
             <h5>客户信息管理</h5>
 
             <h5>添加新客户信息</h5>
-            <form id="communication-form">
+            <form id="communication-form" th:action="@{/client/add(token=${#httpServletRequest.getParameter('token')})}" method="post">
                 <label for="customer">客户姓名：</label>
-                <input type="text" name="customer" id="customer"><br>
+                <input type="text" name="clientname" id="customer"><br>
                 <label for="contact">联系方式：</label>
-                <input type="text" name="contact" id="contact"><br>
+                <input type="text" name="phone" id="contact"><br>
+                <label for="shop">商铺名称：</label>
+                <input type="text" name="shopname" id="shop"><br>
                 <input type="submit" value="添加">
             </form>
-
             <h5>客户信息列表</h5>
             <table class="table-striped">
                 <thead>
@@ -49,9 +51,44 @@
                 <!-- 这里将会自动插入数据行 -->
                 </tbody>
             </table>
-
+            <div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <form id="edit-form" th:action="@{/client/updatebyid3(token=${#httpServletRequest.getParameter('token')})}" method="post">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span>&times;</span></button>
+                                <h4 class="modal-title" id="edit-modal-label">修改</h4>
+                            </div>
+                            <div class="modal-body">
+                                <!-- 表单数据项 -->
+                                <table>
+                                    <tr>
+                                        <td>客户ID</td>
+                                        <td><input id="id" name="clientid" value="" readonly="true"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>姓名</td>
+                                        <td><input id="name" name="clientname" value="" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td>电话</td>
+                                        <td><input id="phone" name="phone" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td>商铺名称</td>
+                                        <td><input id="shopname" name="shopname" value="" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td align="right"><input type="submit" value="提交"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
             <!-- jQuery和客户沟通信息管理脚本 -->
-            <script src="/js/jquery-3.6.4.js"></script>
             <script>
                 var client = [];
                 // 发送 AJAX 请求时添加 Token 到 URL 中
@@ -66,7 +103,6 @@
 
                         if (res && res.length > 0) {
                             var str = '';
-
                             for (var i = 0; i < res.length; i++) {
                                 client.push(res[i]);
                                 console.log(res[i])
@@ -88,6 +124,48 @@
                     error: function(jqXHR, textStatus, errorThrown) {
                         // 处理请求失败后的逻辑
                         console.error(errorThrown);
+                    }
+                });
+                $('.table-striped').on('click', '.update', function() {
+                    var tr = $(this).closest('tr');
+                    var id = tr.data('id');
+                    console.log(id);
+
+                    var clients =client.find(function(e) {
+                        return e.clientid == id;
+                    });
+
+                    if (clients) {
+                        // 将记录的详细信息填充到模态框中
+                        $('#id').val(clients.clientid);
+                        $('#name').val(clients.clientname);
+                        $('#phone').val(clients.phone);
+                        $('#shopname').val(clients.shopname);
+                        // 弹出模态框
+                        $('#edit-modal').modal('show');
+                    }
+                });
+                $('.table-striped').on('click', '.delete', function() {
+                    var tr = $(this).closest('tr');
+                    var id = tr.data('id');
+                    if (confirm('确认要删除该客户信息吗？')) {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/client/delectbyid',
+                            data: {
+                                clientid: id,
+                                token: token
+                            },
+                            success: function(res) {
+                                // 处理成功请求后的逻辑
+                                console.log('删除成功！');
+                                tr.remove(); // 在表格中将已删除的员工记录从 DOM 中移除
+                            },
+                            error: function(jqXHR, textStatus, errorThrown) {
+                                // 处理请求失败后的逻辑
+                                console.error(errorThrown);
+                            }
+                        });
                     }
                 });
             </script>

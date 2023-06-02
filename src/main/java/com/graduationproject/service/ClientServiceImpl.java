@@ -16,6 +16,7 @@ public class ClientServiceImpl implements ClientService{
     private ClientController clientService;
     @Override
     public int deleteByPrimaryKey(Integer clientid) {
+        clientService.deleteByPrimaryKey(clientid);
         return 0;
     }
 
@@ -26,6 +27,7 @@ public class ClientServiceImpl implements ClientService{
 
     @Override
     public int insertSelective(Client record) {
+        clientService.insertSelective(record);
         return 0;
     }
 
@@ -36,6 +38,7 @@ public class ClientServiceImpl implements ClientService{
 
     @Override
     public int updateByPrimaryKeySelective(Client record) {
+        clientService.updateByPrimaryKeySelective(record);
         return 0;
     }
 

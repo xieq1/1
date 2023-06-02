@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.graduationproject.dao.MaintainidController">
+  <resultMap id="BaseResultMap" type="com.graduationproject.po.Maintainid">
+    <id column="maintainid" jdbcType="INTEGER" property="maintainid" />
+    <result column="macont" jdbcType="VARCHAR" property="macont" />
+    <result column="madate" jdbcType="DATE" property="madate" />
+    <result column="macost" jdbcType="DECIMAL" property="macost" />
+    <result column="maintainer" jdbcType="VARCHAR" property="maintainer" />
+    <result column="maresult" jdbcType="VARCHAR" property="maresult" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    maintainid, macont, madate, macost, maintainer, maresult
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from maintainid
+    where maintainid = #{maintainid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from maintainid
+    where maintainid = #{maintainid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="maintainid" keyProperty="maintainid" parameterType="com.graduationproject.po.Maintainid" useGeneratedKeys="true">
+    insert into maintainid (macont, madate, macost, 
+      maintainer, maresult)
+    values (#{macont,jdbcType=VARCHAR}, #{madate,jdbcType=DATE}, #{macost,jdbcType=DECIMAL}, 
+      #{maintainer,jdbcType=VARCHAR}, #{maresult,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="maintainid" keyProperty="maintainid" parameterType="com.graduationproject.po.Maintainid" useGeneratedKeys="true">
+    insert into maintainid
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="macont != null">
+        macont,
+      </if>
+      <if test="madate != null">
+        madate,
+      </if>
+      <if test="macost != null">
+        macost,
+      </if>
+      <if test="maintainer != null">
+        maintainer,
+      </if>
+      <if test="maresult != null">
+        maresult,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="macont != null">
+        #{macont,jdbcType=VARCHAR},
+      </if>
+      <if test="madate != null">
+        #{madate,jdbcType=DATE},
+      </if>
+      <if test="macost != null">
+        #{macost,jdbcType=DECIMAL},
+      </if>
+      <if test="maintainer != null">
+        #{maintainer,jdbcType=VARCHAR},
+      </if>
+      <if test="maresult != null">
+        #{maresult,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.graduationproject.po.Maintainid">
+    update maintainid
+    <set>
+      <if test="macont != null">
+        macont = #{macont,jdbcType=VARCHAR},
+      </if>
+      <if test="madate != null">
+        madate = #{madate,jdbcType=DATE},
+      </if>
+      <if test="macost != null">
+        macost = #{macost,jdbcType=DECIMAL},
+      </if>
+      <if test="maintainer != null">
+        maintainer = #{maintainer,jdbcType=VARCHAR},
+      </if>
+      <if test="maresult != null">
+        maresult = #{maresult,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where maintainid = #{maintainid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.graduationproject.po.Maintainid">
+    update maintainid
+    set macont = #{macont,jdbcType=VARCHAR},
+      madate = #{madate,jdbcType=DATE},
+      macost = #{macost,jdbcType=DECIMAL},
+      maintainer = #{maintainer,jdbcType=VARCHAR},
+      maresult = #{maresult,jdbcType=VARCHAR}
+    where maintainid = #{maintainid,jdbcType=INTEGER}
+  </update>
+</mapper>

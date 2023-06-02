@@ -7,6 +7,7 @@
     <link type="text/css" rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="/js/jquery-3.6.4.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
 <div class="container">
@@ -41,6 +42,39 @@
                 </table>
             </div>
         </div>
+        <div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <form id="edit-form" th:action="@{/client/updatebyid1(token=${#httpServletRequest.getParameter('token')})}" method="post">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span>&times;</span></button>
+                            <h4 class="modal-title" id="edit-modal-label">修改</h4>
+                        </div>
+                        <div class="modal-body">
+                            <!-- 表单数据项 -->
+                            <table>
+                                <tr>
+                                    <td>客户ID</td>
+                                    <td><input id="id" name="clientid" value="" readonly="true"/></td>
+                                </tr>
+                                <tr>
+                                    <td>姓名</td>
+                                    <td><input id="name" name="clientname" value="" /></td>
+                                </tr>
+                                <tr>
+                                    <td>沟通记录</td>
+                                    <td><input id="communicationrecord" name="communicationrecord" /></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td align="right"><input type="submit" value="提交"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
         <script>
             var client = [];
             // 发送 AJAX 请求时添加 Token 到 URL 中
@@ -63,8 +97,7 @@
                                 '<td>' + res[i].clientname + '</td>' +
                                 '<td>' + res[i].communicationrecord + '</td>' +
                                 '<td class="btn-group">' +
-                                '<a href="#" class="btn update">编辑</a>' +
-                                '<a href="#" class="btn delete">删除</a>' +
+                                '<a href="#" class="btn update">修改</a>' +
                                 '</td>' +
                                 '</tr>';
                         }
@@ -76,6 +109,25 @@
                 error: function(jqXHR, textStatus, errorThrown) {
                     // 处理请求失败后的逻辑
                     console.error(errorThrown);
+                }
+            });
+            //修改
+            $('.table-striped').on('click', '.update', function() {
+                var tr = $(this).closest('tr');
+                var id = tr.data('id');
+                console.log(id);
+
+                var clients =client.find(function(e) {
+                    return e.clientid == id;
+                });
+
+                if (clients) {
+                    // 将记录的详细信息填充到模态框中
+                    $('#id').val(clients.clientid);
+                    $('#name').val(clients.clientname);
+                    $('#communicationrecord').val(clients.communicationrecord);
+                    // 弹出模态框
+                    $('#edit-modal').modal('show');
                 }
             });
         </script>

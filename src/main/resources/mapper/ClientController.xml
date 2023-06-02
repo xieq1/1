@@ -99,9 +99,7 @@
       <if test="shopname != null">
         shopname = #{shopname,jdbcType=VARCHAR},
       </if>
-      <if test="feedback != null">
         feedback = #{feedback,jdbcType=VARCHAR},
-      </if>
       <if test="sex != null">
         sex = #{sex,jdbcType=VARCHAR},
       </if>
