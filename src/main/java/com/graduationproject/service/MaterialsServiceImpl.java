@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service("MaterialsService")
@@ -56,5 +57,20 @@ public class MaterialsServiceImpl implements MaterialsService{
         List<Materials> materialsList = materialsService.selectall();
         System.out.println(materialsList);
         return materialsList;
+    }
+
+    @Override
+    public void updateByPrimaryKeySelective1(String item, Integer purquantity, Date purtime) {
+        materialsService.updateByPrimaryKeySelective1(item,purquantity,purtime);
+    }
+
+    @Override
+    public Integer selectByname(String item) {
+        return materialsService.selectbyname(item);
+    }
+
+    @Override
+    public void insertpur(String item, Integer purquantity, Date purtime) {
+        materialsService.insertpur(item,purquantity,purtime);
     }
 }

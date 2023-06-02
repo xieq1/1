@@ -15,11 +15,13 @@ public class ScheduleServiceImpl implements ScheduleService{
     private ScheduleController scheduleService;
     @Override
     public int deleteByPrimaryKey(Integer scheduleid) {
+        scheduleService.deleteByPrimaryKey(scheduleid);
         return 0;
     }
 
     @Override
     public int insert(Schedule record) {
+        scheduleService.insert(record);
         return 0;
     }
 
@@ -40,6 +42,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 
     @Override
     public int updateByPrimaryKey(Schedule record) {
+        scheduleService.updateByPrimaryKey(record);
         return 0;
     }
 

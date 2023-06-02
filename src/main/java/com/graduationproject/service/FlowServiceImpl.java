@@ -16,11 +16,13 @@ public class FlowServiceImpl implements FlowService{
     private FlowController flowService;
     @Override
     public int deleteByPrimaryKey(Integer flowid) {
+        flowService.deleteByPrimaryKey(flowid);
         return 0;
     }
 
     @Override
     public int insert(Flow record) {
+        flowService.insert(record);
         return 0;
     }
 
@@ -41,6 +43,7 @@ public class FlowServiceImpl implements FlowService{
 
     @Override
     public int updateByPrimaryKey(Flow record) {
+        flowService.updateByPrimaryKey(record);
         return 0;
     }
 

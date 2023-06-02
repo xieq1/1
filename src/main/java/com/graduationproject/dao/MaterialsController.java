@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository("materialsdao")
@@ -23,4 +24,10 @@ public interface MaterialsController {
     int updateByPrimaryKey(Materials record);
 
     List<Materials> selectall();
+
+    void updateByPrimaryKeySelective1(String item, Integer purquantity, Date purtime);
+
+    Integer selectbyname(String item);
+
+    void insertpur(String item, Integer purquantity, Date purtime);
 }

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.graduationproject.dao.PurchaseController">
+  <resultMap id="BaseResultMap" type="com.graduationproject.po.Purchase">
+    <id column="purid" jdbcType="INTEGER" property="purid" />
+    <result column="item" jdbcType="VARCHAR" property="item" />
+    <result column="purquantity" jdbcType="INTEGER" property="purquantity" />
+    <result column="supplier" jdbcType="VARCHAR" property="supplier" />
+    <result column="purtime" jdbcType="DATE" property="purtime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    purid, item, purquantity, supplier, purtime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from purchase
+    where purid = #{purid,jdbcType=INTEGER}
+  </select>
+  <select id="selectall" resultType="com.graduationproject.po.Purchase">
+    select * from purchase
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from purchase
+    where purid = #{purid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="purid" keyProperty="purid" parameterType="com.graduationproject.po.Purchase" useGeneratedKeys="true">
+    insert into purchase (item, purquantity, supplier, 
+      purtime)
+    values (#{item,jdbcType=VARCHAR}, #{purquantity,jdbcType=INTEGER}, #{supplier,jdbcType=VARCHAR}, 
+      #{purtime,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" keyColumn="purid" keyProperty="purid" parameterType="com.graduationproject.po.Purchase" useGeneratedKeys="true">
+    insert into purchase
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="item != null">
+        item,
+      </if>
+      <if test="purquantity != null">
+        purquantity,
+      </if>
+      <if test="supplier != null">
+        supplier,
+      </if>
+      <if test="purtime != null">
+        purtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="item != null">
+        #{item,jdbcType=VARCHAR},
+      </if>
+      <if test="purquantity != null">
+        #{purquantity,jdbcType=INTEGER},
+      </if>
+      <if test="supplier != null">
+        #{supplier,jdbcType=VARCHAR},
+      </if>
+      <if test="purtime != null">
+        #{purtime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.graduationproject.po.Purchase">
+    update purchase
+    <set>
+      <if test="item != null">
+        item = #{item,jdbcType=VARCHAR},
+      </if>
+      <if test="purquantity != null">
+        purquantity = #{purquantity,jdbcType=INTEGER},
+      </if>
+      <if test="supplier != null">
+        supplier = #{supplier,jdbcType=VARCHAR},
+      </if>
+      <if test="purtime != null">
+        purtime = #{purtime,jdbcType=DATE},
+      </if>
+    </set>
+    where purid = #{purid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.graduationproject.po.Purchase">
+    update purchase
+    set item = #{item,jdbcType=VARCHAR},
+      purquantity = #{purquantity,jdbcType=INTEGER},
+      supplier = #{supplier,jdbcType=VARCHAR},
+      purtime = #{purtime,jdbcType=DATE}
+    where purid = #{purid,jdbcType=INTEGER}
+  </update>
+</mapper>

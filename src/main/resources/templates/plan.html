@@ -4,117 +4,10 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link type="text/css" rel="stylesheet" href="/css/mycss.css">
+    <link type="text/css" rel="stylesheet" href="/css/mycss2.css">
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <style>
-        table, th, td {
-            border: 1px solid black;
-            border-collapse: collapse;
-            padding: 5px;
-        }
-        #edit-form {
-            display: none;
-        }
-    </style>
-    <script src="/js/jquery-3.6.4.js"></script>
-    <script>
-        $(document).ready(function() {
-            // 添加记录
-            $("#add-btn").click(function() {
-                var projectId = $("#project-id").val();
-                var scheduleId = $("#schedule-id").val();
-                var planDuration = $("#plan-duration").val();
-                var actualDuration = $("#actual-duration").val();
-                var delayReason = $("#delay-reason").val();
-                var personnelAssignment = $("#personnel-assignment").val();
-                var solution = $("#solution").val();
-
-                if (projectId === "" || scheduleId === "" || planDuration === "" || actualDuration === "" || delayReason === "" || personnelAssignment === "" || solution === "") {
-                    alert("请将信息填写完整！");
-                    return;
-                }
-
-                var content =
-                    "<tr>" +
-                    "<td>" + projectId + "</td>" +
-                    "<td>" + scheduleId + "</td>" +
-                    "<td>" + planDuration + "</td>" +
-                    "<td>" + actualDuration + "</td>" +
-                    "<td>" + delayReason + "</td>" +
-                    "<td>" + personnelAssignment + "</td>" +
-                    "<td>" + solution + "</td>" +
-                    "<td><button class='edit-btn'>修改</button></td>" +
-                    "<td><button class='delete-btn'>删除</button></td>" +
-                    "</tr>";
-
-                $("#schedule-table").append(content);
-            });
-
-            // 显示修改表单
-            $(document).on("click", ".edit-btn", function() {
-                var row = $(this).closest("tr");
-                var scheduleId = row.find("td:nth-child(2)").text();
-                var planDuration = row.find("td:nth-child(3)").text();
-                var actualDuration = row.find("td:nth-child(4)").text();
-                var delayReason = row.find("td:nth-child(5)").text();
-                var personnelAssignment = row.find("td:nth-child(6)").text();
-                var solution = row.find("td:nth-child(7)").text();
-
-                $("#edit-form").show();
-                $("#schedule-id").val(scheduleId);
-                $("#plan-duration").val(planDuration);
-                $("#actual-duration").val(actualDuration);
-                $("#delay-reason").val(delayReason);
-                $("#personnel-assignment").val(personnelAssignment);
-                $("#solution").val(solution);
-
-                row.remove();
-            });
-
-            // 隐藏修改表单
-            $("#cancel-btn").click(function() {
-                var content =
-                    "<tr>" +
-                    "<td>" + $("#project-id").val() + "</td>" +
-                    "<td>" + $("#schedule-id").val() + "</td>" +
-                    "<td>" + $("#plan-duration").val() + "</td>" +
-                    "<td>" + $("#actual-duration").val() + "</td>" +
-                    "<td>" + $("#delay-reason").val() + "</td>" +
-                    "<td>" + $("#personnel-assignment").val() + "</td>" +
-                    "<td>" + $("#solution").val() + "</td>" +
-                    "<td><button class='edit-btn'>修改</button></td>" +
-                    "<td><button class='delete-btn'>删除</button></td>" +
-                    "</tr>";
-
-                $("#schedule-table").append(content);
-                $("#edit-form").hide();
-            });
-
-            // 删除记录
-            $(document).on("click", ".delete-btn", function() {
-                $(this).closest("tr").remove();
-            });
-
-            // 查询记录
-            $("#search-btn").click(function() {
-                var input, filter, table, tr, td, i, txtValue;
-                input = $("#search-input").val();
-                filter = input.toUpperCase();
-                table = document.getElementById("schedule-table");
-                tr = table.getElementsByTagName("tr");
-                for (i = 1; i < tr.length; i++) {
-                    td= tr[i].getElementsByTagName("td")[0];
-                    if (td) {
-                        txtValue = td.textContent || td.innerText;
-                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                            tr[i].style.display = "";
-                        } else {
-                            tr[i].style.display = "none";
-                        }
-                    }
-                }
-            });
-        });
-    </script>
+    <script src="/js/jquery-3.6.4.js">
+    </script><script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
 <div class="container">
@@ -134,6 +27,12 @@
         <!-- article -->
         <div class="area grow-1" id="">
             <h5>施工进度管理</h5>
+            <!-- 查询表单 -->
+            <form id="search-form">
+                <label for="search-input">查询施工项目ID:</label>
+                <input type="text" id="search-input" name="search-input">
+                <input type="button" value="查询" id="search-btn">
+            </form>
             <div th:replace="~{process::table1}" ></div>
             <table class="table-striped" id="table-striped" style="display: none">
                 <thead>
@@ -145,65 +44,116 @@
                     <th>落后原因</th>
                     <th>人员分配</th>
                     <th>解决方案</th>
+                    <th>操作</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>10001</td>
-                    <td>2023-06-01 ~ 2024-03-31</td>
-                    <td>2023-06-01 ~ 2024-05-15</td>
-                    <td>材料供应不足，天气原因等</td>
-                    <td>项目经理：张三<br>技术负责人：李四<br>其他成员：王五、赵六</td>
-                    <td>加强对材料的储备，合理安排施工计划，及时调整人员和资源的调配</td>
-                    <td><button class="edit-btn">修改</button></td>
-                    <td><button class="delete-btn">删除</button></td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>10002</td>
-                    <td>2023-07-01 ~ 2024-05-31</td>
-                    <td>2023-07-01 ~ 2024-06-30</td>
-                    <td>施工机械故障、人员缺乏等</td>
-                    <td>项目经理：张三<br>技术负责人：李四<br>其他成员：王五、赵六</td>
-                    <td>增加备用的施工机械，及时修理维护，调整项目进度和资源分配，提高工人的效率</td>
-                    <td><button class="edit-btn">修改</button></td>
-                    <td><button class="delete-btn">删除</button></td>
-                </tr>
+
                 </tbody>
             </table>
-            <!-- 修改表单 -->
-            <form id="edit-form">
-                <label for="project-id">施工项目ID:</label>
-                <input type="text" id="project-id" name="project-id"><br><br>
-                <label for="schedule-id">进度ID:</label>
-                <input type="text" id="schedule-id" name="schedule-id"><br><br>
-                <label for="plan-duration">计划工期:</label>
-                <input type="text" id="plan-duration" name="plan-duration"><br><br>
-                <label for="actual-duration">实际工期:</label>
-                <input type="text" id="actual-duration" name="actual-duration"><br><br>
-                <label for="delay-reason">落后原因:</label>
-                <input type="text" id="delay-reason" name="delay-reason"><br><br>
-                <label for="personnel-assignment">人员分配:</label>
-                <input type="text" id="personnel-assignment" name="personnel-assignment"><br><br>
-                <label for="solution">解决方案:</label>
-                <input type="text" id="solution" name="solution"><br><br>
-                <input type="button" value="提交" id="submit-btn">
-                <input type="button" value="取消" id="cancel-btn">
-            </form>
 
-            <!-- 查询表单 -->
-            <form id="search-form">
-                <label for="search-input">查询施工项目ID:</label>
-                <input type="text" id="search-input" name="search-input">
-                <input type="button" value="查询" id="search-btn">
-            </form>
+            <!-- 新增信息的模态框 -->
+            <div class="modal fade" id="add-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <form id="add-form" th:action="@{/scheduled/add(token=${#httpServletRequest.getParameter('token')})}" method="post">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span>&times;</span></button>
+                                <h4 class="modal-title" id="myModalLabel">新增信息</h4>
+                            </div>
+                            <div class="modal-body">
+                                <!-- 表单数据项 -->
+                                <div class="form-group">
+                                    <label for="sid-input" class="control-label">进度ID:</label>
+                                    <input type="text" class="form-control" id="sid-input" name="scheduleid" placeholder="请输入进度ID">
+                                </div>
+                                <div class="form-group">
+                                    <label for="fid-input" class="control-label">流程ID:</label>
+                                    <input type="text" class="form-control" id="fid-input" name="flowid" placeholder="请输入流程ID">
+                                </div>
+                                <div class="form-group">
+                                    <label for="sctime-input" class="control-label">计划工期:</label>
+                                    <input type="text" class="form-control" id="sctime-input" name="timescaleplan" placeholder="请输入yyyy-MM-dd">
+                                </div>
+                                <div class="form-group">
+                                    <label for="prac-input" class="control-label">实际工期:</label>
+                                    <input type="text" class="form-control" id="prac-input" name="practicalscale" placeholder="请输入yyyy-MM-dd">
+                                </div>
+                                <div class="form-group">
+                                    <label for="cause-input" class="control-label">落后原因:</label>
+                                    <input type="text" class="form-control" id="cause-input" name="cause" placeholder="请输入落后原因">
+                                </div>
+                                <div class="form-group">
+                                    <label for="staf-input" class="control-label">人员分配:</label>
+                                    <input type="text" class="form-control" id="staf-input" name="staffallocation" placeholder="请输入人员分配:">
+                                </div>
+                                <div class="form-group">
+                                    <label for="solut-input" class="control-label">解决方案:</label>
+                                    <input type="text" class="form-control" id="solut-input" name="solution" placeholder="请输入解决方案">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">保存</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
 
-            <button id="add-btn">添加记录</button>
+            <div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <form id="edit-form" th:action="@{/scheduled/update(token=${#httpServletRequest.getParameter('token')})}" method="post">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span>&times;</span></button>
+                                <h4 class="modal-title" id="edit-modal-label">修改信息</h4>
+                            </div>
+                            <div class="modal-body">
+                                <!-- 表单数据项 -->
+                                <table>
+                                <tr>
+                                    <td>进度ID:</td>
+                                    <td><input id="edit-input" name="scheduleid" readonly="readonly" value=""></td>
+                                </tr>
+                                <tr>
+                                    <td>流程ID:</td>
+                                    <td><input id="edit1-input" name="flowid" readonly="readonly" value=""></td>
+                                </tr>
+                                <tr>
+                                    <td>计划工期:</td>
+                                    <td><input id="editsctime-input" name="timescaleplan" value=""></td>
+                                </tr>
+                                <tr>
+                                    <td>实际工期:</td>
+                                    <td><input id="editprac-input" name="practicalscale" value=""></td>
+                                </tr>
+                                <tr>
+                                    <td>落后原因:</td>
+                                    <td><input id="editcause-input" name="cause" value=""></td>
+                                </tr>
+                                <tr>
+                                    <td>人员分配:</td>
+                                    <td><input id="editstaf-input" name="staffallocation" value=""></td>
+                                </tr>
+                                <tr>
+                                    <td>解决方案:</td>
+                                    <td><input id="editsolut-input" name="solution" value=""></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td align="right"><input type="submit" value="提交"></td>
+                                </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <button id="add-btn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-modal">添加记录</button>
         </div>
     </div>
-    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
     <div th:replace="~{process::js}" ></div>
     <script>
         $('.Table').on('click', '.selectbypid', function() {
@@ -213,6 +163,7 @@
         var schedule = [];
         // 发送 AJAX 请求时添加 Token 到 URL 中
         var token = new URLSearchParams(window.location.search).get("token");
+        //查询
         $.ajax({
             type: 'post',
             url: '/scheduled/getscheduleall?token=' + token,
@@ -221,7 +172,7 @@
                 // 处理成功请求后的逻辑
                 $('#Table').hide();
                 $('#table-striped').show();
-                flow = [];
+                schedule = [];
 
                 if (res && res.length > 0) {
                     var str = '';
@@ -253,6 +204,55 @@
                 console.error(errorThrown);
             }
         });
+        //修改
+            $('.table-striped').on('click', '.update', function() {
+                var tr = $(this).closest('tr');
+                var id = tr.data('id');
+                console.log(id);
+
+                var schedules = schedule.find(function(e) {
+                    return e.scheduleid == id;
+                });
+
+                if (schedules) {
+                    // 将记录的详细信息填充到模态框中
+                    $('#edit-input').val(schedules.scheduleid);
+                    $('#edit1-input').val(schedules.flowid);
+                    $('#editsctime-input').val(schedules.timescaleplan);
+                    $('#editprac-input').val(schedules.practicalscale);
+                    $('#editcause-input').val(schedules.cause);
+                    $('#editstaf-input').val(schedules.staffallocation);
+                    $("#editsolut-input").val(schedules.solution);
+                    // 弹出模态框
+                    $('#edit-modal').modal('show');
+                }
+            });
+        });
+        //删除
+        $('.table-striped').on('click', '.delete', function() {
+            var tr = $(this).closest('tr'); // 获取所选行元素
+            var id = tr.data('id'); // 获取 ID
+
+            if (confirm('确认要删除该信息吗？')) {
+                // 发送 AJAX 请求删除员工记录
+                $.ajax({
+                    type: 'POST',
+                    url: '/scheduled/delectbyid',
+                    data: {
+                        scheduleid: id,
+                        token: token
+                    },
+                    success: function(res) {
+                        // 处理成功请求后的逻辑
+                        console.log('删除成功！');
+                        tr.remove(); // 在表格中将已删除的员工记录从 DOM 中移除
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        // 处理请求失败后的逻辑
+                        console.error(errorThrown);
+                    }
+                });
+            }
         });
     </script>
     <!-- footer -->

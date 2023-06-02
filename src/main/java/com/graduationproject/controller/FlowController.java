@@ -3,6 +3,7 @@ package com.graduationproject.controller;
 import com.graduationproject.po.Flow;
 import com.graduationproject.service.FlowService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,5 +21,23 @@ public class FlowController {
     @ResponseBody
     public List<Flow> selectall(Integer id){
         return flowService.selectall(id);
+    }
+
+    @PostMapping(value = "delectbyid")
+    public String delectbyid(Flow record){
+        flowService.deleteByPrimaryKey(record.getFlowid());
+        return "process";
+    }
+
+    @PostMapping(value = "update")
+    public String updatebyid(Flow record){
+        flowService.updateByPrimaryKey(record);
+        return "process";
+    }
+
+    @PostMapping(value = "/insert")
+    public String insert(Flow record){
+        flowService.insert(record);
+        return "process";
     }
 }

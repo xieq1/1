@@ -30,10 +30,10 @@
     where scheduleid = #{scheduleid,jdbcType=INTEGER}
   </delete>
   <insert id="insert" keyColumn="scheduleid" keyProperty="scheduleid" parameterType="com.graduationproject.po.Schedule" useGeneratedKeys="true">
-    insert into schedule (flowid, timescaleplan, practicalscale, 
+    insert into schedule (scheduleid, flowid, timescaleplan, practicalscale,
       cause, staffallocation, solution
       )
-    values (#{flowid,jdbcType=INTEGER}, #{timescaleplan,jdbcType=TIMESTAMP}, #{practicalscale,jdbcType=TIMESTAMP}, 
+    values (#{scheduleid,jdbcType=INTEGER}, #{flowid,jdbcType=INTEGER}, #{timescaleplan,jdbcType=TIMESTAMP}, #{practicalscale,jdbcType=TIMESTAMP},
       #{cause,jdbcType=VARCHAR}, #{staffallocation,jdbcType=VARCHAR}, #{solution,jdbcType=VARCHAR}
       )
   </insert>

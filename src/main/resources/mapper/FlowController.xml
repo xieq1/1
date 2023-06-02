@@ -24,13 +24,13 @@
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from flow
-    where flowid = #{flowid,jdbcType=INTEGER}
+    where flowid = #{flowid}
   </delete>
-  <insert id="insert" keyColumn="flowid" keyProperty="flowid" parameterType="com.graduationproject.po.Flow" useGeneratedKeys="true">
-    insert into flow (flowname, projectid, projectcast, 
+  <insert id="insert" parameterType="com.graduationproject.po.Flow" useGeneratedKeys="true">
+    insert into flow (flowid, flowname, projectid, projectcast,
       builders, `describe`, cstrinfo
       )
-    values (#{flowname,jdbcType=VARCHAR}, #{projectid,jdbcType=INTEGER}, #{projectcast,jdbcType=INTEGER}, 
+    values (#{flowid,jdbcType=INTEGER},#{flowname,jdbcType=VARCHAR}, #{projectid,jdbcType=INTEGER}, #{projectcast,jdbcType=INTEGER},
       #{builders,jdbcType=VARCHAR}, #{describe,jdbcType=VARCHAR}, #{cstrinfo,jdbcType=VARCHAR}
       )
   </insert>

@@ -21,6 +21,9 @@
   <select id="selectall" resultType="com.graduationproject.po.Materials">
     select * from materials;
   </select>
+  <select id="selectbyname" resultType="java.lang.Integer">
+    select * from materials where materialsname =#{item}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from materials
     where materialsid = #{materialsid}
@@ -68,6 +71,10 @@
       </if>
     </trim>
   </insert>
+  <insert id="insertpur">
+    insert into materials (materialsname, inventory, lasttime)
+    values (#{item}, #{purquantity}, #{purtime})
+  </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.graduationproject.po.Materials">
     update materials
     <set>
@@ -104,4 +111,16 @@
       variety = #{variety,jdbcType=VARCHAR}
     where materialsid = #{materialsid,jdbcType=INTEGER}
   </update>
+    <update id="updateByPrimaryKeySelective1">
+      update materials
+      <set>
+        <if test="purquantity != null">
+          inventory =inventory + #{purquantity},
+        </if>
+        <if test="purtime != null">
+          lasttime = #{purtime},
+        </if>
+      </set>
+      where materialsname = #{item}
+    </update>
 </mapper>

@@ -50,24 +50,11 @@
                 <thead>
                 <tr>
                     <th>职位</th>
-                    <th>时间</th>
                     <th>费用</th>
                 </tr>
                 </thead>
                 <tbody id="labor">
                 <!-- 这里可以用jQuery动态添加人工费用 -->
-                </tbody>
-            </table>
-
-            <table>
-                <thead>
-                <tr>
-                    <th>设备名称</th>
-                    <th>租赁费用</th>
-                </tr>
-                </thead>
-                <tbody id="equipment">
-                <!-- 这里可以用jQuery动态添加设备租赁费用 -->
                 </tbody>
             </table>
 
@@ -86,65 +73,65 @@
             <h5>总成本: <span id="total"></span></h5>
 
             <script type="text/javascript">
-
+                var token = new URLSearchParams(window.location.search).get("token");
                 var materials = [
                     { name: "地板", price: 20, quantity: 100, total: 2000 },
                     { name: "墙纸", price: 15, quantity: 80, total: 1200 }
                 ];
-                var labor = [
-                    { position: "设计师", time: "20天", cost: 8000 },
-                    { position: "施工队长", time: "30天", cost: 12000 },
-                    { position: "木工", time: "50天", cost: 15000 }
-                ];
-                var equipment = [
-                    { name: "挖掘机", cost: 5000 },
-                    { name: "卡车", cost: 3000 }
-                ];
+                var labor=[];
                 var others = [
                     { name: "交通运输费", cost: 2000 },
                     { name: "其他杂项费用", cost: 1000 }
                 ];
 
+                //员工
+                $.ajax({
+                    type: 'GET',
+                    url: '/User/getalluser?token=' + token,
+                    data: {},
+                    success: function (res) {
+                        // 处理成功请求后的逻辑
+                        labor = [];
+                        if (res && res.length > 0) {
+                            var str = '';
+                            for (var i = 0; i < res.length; i++) {
+                                labor.push(res[i]);
+                                var row = $("<tr>");
+                                row.append($("<td>").text(labor[i].job));
+                                row.append($("<td>").text(labor[i].salary));
+                                $("#labor").append(row);
+                            }
+                        } else {
+
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        // 处理请求失败后的逻辑
+                        console.error(errorThrown);
+                    }
+                    }
+                );
+
+                //材料
+                $.post('/purchase/selectall', function(data) {
+                    data.forEach(function(item) {
+                        var rowHTML = '<tr><td>' + item.item + '</td>' +
+                            '<td>' + item.item + '</td>'+
+                            '<td>' + item.purquantity+ '</td>' +
+                            '<td>' + item.price + '</td></tr>';
+                        $('#materials').append(rowHTML);
+                    });
+                });
+
                 $(document).ready(function() {
 
                     // 动态生成表格
-                    for (var i = 0; i < materials.length; i++) {
-                        var row = $("<tr>");
-                        row.append($("<td>").text(materials[i].name));
-                        row.append($("<td>").text(materials[i].price));
-                        row.append($("<td>").text(materials[i].quantity));
-                        row.append($("<td>").text(materials[i].total));
-                        $("#materials").append(row);
-                    }
-                    for (var i = 0; i < labor.length; i++) {
-                        var row = $("<tr>");
-                        row.append($("<td>").text(labor[i].position));
-                        row.append($("<td>").text(labor[i].time));
-                        row.append($("<td>").text(labor[i].cost));
-                        $("#labor").append(row);
-                    }
-                    for (var i = 0; i < equipment.length; i++) {
-                        var row = $("<tr>");
-                        row.append($("<td>").text(equipment[i].name));
-                        row.append($("<td>").text(equipment[i].cost));
-                        $("#equipment").append(row);
-                    }
                     for (var i = 0; i < others.length; i++) {
                         var row = $("<tr>");
                         row.append($("<td>").text(others[i].name));
                         row.append($("<td>").text(others[i].cost));
                         $("#others").append(row);
                     }
-
-                    // 添加项目
-                    $("#projectForm").submit(function(e) {
-                        e.preventDefault();
-                        var projectName = $("#name").val();
-                        if (projectName !== "") {
-                            // TODO: 添加项目代码
-                        }
-                    });
-
                     // 计算总成本
                     function calculateTotal() {
                         var total = 0;
@@ -152,10 +139,7 @@
                             total += materials[i].total;
                         }
                         for (var i = 0; i < labor.length; i++) {
-                            total += labor[i].cost;
-                        }
-                        for (var i = 0; i < equipment.length; i++) {
-                            total += equipment[i].cost;
+                            total += labor[i].salary;
                         }
                         for (var i = 0; i < others.length; i++) {
                             total += others[i].cost;

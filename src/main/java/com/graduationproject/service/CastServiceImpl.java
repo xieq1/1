@@ -16,11 +16,13 @@ public class CastServiceImpl implements CastService{
     private CastController castService;
     @Override
     public int deleteByPrimaryKey(Integer castid) {
+        castService.deleteByPrimaryKey(castid);
         return 0;
     }
 
     @Override
     public int insert(Cast record) {
+        castService.insert(record);
         return 0;
     }
 
@@ -41,6 +43,7 @@ public class CastServiceImpl implements CastService{
 
     @Override
     public int updateByPrimaryKey(Cast record) {
+        castService.updateByPrimaryKey(record);
         return 0;
     }
 

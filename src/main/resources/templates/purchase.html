@@ -30,8 +30,8 @@
             <form id="purchase-form">
                 <label for="item">采购物品：</label>
                 <input type="text" name="item" id="item"><br>
-                <label for="quantity">采购数量：</label>
-                <input type="number" name="quantity" id="quantity"><br>
+                <label for="purquantity">采购数量：</label>
+                <input type="number" name="purquantity" id="purquantity"><br>
                 <label for="supplier">供应商名称：</label>
                 <input type="text" name="supplier" id="supplier"><br>
                 <input type="submit" value="添加">
@@ -57,12 +57,12 @@
             <script src="/js/jquery-3.6.4.js"></script>
             <script>
                 // 加载采购记录列表并更新页面
-                $.get('/api/purchase', function(data) {
+                $.post('/purchase/selectall', function(data) {
                     data.forEach(function(item) {
-                        var rowHTML = '<tr><td>' + new Date(item.time).toLocaleString() + '</td><td>' +
-                            item.item + '</td><td>' + item.quantity + '</td><td>' +
+                        var rowHTML = '<tr><td>' + new Date(item.purtime).toLocaleString() + '</td><td>' +
+                            item.item + '</td><td>' + item.purquantity + '</td><td>' +
                             item.supplier + '</td><td><button class="delete" data-id="' +
-                            item.id + '">删除</button></td></tr>';
+                            item.purid + '">删除</button></td></tr>';
                         $('#purchase-list').append(rowHTML);
                     });
                 });
@@ -74,13 +74,14 @@
                     // 发送POST请求以添加新的采购记录数据
                     var requestData = {
                         item: $('#item').val(),
-                        quantity: $('#quantity').val(),
+                        purquantity: $('#purquantity').val(),
                         supplier: $('#supplier').val()
                     };
-                    $.post('/api/purchase', requestData, function(data) {
+                    $.post('/purchase/insert', requestData, function(data) {
+                        console.log(requestData)
                         // 添加新数据行到采购记录列表中
                         var rowHTML = '<tr><td>' + new Date(data.time).toLocaleString() + '</td><td>' +
-                            data.item + '</td><td>' + data.quantity + '</td><td>' +
+                            data.item + '</td><td>' + data.purquantity + '</td><td>' +
                             data.supplier + '</td><td><button class="delete" data-id="' +
                             data.id + '">删除</button></td></tr>';
                         $('#purchase-list').append(rowHTML);
@@ -99,8 +100,11 @@
                         // 发送DELETE请求以删除对应的采购记录数据
                         var id = $(this).data('id');
                         $.ajax({
-                            url: '/api/purchase/' + id,
-                            type: 'DELETE',
+                            url: '/purchase/deletebyid',
+                            data: {
+                                id:id
+                            },
+                            type: 'post',
                             success: function(data) {
                                 // 移除对应的HTML数据行
                                 $(this).parent().parent().remove();

@@ -1,5 +1,6 @@
 package com.graduationproject.controller;
 
+import com.graduationproject.po.Flow;
 import com.graduationproject.po.Materials;
 import com.graduationproject.po.Schedule;
 import com.graduationproject.service.ScheduleService;
@@ -22,5 +23,23 @@ public class ScheduleController {
     public List<Schedule> selectall(Integer id){
         System.out.println(id);
          return scheduleService.selectall(id);
+    }
+
+    @PostMapping(value = "/add")
+    public String insert(Schedule record){
+        scheduleService.insert(record);
+        return "plan";
+    }
+
+    @PostMapping(value = "/update")
+    public String update(Schedule record){
+        scheduleService.updateByPrimaryKey(record);
+        return "plan";
+    }
+
+    @PostMapping(value = "delectbyid")
+    public String delectbyid(Schedule record){
+        scheduleService.deleteByPrimaryKey(record.getScheduleid());
+        return "plan";
     }
 }

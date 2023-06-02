@@ -26,10 +26,10 @@
         <!-- article -->
         <div class="area grow-1" id="">
             <h5>施工验收管理</h5>
-
+            <div th:replace="~{process::table1}" ></div>
             <div class="construction-checks">
                 <h5>未审核施工环节列表</h5>
-                <table class="table-striped">
+                <table class="table-striped" id="table-striped" style="display: none">
                     <thead>
                     <tr>
                         <th>流程ID</th>
@@ -72,7 +72,7 @@
 
             <div class="construction-checks">
                 <h5>已审核施工环节列表</h5>
-                <table class="table-striped">
+                <table class="table-striped" style="display: none">
                     <thead>
                     <tr>
                         <th>流程ID</th>
@@ -80,7 +80,7 @@
                         <th>描述</th>
                         <th>装修内容</th>
                         <th>施工人员</th>
-                        <th>完工时间</th>
+                        <th>审核状态</th>
                         <th>状态</th>
                     </tr>
                     </thead>
@@ -98,66 +98,69 @@
                 </table>
             </div>
         </div>
+        <div th:replace="~{process::js}" ></div>
         <script>
-            /*
-            // 获取元素
-            const approveButtons = document.querySelectorAll('.approve-button');
-            const rejectButtons = document.querySelectorAll('.reject-button');
-
-            // 审核通过
-            function approveCheck(event) {
-                const tr = event.target.closest('tr');
-                tr.querySelector('td:last-child').innerHTML = '<span class="approved">已通过</span>';
-            }
-
-            // 拒绝审核
-            function rejectCheck(event) {
-                const tr = event.target.closest('tr');
-                tr.remove();
-            }
-
-            // 将审核通过和拒绝审核的事件分别绑定到每个按钮上
-            approveButtons.forEach(button => button.addEventListener('click', approveCheck));
-            rejectButtons.forEach(button => button.addEventListener('click', rejectCheck));
-       */
-            var flow = [];
-            // 发送 AJAX 请求时添加 Token 到 URL 中
-            var token = new URLSearchParams(window.location.search).get("token");
-            $.ajax({
-                type: 'post',
-                url: '/flow/getflowall?token=' + token,
-                data: {},
-                success: function(res) {
-                    // 处理成功请求后的逻辑
-                    flow = [];
-
-                    if (res && res.length > 0) {
-                        var str = '';
-
-                        for (var i = 0; i < res.length; i++) {
-                            flow.push(res[i]);
-                            console.log(res[i])
-                            str += '<tr data-id="' + res[i].flowid + '">' +
-                                '<td>' + res[i].flowid+ '</td>' +
-                                '<td>' + res[i].flowname + '</td>' +
-                                '<td>' + res[i].describe + '</td>' +
-                                '<td>' + res[i].cstinfo + '</td>' +
-                                '<td>' + res[i].builders + '</td>' +
-                                '<td class="btn-group">' +
-                                '<a href="#" class="btn update">通过</a>' +
-                                '<a href="#" class="btn delete">拒绝</a>' +
-                                '</td>' +
-                                '</tr>';
+            $('.Table').on('click', '.selectbypid', function() {
+                var tr = $(this).closest('tr');
+                var id = tr.data('id');
+                var projectid=id;
+                console.log(id);
+                var flow = [];
+                $.ajax({
+                    type: 'post',
+                    url: '/flow/getflowall',
+                    data: {
+                        id:id,
+                        token: token
+                    },
+                    success: function(res) {
+                        $('#Table').hide();
+                        $('#table-striped').show();
+                        $('#tile1').show();
+                        $('#button1').show();
+                        // 处理成功请求后的逻辑
+                        flow = [];
+                        if (res && res.length > 0) {
+                            var str = '';
+                            for (var i = 0; i < res.length; i++) {
+                                flow.push(res[i]);
+                                console.log(res[i])
+                                str += '<tr data-id="' + res[i].flowid + '">' +
+                                    '<td>' + res[i].flowid+ '</td>' +
+                                    '<td>' + res[i].flowname + '</td>' +
+                                    '<td>' + res[i].describe + '</td>' +
+                                    '<td>' + res[i].cstrinfo + '</td>' +
+                                    '<td>' + res[i].builders + '</td>' +
+                                    '<td>' + res[i].projectcast + '</td>' +
+                                    '<td class="btn-group">' +
+                                    '<a href="#" class="btn update1">通过</a>' +
+                                    '<a href="#" class="btn update2">拒绝</a>' +
+                                    '</td>' +
+                                    '</tr>';
+                            }
+                            $('.table-striped tbody').html(str); // 将表格内容替换为从后端获取的员工信息
+                        } else {
+                            $('.table-striped tbody').html('暂无数据'); // 若未获取到任何员工信息，则在表格中显示暂无数据的提示
                         }
-                        $('.table-striped tbody').html(str); // 将表格内容替换为从后端获取的员工信息
-                    } else {
-                        $('.table-striped tbody').html('暂无数据'); // 若未获取到任何员工信息，则在表格中显示暂无数据的提示
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        // 处理请求失败后的逻辑
+                        console.error(errorThrown);
                     }
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    // 处理请求失败后的逻辑
-                    console.error(errorThrown);
-                }
+                });
+                $(document).ready(function() {
+                    $("#add-form").submit(function(event) {
+                        // 阻止表单默认提交行为
+                        event.preventDefault();
+
+                        // 将施工项目ID设置为隐藏输入框的值
+                        $("#projectid").val(projectid);
+
+                        // 提交表单
+                        this.submit();
+                    });
+                });
+
             });
         </script>
     </div>
