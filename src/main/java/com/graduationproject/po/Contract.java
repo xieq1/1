@@ -14,7 +14,7 @@ public class Contract implements Serializable {
     private Integer contractid;
 
     @Lob
-    private byte[] contractcontent;
+    private String contractcontent;
 
     private String contractcontentname;
 

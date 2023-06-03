@@ -27,11 +27,11 @@
             <h5>支出统计</h5>
 
             <h5>添加支出</h5>
-            <form id="add-form" action="/api/expense" method="post">
+            <form id="add-form">
                 <label for="date">日期：</label>
-                <input type="date" name="date" id="date"><br>
+                <input type="date" name="date" id="date" required><br>
                 <label for="type">类型：</label>
-                <select name="type" id="type">
+                <select name="type" id="type" required>
                     <option value="工资">工资</option>
                     <option value="材料">材料</option>
                     <option value="租金">租金</option>
@@ -40,11 +40,13 @@
                     <option value="其他">其他</option>
                 </select><br>
                 <label for="amount">金额：</label>
-                <input type="number" name="amount" id="amount" min="0" step="0.01"><br>
-                <input type="submit" value="添加">
+                <input type="number" name="amount" id="amount" min="0" step="0.01" required><br>
+                <button type="submit">添加</button>
             </form>
-
-            <h5>支出列表</h5>
+            <div>
+            <canvas id="type-chart" width="400" height="400"></canvas>
+            </div>
+            <!-- 显示支出列表 -->
             <table>
                 <thead>
                 <tr>
@@ -54,69 +56,114 @@
                 </tr>
                 </thead>
                 <tbody id="expense-list">
-                <!-- 这里将会自动插入数据行 -->
+                <!-- 在这里显示支出列表 -->
                 </tbody>
             </table>
 
-            <h5>支出报表</h5>
+            <!-- 生成报表按钮 -->
             <button id="generate-report">生成报表</button>
+
+            <div id="report-div"></div>
 
             <!-- jQuery和支出统计脚本 -->
             <script src="/js/jquery-3.6.4.js"></script>
+            <script src="https://cdn.bootcss.com/Chart.js/2.9.4/Chart.min.js"></script>
             <script>
-                // 加载支出列表并更新页面
-                $.get('/api/expense', function(data) {
-                    data.forEach(function(item) {
-                        var rowHTML = '<tr><td>' + new Date(item.date).toLocaleDateString() + '</td><td>' +
-                            item.type + '</td><td>' + item.amount.toFixed(2) + '</td></tr>';
-                        $('#expense-list').append(rowHTML);
-                    });
-                });
-
+                var expenses = [];
                 // 监听添加支出表单提交事件
                 $('#add-form').submit(function(event) {
-                    event.preventDefault();  // 防止表单自动提交
+                    event.preventDefault(); // 阻止表单默认提交行为
 
-                    // 构造JSON对象并发送POST请求以添加支出
-                    var formData = {
+                    // 将用户输入的支出数据保存到数组中
+                    var expense = {
                         date: $('#date').val(),
                         type: $('#type').val(),
-                        amount: Number($('#amount').val())
+                        amount: parseFloat($('#amount').val())
                     };
-                    $.post('/api/expense', formData, function(data) {
-                        // 添加新数据行到支出列表中
-                        var rowHTML = '<tr><td>' + new Date(data.date).toLocaleDateString() + '</td><td>' +
-                            data.type + '</td><td>' + data.amount.toFixed(2) + '</td></tr>';
-                        $('#expense-list').append(rowHTML);
-                    });
+                    expenses.push(expense);
+
+                    // 在页面上显示新的支出记录
+                    var rowHTML = '<tr><td>' + new Date(expense.date).toLocaleDateString() + '</td><td>' +
+                        expense.type + '</td><td>' + expense.amount.toFixed(2) + '</td></tr>';
+                    $('#expense-list').append(rowHTML);
+
+                    // 清空表单内容
+                    $('#add-form')[0].reset();
                 });
 
-                // 监听生成报表按钮的点击事件
-                $('#generate-report').click(function(event) {
-                    // 发送GET请求以获取所有支出数据，并计算各项汇总数
-                    $.get('/api/expense', function(data) {
-                        var total = 0;
-                        var byType = {};
-                        data.forEach(function(item) {
-                            total += item.amount;
-                            if (item.type in byType) {
-                                byType[item.type] += item.amount;
-                            } else {
-                                byType[item.type] = item.amount;
-                            }
-                        });
-
-                        // 弹窗显示统计结果
-                        var content = '<p>总支出：' + total.toFixed(2) + '</p>';
-                        content += '<p>按类型统计：</p>';
-                        content += '<ul>';
-                        for (var type in byType) {
-                            content += '<li>' + type + '：' + byType[type].toFixed(2) + '</li>';
+                $('#generate-report').click(function() {
+                    // 计算支出汇总数和按类型的支出汇总数
+                    var total = 0;
+                    var byType = {};
+                    expenses.forEach(function(expense) {
+                        total += expense.amount;
+                        if (expense.type in byType) {
+                            byType[expense.type] += expense.amount;
+                        } else {
+                            byType[expense.type] = expense.amount;
                         }
-                        content += '</ul>';
-                        alert(content);
                     });
+
+                    // 将支出汇总数据转换为报表文本
+                    var reportText = '总支出：' + total.toFixed(2) + '\n\n';
+                    reportText += '按类型统计：\n'
+                    for (var type in byType) {
+                        reportText += type + '：' + byType[type].toFixed(2) + '\n';
+                    }
+
+                    // 显示报表内容和图表
+                    $('#report-div').text(reportText);
+                    generateTypeChart();
                 });
+
+                // 生成支出类型的饼图
+                function generateTypeChart() {
+                    // 分类汇总支出数据
+                    var byType = {};
+                    expenses.forEach(function(expense) {
+                        if (expense.type in byType) {
+                            byType[expense.type] += expense.amount;
+                        } else {
+                            byType[expense.type] = expense.amount;
+                        }
+                    });
+
+                    // 将分类数据转换为图表数据
+                    var chartData = {
+                        labels: Object.keys(byType),
+                        datasets: [{
+                            data: Object.values(byType),
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    };
+
+                    // 创建饼图
+                    var chartOptions = {
+                        responsive: true,
+                        maintainAspectRatio: false
+                    };
+                    var typeChart = new Chart(document.getElementById('type-chart'), {
+                        type: 'pie',
+                        data: chartData,
+                        options: chartOptions
+                    });
+                }
             </script>
         </div>
     </div>

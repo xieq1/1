@@ -18,4 +18,6 @@ public interface StatementController {
     int updateByPrimaryKeySelective(Statement record);
 
     int updateByPrimaryKey(Statement record);
+
+    void save(Statement statement);
 }

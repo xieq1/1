@@ -18,5 +18,7 @@ public class Statement implements Serializable {
 
     private String statementcontent;
 
+    private String type;
+
     private static final long serialVersionUID = 1L;
 }

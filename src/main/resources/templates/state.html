@@ -28,7 +28,7 @@
             <h5>报表管理</h5>
 
             <h5>上传报表</h5>
-            <form id="upload-form" action="/api/report" method="post" enctype="multipart/form-data">
+            <form id="upload-form" action="/statement/upload" method="post" enctype="multipart/form-data">
                 <label for="file">选择文件：</label>
                 <input type="file" name="file" id="file"><br>
                 <label for="type">报表类型：</label>
@@ -40,13 +40,12 @@
             </form>
 
             <h5>报表列表</h5>
-            <table>
+            <table class="table-striped">
                 <thead>
                 <tr>
                     <th>名称</th>
-                    <th>大小</th>
-                    <th>类型</th>
                     <th>上传时间</th>
+                    <th>链接地址</th>
                     <th>操作</th>
                 </tr>
                 </thead>
@@ -58,62 +57,73 @@
             <!-- jQuery和报表管理脚本 -->
             <script src="/js/jquery-3.6.4.js"></script>
             <script>
-                // 加载报表列表并更新页面
-                $.get('/api/report', function(data) {
-                    data.forEach(function(item) {
-                        var rowHTML = '<tr><td>' + item.name + '</td><td>' +
-                            (item.size / 1000).toFixed(2) + ' KB</td><td>' +
-                            (item.type === 'balance_sheet' ? '资产负债表' : '利润表') + '</td><td>' +
-                            new Date(item.upload_time).toLocaleString() + '</td><td>' +
-                            '<button data-id="' + item.id + '">查看</button> ' +
-                            '<button data-id="' + item.id + '">删除</button> ' +
-                            '<a href="/api/report/' + item.id + '/download">下载</a></td></tr>';
-                        $('#report-list').append(rowHTML);
-                    });
-                });
-
-                // 监听上传表单提交事件
-                $('#upload-form').submit(function(event) {
-                    event.preventDefault();  // 防止表单自动提交
-
-                    // 构造FormData对象并发送POST请求以上传文件
-                    var formData = new FormData();
-                    formData.append('file', $('#file')[0].files[0]);
-                    formData.append('type', $('#type').val());
+                $("#uploadForm").on("submit", function(e) {
+                    e.preventDefault();
+                    var formData = new FormData($(this)[0]);
                     $.ajax({
-                        url: $(this).attr('action'),
-                        method: $(this).attr('method'),
+                        url: "/statement/upload",
+                        type: "POST",
                         data: formData,
                         processData: false,
                         contentType: false,
                         success: function(data) {
-                            // 添加新数据行到报表列表中
-                            var rowHTML = '<tr><td>' + data.name + '</td><td>' +
-                                (data.size / 1000).toFixed(2) + ' KB</td><td>' +
-                                (data.type === 'balance_sheet' ? '资产负债表' : '利润表') + '</td><td>' +
-                                new Date(data.upload_time).toLocaleString() + '</td><td>' +
-                                '<button data-id="' + data.id + '">查看</button> ' +
-                                '<button data-id="' + data.id + '">删除</button> ' +
-                                '<a href="/api/report/' + data.id + '/download">下载</a></td></tr>';
-                            $('#report-list').append(rowHTML);
+                            alert(data); // 显示上传结果
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            alert("合同文件上传失败：" + jqXHR.responseText);
                         }
                     });
                 });
+                $.ajax({
+                    type: 'post',
+                    url: '/statement/selectall',
+                    data: {},
+                    success: function(res) {
+                        // 处理成功请求后的逻辑
+                        if (res && res.length > 0) {
+                            var str = '';
+                            for (var i = 0; i < res.length; i++) {
+                                str += '<tr data-id="' + res[i].statementid + '">' +
+                                    '<td class="filename" >' + res[i].statementname+ '</td>' +
+                                    '<td>' + res[i].time+ '</td>' +
+                                    '<td class="filename" >' + res[i].statementcontent+ '</td>' +
+                                    '<td class="btn-group">' +
+                                    '<a href="#" class="btn delete">删除</a>' +
+                                    '<a href="' + res[i].statementcontent + '" class="btn download">下载</a>' +
+                                    '</td>' +
+                                    '</tr>';
+                            }
+                            $('.table-striped tbody').html(str); // 将表格内容替换为从后端获取的信息
+                        } else {
+                            $('.table-striped tbody').html('暂无数据'); // 若未获取到任何信息，则在表格中显示暂无数据的提示
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        // 处理请求失败后的逻辑
+                        console.error(errorThrown);
+                    }
+                });
+                $('.table-striped').on('click', '.delete', function() {
+                    var tr = $(this).closest('tr');
+                    var id = tr.data('id'); // 获取 ID
 
-                // 监听查看和删除按钮的点击事件
-                $('#report-list').on('click', 'button', function() {
-                    if ($(this).html() === '查看') {
-                        // TODO: 打开对应报表的浏览窗口
-
-                    } else if ($(this).html() === '删除') {
-                        // 发送DELETE请求以删除对应的数据
+                    if (confirm('确认要删除该合同文件吗？')) {
+                        // 发送 AJAX 请求删除
                         $.ajax({
-                            url: '/api/report/' + $(this).attr('data-id'),
-                            method: 'DELETE',
-                            success: function(message) {
-                                // 删除对应的数据行
-                                $(this).parent().parent().remove();
-                            }.bind(this)
+                            type: 'POST',
+                            url: '/statement/delectbyid',
+                            data: {
+                                statementid:id
+                            },
+                            success: function(res) {
+                                // 处理成功请求后的逻辑
+                                console.log('删除成功！');
+                                tr.remove(); // 在表格中将已删除的从 DOM 中移除
+                            },
+                            error: function(jqXHR, textStatus, errorThrown) {
+                                // 处理请求失败后的逻辑
+                                console.error(errorThrown);
+                            }
                         });
                     }
                 });

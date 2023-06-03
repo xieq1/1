@@ -32,44 +32,13 @@
                 <button type="submit">上传文件</button>
             </form>
             <div id="result"></div>
-
-            <script>
-                var token = new URLSearchParams(window.location.search).get("token");
-                const uploadForm = document.querySelector('#uploadForm');
-                const fileInput = document.querySelector('#fileInput');
-                const resultDiv = document.querySelector('#result');
-
-                uploadForm.addEventListener('submit', event => {
-                    event.preventDefault();
-
-                    const formData = new FormData(uploadForm);
-                    const xhr = new XMLHttpRequest();
-
-                    xhr.onreadystatechange = function() {
-                        if (xhr.readyState === XMLHttpRequest.DONE) {
-                            if (xhr.status === 200) {
-                                // 成功上传文件，处理响应结果
-                                const responseText = xhr.responseText;
-                                resultDiv.textContent = responseText;
-                            } else {
-                                // 上传文件失败，处理错误信息
-                                const error = `上传文件失败(${xhr.status}): ${xhr.statusText}`;
-                                resultDiv.textContent = error;
-                            }
-                        }
-                    };
-
-                    xhr.open('POST', '/contract/upload?token=' + token);
-                    xhr.send(formData);
-                });
-            </script>
-
             <h5>合同列表</h5>
             <table class="table-striped">
                 <thead>
                 <tr>
                     <th>合同id</th>
                     <th>合同名称</th>
+                    <th>合同链接</th>
                     <th>操作</th>
                 </tr>
                 </thead>
@@ -81,11 +50,26 @@
             <!-- jQuery和合同管理脚本 -->
             <script src="/js/jquery-3.6.4.js"></script>
             <script>
-                var token = new URLSearchParams(window.location.search).get("token");
-                // 加载合同列表并更新页面
+                $("#uploadForm").on("submit", function(e) {
+                    e.preventDefault();
+                    var formData = new FormData($(this)[0]);
+                    $.ajax({
+                        url: "/contract/upload",
+                        type: "POST",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(data) {
+                            alert(data); // 显示上传结果
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            alert("合同文件上传失败：" + jqXHR.responseText);
+                        }
+                    });
+                });
                 $.ajax({
                     type: 'post',
-                    url: '/contract/selectall?token=' + token,
+                    url: '/contract/selectall',
                     data: {},
                     success: function(res) {
                         // 处理成功请求后的逻辑
@@ -95,10 +79,10 @@
                                 str += '<tr data-id="' + res[i].contractid + '">' +
                                     '<td>' + res[i].contractid+ '</td>' +
                                     '<td class="filename" >' + res[i].contractcontentname+ '</td>' +
+                                    '<td class="filename" >' + res[i].contractcontent+ '</td>' +
                                     '<td class="btn-group">' +
-                                    '<a href="#" class="btn view">查看</a>' +
                                     '<a href="#" class="btn delete">删除</a>' +
-                                    '<a href="#" class="btn download">下载</a>' +
+                                    '<a href="' + res[i].contractcontent + '" class="btn download">下载</a>' +
                                     '</td>' +
                                     '</tr>';
                             }
@@ -122,8 +106,7 @@
                             type: 'POST',
                             url: '/contract/delectbyid',
                             data: {
-                                contractid: id,
-                                token: token
+                                contractid:id
                             },
                             success: function(res) {
                                 // 处理成功请求后的逻辑
@@ -137,53 +120,6 @@
                         });
                     }
                 });
-                $('.table-striped').on('click', '.download', function() {
-                    var tr = $(this).closest('tr');
-                    var id = tr.data('id'); // 获取 ID
-                    var name = tr.find('.filename').text(); // 获取文件名
-
-                    $.ajax({
-                        type: 'POST',
-                        url: '/contract/getContractContent',
-                        data: {
-                            id: id,
-                            token: token
-                        },
-                        responseType: 'arraybuffer', // 设置响应类型为二进制数据流
-                        success: function (result) {
-                            var contentType = '';
-                            var contentDisposition = '';
-                            if (result && result.byteLength > 0) {
-                                // 解析响应头信息，获取Content-Type和Content-Disposition等字段
-                                var headers = new Headers();
-                                headers.set('Content-Type', 'application/octet-stream');
-                                var blob = new Blob([result], {type: 'application/octet-stream'});
-                                var response = new Response(blob, {headers});
-                                contentType = response.headers.get('Content-Type');
-                                contentDisposition = response.headers.get('Content-Disposition');
-                            }
-                            var fileName = name;
-                            if (contentDisposition) {
-                                var match = /filename\*?=(.*)/ig.exec(contentDisposition);
-                                if (match != null && match[1]) {
-                                    fileName = decodeURIComponent(match[1].trim());
-                                }
-                            }
-
-                            // 创建并点击一个下载链接，让浏览器自动下载文件
-                            var blob = new Blob([result], {type: contentType});
-                            var link = document.createElement("a");
-                            link.href = window.URL.createObjectURL(blob);
-                            link.download = fileName;
-                            link.click();
-                        },
-                        error: function (xhr, status, error) {
-                            alert("下载合同文件失败：" + xhr.responseText);
-                        }
-                    });
-                });
-
-
             </script>
         </div>
     </div>
