@@ -2,7 +2,6 @@ package com.graduationproject.service;
 
 import com.graduationproject.dao.PurchaseController;
 import com.graduationproject.po.Purchase;
-import com.graduationproject.po.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -10,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service("PurchaseService")
-public class PurchaseImpl implements PurchaseService{
+public class PurchaseServiceImpl implements PurchaseService{
     @Qualifier("purchasedao")
     @Autowired
     private PurchaseController purchaseService;

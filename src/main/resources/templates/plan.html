@@ -150,7 +150,7 @@
                     </div>
                 </form>
             </div>
-            <button id="add-btn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-modal">添加记录</button>
+            <button id="add-btn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-modal" style="display: none">添加记录</button>
         </div>
     </div>
 
@@ -172,6 +172,7 @@
                 // 处理成功请求后的逻辑
                 $('#Table').hide();
                 $('#table-striped').show();
+                $('#add-btn').show();
                 schedule = [];
 
                 if (res && res.length > 0) {

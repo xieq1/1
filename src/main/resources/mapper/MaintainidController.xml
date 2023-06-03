@@ -10,13 +10,16 @@
     <result column="maresult" jdbcType="VARCHAR" property="maresult" />
   </resultMap>
   <sql id="Base_Column_List">
-    maintainid, macont, madate, macost, maintainer, maresult
+    maintainid, macont, madate, macost, maintainer, maresult, clid
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from maintainid
     where maintainid = #{maintainid,jdbcType=INTEGER}
+  </select>
+  <select id="selectbycid" resultType="com.graduationproject.po.Maintainid">
+    select * from maintainid where clid =#{id}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from maintainid
@@ -46,6 +49,9 @@
       <if test="maresult != null">
         maresult,
       </if>
+      <if test="clid != null">
+        clid,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="macont != null">
@@ -62,6 +68,9 @@
       </if>
       <if test="maresult != null">
         #{maresult,jdbcType=VARCHAR},
+      </if>
+      <if test="clid != null">
+        #{clid},
       </if>
     </trim>
   </insert>

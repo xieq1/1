@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.graduationproject.dao.PreController">
+  <resultMap id="BaseResultMap" type="com.graduationproject.po.Pre">
+    <id column="preid" jdbcType="INTEGER" property="preid" />
+    <result column="precontent" jdbcType="VARCHAR" property="precontent" />
+    <result column="predate" jdbcType="DATE" property="predate" />
+    <result column="preperson" jdbcType="VARCHAR" property="preperson" />
+    <result column="precost" jdbcType="DECIMAL" property="precost" />
+    <result column="clid" jdbcType="INTEGER" property="clid" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    preid, precontent, predate, preperson, precost, clid, clfeedback
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from pre
+    where preid = #{preid,jdbcType=INTEGER}
+  </select>
+  <select id="selectbycid" resultType="com.graduationproject.po.Pre">
+    select * from pre where clid =#{id}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from pre
+    where preid = #{preid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="preid" keyProperty="preid" parameterType="com.graduationproject.po.Pre" useGeneratedKeys="true">
+    insert into pre (precontent, predate, preperson, 
+      precost, clid, clfeedback)
+    values (#{precontent,jdbcType=VARCHAR}, #{predate,jdbcType=DATE}, #{preperson,jdbcType=VARCHAR}, 
+      #{precost,jdbcType=DECIMAL}, #{clid,jdbcType=INTEGER}, #{clfeedback})
+  </insert>
+  <insert id="insertSelective" keyColumn="preid" keyProperty="preid" parameterType="com.graduationproject.po.Pre" useGeneratedKeys="true">
+    insert into pre
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="precontent != null">
+        precontent,
+      </if>
+      <if test="predate != null">
+        predate,
+      </if>
+      <if test="preperson != null">
+        preperson,
+      </if>
+      <if test="precost != null">
+        precost,
+      </if>
+      <if test="clid != null">
+        clid,
+      </if>
+      <if test="clfeedback != null">
+        clfeedback,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="precontent != null">
+        #{precontent,jdbcType=VARCHAR},
+      </if>
+      <if test="predate != null">
+        #{predate,jdbcType=DATE},
+      </if>
+      <if test="preperson != null">
+        #{preperson,jdbcType=VARCHAR},
+      </if>
+      <if test="precost != null">
+        #{precost,jdbcType=DECIMAL},
+      </if>
+      <if test="clid != null">
+        #{clid,jdbcType=INTEGER},
+      </if>
+      <if test="clfeedback != null">
+        #{clfeedback,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.graduationproject.po.Pre">
+    update pre
+    <set>
+      <if test="precontent != null">
+        precontent = #{precontent,jdbcType=VARCHAR},
+      </if>
+      <if test="predate != null">
+        predate = #{predate,jdbcType=DATE},
+      </if>
+      <if test="preperson != null">
+        preperson = #{preperson,jdbcType=VARCHAR},
+      </if>
+      <if test="precost != null">
+        precost = #{precost,jdbcType=DECIMAL},
+      </if>
+      <if test="clid != null">
+        clid = #{clid,jdbcType=INTEGER},
+      </if>
+      <if test="clfeedback != null">
+        clfeedback = #{clfeedback,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where preid = #{preid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.graduationproject.po.Pre">
+    update pre
+    set precontent = #{precontent,jdbcType=VARCHAR},
+      predate = #{predate,jdbcType=DATE},
+      preperson = #{preperson,jdbcType=VARCHAR},
+      precost = #{precost,jdbcType=DECIMAL},
+      clid = #{clid,jdbcType=INTEGER}
+    where preid = #{preid,jdbcType=INTEGER}
+  </update>
+</mapper>

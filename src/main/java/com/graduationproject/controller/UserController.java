@@ -8,10 +8,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/User")
@@ -49,24 +53,41 @@ public class UserController {
 
     @GetMapping("/topersonalinformation")
     public String getProfile(HttpServletRequest request, Model model) {
-        // 从请求中获取Token参数
-        String token = request.getParameter("token");
-        System.out.println("Token: " + token); // 添加调试记录
-        if (token == null || token.isEmpty()) {
-            // 如果Token为空，则重定向到登录页面
-            return "personalinformation";
+        String userId=null;
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            Map<String, String> cookieMap = new HashMap<>();
+            for (Cookie cookie : cookies) {
+                cookieMap.put(cookie.getName(), cookie.getValue());
+            }
+            request.setAttribute("cookieMap", cookieMap);
+        }
+        System.out.println(cookies);
+        // 从 Cookie 中获取 Token
+        String token = null;
+        if (cookies != null && cookies.length > 0) {
+            for (Cookie cookie : cookies) {
+                if ("token".equals(cookie.getName())) {
+                    token = cookie.getValue();
+                    break;
+                }
+            }
         }
 
-        // 验证Token的有效性，并返回用户ID
-        String userId = tokenUtil.getUserIdFromToken(token);
+        System.out.println("Token received: " + token); // 添加调试信息
+        if (token != null && !"".equals(token.trim())) { // 如果 Token 不为空，则进行校验
+            if (tokenUtil.validateToken(token)) { // 校验 Token
+                userId = tokenUtil.getUserIdFromToken(token);
+            }
+        }
+        System.out.println(userId);
         if (userId == null || userId.isEmpty()) {
-            // 如果Token无效，则重定向到登录页面
+            // 如果未找到有效的用户 ID 或角色，则重定向到登录页面
             return "personalinformation";
         }
-
         // 根据用户ID获取用户信息
         User user = userService.findById(Integer.parseInt(userId));
-        if (user == null) {
+        if (user.getUserid() == 0) {
             // 如果未找到用户，则重定向到登录页面
             return "personalinformation";
         }

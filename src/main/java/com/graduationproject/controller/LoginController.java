@@ -19,26 +19,6 @@ import java.io.IOException;
 public class LoginController {
     @Autowired
     private LoginService loginService;
-/*  @PostMapping(value = "/login")
-    public String login(HttpServletRequest request,User u){
-        String name=request.getParameter("name");
-        String password=request.getParameter("password");
-        System.out.print(name);
-        System.out.print(password);
-        if(name.equals("admin")&&password.equals("123456"))
-            return "index";
-        u = loginService.Login(name,password);
-        //int i=0;
-        if(u!=null) {
-            return "index";
-        }
-        return "login";
-
-@GetMapping("/login")
-    public String login() {
-        return "login";
-    }
-}*/
 
     @Autowired
     private TokenUtil tokenUtil;
@@ -53,11 +33,12 @@ public class LoginController {
             // 生成并存储Token
             String token = tokenUtil.generateToken(String.valueOf(user.getUserid()));
             Cookie cookie = new Cookie("token", token);
-            cookie.setMaxAge(300);
+            cookie.setMaxAge(3600);
             response.addCookie(cookie);
-            //System.out.print(token);
-            // 跳转到首页，并将Token作为URL参数之一
-            response.sendRedirect(request.getContextPath() +"/user/index?token=" + token);
+            cookie.setSecure(true); // 启用 HTTPS 时发送 Cookie
+            cookie.setPath("/"); // 设置 Cookie 的作用域路径为应用程序的上下文路径
+            response.addCookie(cookie);
+            response.sendRedirect(request.getContextPath() +"/user/index");
         } else {
             // 登录失败，重新登录
             response.sendRedirect(request.getContextPath() +"/login?error=用户名或密码错误！");

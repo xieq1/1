@@ -166,7 +166,6 @@
                     materials = [];
                     if (res && res.length > 0) {
                         var str = '';
-
                         for (var i = 0; i < res.length; i++) {
                             materials.push(res[i]);
                             console.log(res[i])
@@ -198,11 +197,9 @@
                 var tr = $(this).closest('tr');
                 var id = tr.data('id');
                 console.log(id);
-
                 var material = materials.find(function(e) {
                     return e.materialsid == id;
                 });
-
                 if (materials) {
                     // 将记录的详细信息填充到模态框中
                     $('#id').val(material.materialsid);
@@ -220,7 +217,6 @@
             $('.table-striped').on('click', '.delete', function() {
                 var tr = $(this).closest('tr'); // 获取所选员工记录的行元素
                 var id = tr.data('id'); // 获取员工记录的 ID
-
                 if (confirm('确认要删除该材料信息吗？')) {
                     // 发送 AJAX 请求删除员工记录
                     $.ajax({

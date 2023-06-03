@@ -6,24 +6,24 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * maintainid
+ * pre
  * @author 
  */
 @Data
-public class Maintainid implements Serializable {
-    private Integer maintainid;
+public class Pre implements Serializable {
+    private Integer preid;
 
-    private String macont;
+    private String precontent;
 
-    private Date madate;
+    private Date predate;
 
-    private BigDecimal macost;
+    private String preperson;
 
-    private String maintainer;
-
-    private String maresult;
+    private BigDecimal precost;
 
     private Integer clid;
+
+    private String clfeedback;
 
     private static final long serialVersionUID = 1L;
 }

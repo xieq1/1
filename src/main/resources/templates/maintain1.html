@@ -5,54 +5,9 @@
     <title>Title</title>
     <link type="text/css" rel="stylesheet" href="/css/mycss.css">
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <style>
-        /* 表单输入框的样式 */
-        input[type="text"],
-        input[type="date"],
-        input[type="number"],
-        textarea,
-        select {
-            padding: 6px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-            margin-top: 6px;
-            margin-bottom: 16px;
-            resize: vertical;
-            font-size: 16px;
-        }
-
-        /* 输入框区域的宽度和布局 */
-        .form-group {
-            display: block;
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            text-align: left;
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        /* 提交按钮的样式 */
-        input[type="submit"] {
-            background-color: #4CAF50;
-            color: white;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            float: right;
-            font-size: 16px;
-        }
-
-        input[type="submit"]:hover {
-            background-color: #45a049;
-        }
-    </style>
     <script src="/js/jquery-3.6.4.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="/css/mycss5.css">
 </head>
 <body>
 <div class="container">
@@ -72,51 +27,238 @@
         <!-- article -->
         <div class="area grow-1" id="">
             <h5>维修</h5>
-            <form id="repair-form">
-                <div class="form-group">
-                    <label for="fault-desc">内容描述:</label>
-                    <textarea id="fault-desc" name="faultDesc" required></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="technician">维修人员:</label>
-                    <input type="text" id="technician" name="technician" required>
-                </div>
-                <div class="form-group">
-                    <label for="repair-date">维修日期:</label>
-                    <input type="date" id="repair-date" name="repairDate" required>
-                </div>
-                <div class="form-group">
-                    <label for="repair-cost">维修费用:</label>
-                    <input type="number" id="repair-cost" name="repairCost" required>
-                </div>
-                <div class="form-group">
-                    <label for="result">处理结果:</label>
-                    <textarea id="result" name="result" required></textarea>
-                </div>
-                <input type="submit" value="提交">
+            <table class="Table" id="Table" th:fragment="table1">
+                <thead>
+                <tr>
+                    <th>客户ID</th>
+                    <th>姓名</th>
+                    <th>电话</th>
+                    <th>反馈</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- 这里需要使用服务器动态生成客户列表 -->
+                </tbody>
+            </table>
+            <table class="table-striped" id="table-striped" style="display: none">
+                <thead>
+                <tr>
+                    <th>维修日期</th>
+                    <th>维修人员</th>
+                    <th>维修方案</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            <button type="button" style="display: none" id="button1">新增维修记录</button>
+            <form id="add-form" style="display: none" th:action="@{/maintainid/insert(token=${#httpServletRequest.getParameter('token')})}" method="post">
+                <table>
+                    <tr>
+                        <td>维修内容</td>
+                        <td><input id="macont" name="macont" value="" /></td>
+                    </tr>
+                    <tr>
+                        <td>维修收费</td>
+                        <td><input id="macost" name="macost" value="" /></td>
+                    </tr>
+                    <tr>
+                        <td>维修人员</td>
+                        <td><input id="maintainer" name="maintainer" value="" /></td>
+                    </tr>
+                    <tr>
+                        <td>解决方法</td>
+                        <td><input id="maresult" name="maresult" value="" /></td>
+                    </tr>
+                    <tr>
+                        <td><input id="clid" name="clid" value="" type="hidden"/></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td align="right"><input type="submit" value="提交"></td>
+                        <td align="right"><input type="button" id="cancel-button" value="取消"></td>
+                    </tr>
+                </table>
             </form>
-            <script>
-                $(function() {
-                    $("#repair-form").submit(function(event) {
-                        event.preventDefault();
-
-                        var form = $(this);
-                        var url = form.attr("action");
-                        var method = form.attr("method");
-                        var data = form.serialize();
-
-                        $.ajax({
-                            url: url,
-                            method: method,
-                            data: data,
-                            success: function(response) {
-                                alert("提交成功！");
-                                window.location.href = "repair-record.html";
-                            },
-                            error: function(xhr, status, error) {
-                                alert("提交失败！" + error);
+            <form id="edit-form" style="display: none" th:action="@{/maintainid/update(token=${#httpServletRequest.getParameter('token')})}" method="post">
+                <table>
+                    <tr>
+                        <td>维修记录id</td>
+                        <td><input id="edit-maintainid" name="maintainid" value="" readonly="readonly"/></td>
+                    </tr>
+                    <tr>
+                        <td>维修内容</td>
+                        <td><input id="edit-macont" name="macont" value="" /></td>
+                    </tr>
+                    <tr>
+                        <td>维修收费</td>
+                        <td><input id="edit-macost" name="macost" value="" /></td>
+                    </tr>
+                    <tr>
+                        <td>维修人员</td>
+                        <td><input id="edit-maintainer" name="maintainer" value="" /></td>
+                    </tr>
+                    <tr>
+                        <td>解决方法</td>
+                        <td><input id="edit-maresult" name="maresult" value="" /></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td align="right"><input type="submit" value="提交"></td>
+                        <td align="right"><input type="button" id="cancel-button1" value="取消"></td>
+                    </tr>
+                </table>
+            </form>
+            <script th:fragment="js">
+                var client = [];
+                // 发送 AJAX 请求时添加 Token 到 URL 中
+                var token = new URLSearchParams(window.location.search).get("token");
+                $.ajax({
+                    type: 'post',
+                    url: '/client/getclientall?token=' + token,
+                    data: {},
+                    success: function(res) {
+                        // 处理成功请求后的逻辑
+                        client = [];
+                        if (res && res.length > 0) {
+                            var str = '';
+                            for (var i = 0; i < res.length; i++) {
+                                client.push(res[i]);
+                                console.log(res[i])
+                                str += '<tr data-id="' + res[i].clientid + '">' +
+                                    '<td>' + res[i].clientid+ '</td>' +
+                                    '<td>' + res[i].clientname + '</td>' +
+                                    '<td>' + res[i].phone + '</td>' +
+                                    '<td>' + res[i].feedback + '</td>' +
+                                    '<td class="btn-group">' +
+                                    '<a href="#" class="btn selectbycid">查看</a>' +
+                                    '</td>' +
+                                    '</tr>';
                             }
+                            $('.Table tbody').html(str); // 将表格内容替换为从后端获取的
+                        } else {
+                            $('.Table tbody').html('暂无数据'); // 若未获取到任何信息，则在表格中显示暂无数据的提示
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        // 处理请求失败后的逻辑
+                        console.error(errorThrown);
+                    }
+                });
+            </script>
+            <script>
+                $('.Table').on('click', '.selectbycid', function() {
+                    var tr = $(this).closest('tr');
+                    var id = tr.data('id');
+                    var clientid=id;
+                    console.log(id);
+                    var maintainid = [];
+                    $.ajax({
+                        type: 'post',
+                        url: '/maintainid/selectallbycid',
+                        data: {
+                            id:id,
+                            token: token
+                        },
+                        success: function(res) {
+                            $('#Table').hide();
+                            $('#table-striped').show();
+                            $('#button1').show();
+                            // 处理成功请求后的逻辑
+                            maintainid = [];
+                            if (res && res.length > 0) {
+                                var str = '';
+                                for (var i = 0; i < res.length; i++) {
+                                    maintainid.push(res[i]);
+                                    console.log(res[i])
+                                    str += '<tr data-id="' + res[i].maintainid + '">' +
+                                        '<td>' + res[i].madate + '</td>' +
+                                        '<td>' + res[i].maintainer + '</td>' +
+                                        '<td>' + res[i].maresult + '</td>' +
+                                        '<td class="btn-group">' +
+                                        '<a href="#" class="btn update">编辑</a>' +
+                                        '<a href="#" class="btn delete">删除</a>' +
+                                        '</td>' +
+                                        '</tr>';
+                                }
+                                $('.table-striped tbody').html(str); // 将表格内容替换为从后端获取的员工信息
+                            } else {
+                                $('.table-striped tbody').html('暂无数据'); // 若未获取到任何员工信息，则在表格中显示暂无数据的提示
+                            }
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            // 处理请求失败后的逻辑
+                            console.error(errorThrown);
+                        }
+                    });
+                    $(document).ready(function() {
+                        $("#add-form").submit(function(event) {
+                            // 阻止表单默认提交行为
+                            event.preventDefault();
+
+                            // 将ID设置为隐藏输入框的值
+                            $("#clid").val(clientid);
+
+                            // 提交表单
+                            this.submit();
                         });
+                    });
+                    document.getElementById("button1").onclick = function() {
+                        document.getElementById("add-form").style.display = "block";
+                        document.getElementById("cancel-button").style.display = "block";
+                    };
+                    document.getElementById("cancel-button").onclick = function() {
+                        document.getElementById("add-form").style.display = "none";
+                    };
+                    //修改
+                    $('.table-striped').on('click', '.update', function() {
+                        var tr = $(this).closest('tr');
+                        var id = tr.data('id');
+                        console.log(id);
+
+                        var maintainids = maintainid.find(function(e) {
+                            return e.maintainid == id;
+                        });
+                        if (maintainids) {
+                            // 将记录的详细信息填充到模态框中
+                            $('#edit-maintainid').val(maintainids.maintainid);
+                            $('#edit-macont').val(maintainids.macont);
+                            $('#edit-macost').val(maintainids.macost);
+                            $('#edit-maintainer').val(maintainids.maintainer);
+                            $('#edit-maresult').val(maintainids.maresult);
+                            document.getElementById("edit-form").style.display = "block";
+                        }
+                    });
+                    document.getElementById("cancel-button1").onclick = function() {
+                        document.getElementById("edit-form").style.display = "none";
+                    };
+                    //删除
+                    $('.table-striped').on('click', '.delete', function() {
+                        var tr = $(this).closest('tr'); // 获取所选员工记录的行元素
+                        var id = tr.data('id'); // 获取员工记录的 ID
+
+                        if (confirm('确认要删除该维修记录信息吗？')) {
+                            // 发送 AJAX 请求删除员工记录
+                            $.ajax({
+                                type: 'POST',
+                                url: '/maintainid/delectbyid',
+                                data: {
+                                    maintainid: id,
+                                    token: token
+                                },
+                                success: function(res) {
+                                    // 处理成功请求后的逻辑
+                                    console.log('删除成功！');
+                                    tr.remove(); // 在表格中将已删除的员工记录从 DOM 中移除
+                                },
+                                error: function(jqXHR, textStatus, errorThrown) {
+                                    // 处理请求失败后的逻辑
+                                    console.error(errorThrown);
+                                }
+                            });
+                        }
                     });
                 });
             </script>

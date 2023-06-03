@@ -1,14 +1,10 @@
-package com.graduationproject.dao;
+package com.graduationproject.service;
 
 import com.graduationproject.po.Maintainid;
-import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository("maintainiddao")
-@Mapper
-public interface MaintainidController {
+public interface MatintainidService {
     int deleteByPrimaryKey(Integer maintainid);
 
     int insert(Maintainid record);

@@ -2,56 +2,56 @@
     <div class="sidebar-group">
         <h5>人员管理</h5>
         <ul>
-            <li><a th:href="@{/tostaffinformation(token=${#httpServletRequest.getParameter('token')})}">员工信息管理</a></li>
+            <li><a th:href="@{/tostaffinformation}" th:with="jwtToken=${#httpServletRequest.getHeader('Authorization')}">员工信息管理</a></li>
         </ul>
     </div>
     <div class="sidebar-group">
         <h5>材料管理</h5>
         <ul>
-            <li><a th:href="@{/tomaterialinformation(token=${#httpServletRequest.getParameter('token')})}">材料信息管理</a></li>
-            <li><a th:href="@{/toinventorymanagement(token=${#httpServletRequest.getParameter('token')})}">材料库存管理</a></li>
+            <li><a th:href="@{/tomaterialinformation}" th:with="jwtToken=${#httpServletRequest.getHeader('Authorization')}">材料信息管理</a></li>
+            <li><a th:href="@{/toinventorymanagement}" th:with="jwtToken=${#httpServletRequest.getHeader('Authorization')}">材料库存管理</a></li>
         </ul>
     </div>
     <div class="sidebar-group">
         <h5>设计方案管理</h5>
         <ul>
-            <li><a th:href="@{/todesign(token=${#httpServletRequest.getParameter('token')})}">设计方案信息管理</a></li>
-            <li><a th:href="@{/tooffer(token=${#httpServletRequest.getParameter('token')})}">报价管理</a></li>
+            <li><a th:href="@{/todesign}" th:with="jwtToken=${#httpServletRequest.getHeader('Authorization')}">设计方案信息管理</a></li>
+            <li><a th:href="@{/tooffer}" th:with="jwtToken=${#httpServletRequest.getHeader('Authorization')}">报价管理</a></li>
         </ul>
     </div>
     <div class="sidebar-group">
         <h5>施工过程管理</h5>
         <ul>
-            <li><a th:href="@{/toprocess(token=${#httpServletRequest.getParameter('token')})}">施工流程管理</a></li>
-            <li><a th:href="@{/toplan(token=${#httpServletRequest.getParameter('token')})}">进度管理</a></li>
-            <li><a th:href="@{/tocheck(token=${#httpServletRequest.getParameter('token')})}">验收管理</a></li>
-            <li><a th:href="@{/torecord(token=${#httpServletRequest.getParameter('token')})}">施工记录管理</a></li>
+            <li><a th:href="@{/toprocess}" th:with="jwtToken=${#httpServletRequest.getHeader('Authorization')}">施工流程管理</a></li>
+            <li><a th:href="@{/toplan}" th:with="jwtToken=${#httpServletRequest.getHeader('Authorization')}">进度管理</a></li>
+            <li><a th:href="@{/tocheck}" th:with="jwtToken=${#httpServletRequest.getHeader('Authorization')}">验收管理</a></li>
+            <li><a th:href="@{/torecord}" th:with="jwtToken=${#httpServletRequest.getHeader('Authorization')}">施工记录管理</a></li>
         </ul>
     </div>
     <div class="sidebar-group">
         <h5>财务管理</h5>
         <ul>
-            <li><a th:href="@{/toslary(token=${#httpServletRequest.getParameter('token')})}">工资管理</a></li>
-            <li><a th:href="@{/topurchase(token=${#httpServletRequest.getParameter('token')})}">采购管理</a></li>
-            <li><a th:href="@{/tocost(token=${#httpServletRequest.getParameter('token')})}">成本管理</a></li>
-            <li><a th:href="@{/tocontract(token=${#httpServletRequest.getParameter('token')})}">合同管理</a></li>
-            <li><a th:href="@{/tostate(token=${#httpServletRequest.getParameter('token')})}">报表管理</a></li>
-            <li><a th:href="@{/toexpenditure(token=${#httpServletRequest.getParameter('token')})}">支出统计</a></li>
+            <li><a th:href="@{/toslary}" th:with="jwtToken=${#httpServletRequest.getHeader('Authorization')}">工资管理</a></li>
+            <li><a th:href="@{/topurchase}" th:with="jwtToken=${#httpServletRequest.getHeader('Authorization')}">采购管理</a></li>
+            <li><a th:href="@{/tocost}" th:with="jwtToken=${#httpServletRequest.getHeader('Authorization')}">成本管理</a></li>
+            <li><a th:href="@{/tocontract}" th:with="jwtToken=${#httpServletRequest.getHeader('Authorization')}">合同管理</a></li>
+            <li><a th:href="@{/tostate}" th:with="jwtToken=${#httpServletRequest.getHeader('Authorization')}">报表管理</a></li>
+            <li><a th:href="@{/toexpenditure}" th:with="jwtToken=${#httpServletRequest.getHeader('Authorization')}">支出统计</a></li>
         </ul>
     </div>
     <div class="sidebar-group">
         <h5>客户沟通管理</h5>
         <ul>
-            <li><a th:href="@{/toopinion(token=${#httpServletRequest.getParameter('token')})}">客户意见管理</a></li>
-            <li><a th:href="@{/tolink(token=${#httpServletRequest.getParameter('token')})}">沟通记录管理</a></li>
-            <li><a th:href="@{/tomessage(token=${#httpServletRequest.getParameter('token')})}">客户信息管理</a></li>
+            <li><a th:href="@{/toopinion}" th:with="jwtToken=${#httpServletRequest.getHeader('Authorization')}">客户意见管理</a></li>
+            <li><a th:href="@{/tolink}" th:with="jwtToken=${#httpServletRequest.getHeader('Authorization')}">沟通记录管理</a></li>
+            <li><a th:href="@{/tomessage}" th:with="jwtToken=${#httpServletRequest.getHeader('Authorization')}">客户信息管理</a></li>
         </ul>
     </div>
     <div class="sidebar-group">
         <h5>售后管理</h5>
         <ul>
-            <li><a th:href="@{/tomaintain1(token=${#httpServletRequest.getParameter('token')})}">维修管理</a></li>
-            <li><a th:href="@{/tomaintain(token=${#httpServletRequest.getParameter('token')})}">维护管理</a></li>
+            <li><a th:href="@{/tomaintain1}" th:with="jwtToken=${#httpServletRequest.getHeader('Authorization')}">维修管理</a></li>
+            <li><a th:href="@{/tomaintain}" th:with="jwtToken=${#httpServletRequest.getHeader('Authorization')}">维护管理</a></li>
         </ul>
     </div>
 </div>

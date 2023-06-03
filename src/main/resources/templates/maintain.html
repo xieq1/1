@@ -5,64 +5,7 @@
     <title>Title</title>
     <link type="text/css" rel="stylesheet" href="/css/mycss.css">
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <style>
-        /* 表单输入框的样式 */
-        input[type="text"],
-        input[type="date"],
-        input[type="number"],
-        textarea,
-        select {
-            padding: 6px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-            margin-top: 6px;
-            margin-bottom: 16px;
-            resize: vertical;
-            font-size: 16px;
-        }
-
-        /* 输入框区域的宽度和布局 */
-        .form-group {
-            display: block;
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            text-align: left;
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        /* 提交按钮的样式 */
-        input[type="submit"] {
-            background-color: #4CAF50;
-            color: white;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            float: right;
-            font-size: 16px;
-        }
-
-        input[type="submit"]:hover {
-            background-color: #45a049;
-        }
-
-        /* 客户评价下拉列表的样式 */
-        #customer-feedback {
-            width: 100%;
-            padding: 6px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-            margin-top: 6px;
-            margin-bottom: 16px;
-        }
-    </style>
+    <link type="text/css" rel="stylesheet" href="/css/mycss5.css">
     <script src="/js/jquery-3.6.4.js"></script>
 </head>
 <body>
@@ -83,58 +26,201 @@
         <!-- article -->
         <div class="area grow-1" id="">
             <h5>维护</h5>
-            <form id="maintenance-form">
-                <div class="form-group">
-                    <label for="maintenance-date">维护日期:</label>
-                    <input type="date" id="maintenance-date" name="maintenanceDate" required>
-                </div>
-                <div class="form-group">
-                    <label for="maintenance-content">维护内容:</label>
-                    <textarea id="maintenance-content" name="maintenanceContent" required></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="material-used">消耗材料:</label>
-                    <textarea id="material-used" name="materialUsed" required></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="maintenance-cost">维护费用:</label>
-                    <input type="number" id="maintenance-cost" name="maintenanceCost" step=".01" required>
-                </div>
-                <div class="form-group">
-                    <label for="customer-feedback">客户评价:</label>
-                    <select id="customer-feedback" name="customerFeedback" required>
-                        <option value="">请选择</option>
-                        <option value="非常满意">非常满意</option>
-                        <option value="满意">满意</option>
-                        <option value="一般">一般</option>
-                        <option value="不满意">不满意</option>
-                    </select>
-                </div>
+            <div th:replace="~{maintain1::table1}" ></div>
+            <table class="table-striped" id="table-striped" style="display: none">
+                <thead>
+                <tr>
+                    <th>维护日期</th>
+                    <th>维护内容</th>
+                    <th>客户评价</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            <button type="button" style="display: none" id="button1">新增维护记录</button>
+            <form id="add-form" style="display: none" th:action="@{/pre/insert}" method="post">
+                <table>
+                    <tr>
+                        <td>维护内容:</td>
+                        <td><textarea name="precontent" required></textarea></td>
+                    </tr>
+                    <tr>
+                        <td>维护人员:</td>
+                        <td><textarea name="preperson" required></textarea></td>
+                    </tr>
+                    <tr>
+                        <td>维护费用:</td>
+                        <td><input type="number" name="precost" step=".01" required></td>
+                    </tr>
+                    <tr>
+                        <td>客户评价:</td>
+                        <td><select name="clfeedback" required>
+                            <option value="">请选择</option>
+                            <option value="非常满意">非常满意</option>
+                            <option value="满意">满意</option>
+                            <option value="一般">一般</option>
+                            <option value="不满意">不满意</option>
+                        </select></td>
+                    </tr>
+                    <tr>
+                        <td><input id="clid" name="clid" value="" type="hidden"/></td>
+                    </tr>
+                </table>
                 <input type="submit" value="提交">
+                <input type="button" id="cancel-button" value="取消">
             </form>
+            <form id="edit-form" style="display: none" th:action="@{/pre/update}" method="post">
+                <table>
+                    <tr>
+                        <td>维护记录id</td>
+                        <td><input id="edit-preid" name="preid" value="" readonly="readonly"/></td>
+                    </tr>
+                    <tr>
+                        <td>维护内容:</td>
+                        <td><textarea name="precontent" id="edit-precontent" value=""></textarea></td>
+                    </tr>
+                    <tr>
+                        <td>维护人员:</td>
+                        <td><textarea name="preperson" id="edit-preperson" value=""></textarea></td>
+                    </tr>
+                    <tr>
+                        <td>维护费用:</td>
+                        <td><input type="number" id="edit-number" name="precost" step=".01" value=""></td>
+                    </tr>
+                    <tr>
+                        <td>客户评价:</td>
+                        <td><select name="clfeedback" required>
+                            <option value="">请选择</option>
+                            <option value="非常满意">非常满意</option>
+                            <option value="满意">满意</option>
+                            <option value="一般">一般</option>
+                            <option value="不满意">不满意</option>
+                        </select></td>
+                    </tr>
+                    <tr>
+                        <td><input id="edit-clid" name="clid" value="" type="hidden"/></td>
+                    </tr>
+                </table>
+                <input type="submit" value="提交">
+                <input type="button" id="cancel-button1" value="取消">
+            </form>
+            <div th:replace="~{maintain1::js}" ></div>
             <script>
-                $(function() {
-                    $("#maintenance-form").submit(function(event) {
-                        event.preventDefault();
-
-                        var form = $(this);
-                        var url = form.attr("action");
-                        var method =form.attr("method");
-                        var data = form.serialize();
-
-                        $.ajax({
-                            url: url,
-                            method: method,
-                            data: data,
-                            success: function(response) {
-                                alert("提交成功！");
-                                window.location.href = "maintenance-record.html";
-                            },
-                            error: function(xhr, status, error) {
-                                alert("提交失败！" + error);
+                $('.Table').on('click', '.selectbycid', function() {
+                    var tr = $(this).closest('tr');
+                    var id = tr.data('id');
+                    var clientid=id;
+                    console.log(id);
+                    var pre = [];
+                    $.ajax({
+                        type: 'post',
+                        url: '/pre/selectallbycid',
+                        data: {
+                            id:id,
+                            token: token
+                        },
+                        success: function(res) {
+                            $('#Table').hide();
+                            $('#table-striped').show();
+                            $('#button1').show();
+                            // 处理成功请求后的逻辑
+                            pre = [];
+                            if (res && res.length > 0) {
+                                var str = '';
+                                for (var i = 0; i < res.length; i++) {
+                                    pre.push(res[i]);
+                                    console.log(res[i])
+                                    str += '<tr data-id="' + res[i].preid + '">' +
+                                        '<td>' + res[i].predate + '</td>' +
+                                        '<td>' + res[i].precontent + '</td>' +
+                                        '<td>' + res[i].clfeedback + '</td>' +
+                                        '<td class="btn-group">' +
+                                        '<a href="#" class="btn update">编辑</a>' +
+                                        '<a href="#" class="btn delete">删除</a>' +
+                                        '</td>' +
+                                        '</tr>';
+                                }
+                                $('.table-striped tbody').html(str); // 将表格内容替换为从后端获取的员工信息
+                            } else {
+                                $('.table-striped tbody').html('暂无数据'); // 若未获取到任何员工信息，则在表格中显示暂无数据的提示
                             }
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            // 处理请求失败后的逻辑
+                            console.error(errorThrown);
+                        }
+                    });
+                    $(document).ready(function() {
+                        $("#add-form").submit(function(event) {
+                            // 阻止表单默认提交行为
+                            event.preventDefault();
+
+                            // 将ID设置为隐藏输入框的值
+                            $("#clid").val(clientid);
+
+                            // 提交表单
+                            this.submit();
                         });
                     });
+                    document.getElementById("button1").onclick = function() {
+                        document.getElementById("add-form").style.display = "block";
+                        document.getElementById("cancel-button").style.display = "block";
+                    };
+                    document.getElementById("cancel-button").onclick = function() {
+                        document.getElementById("add-form").style.display = "none";
+                    };
+                    //修改
+                    $('.table-striped').on('click', '.update', function() {
+                        var tr = $(this).closest('tr');
+                        var id = tr.data('id');
+                        console.log(id);
+
+                        var pres = pre.find(function(e) {
+                            return e.preid == id;
+                        });
+                        if (pres) {
+                            console.log(pres)
+                            // 将记录的详细信息填充到模态框中
+                            $('#edit-preid').val(pres.preid);
+                            $('#edit-precontent').val(pres.precontent);
+                            $('#edit-preperson').val(pres.preperson);
+                            $('#edit-number').val(pres.precost);
+                            $('#edit-clid').val(pres.clid);
+                            document.getElementById("edit-form").style.display = "block";
+                        }
+                    });
+                    document.getElementById("cancel-button1").onclick = function() {
+                        document.getElementById("edit-form").style.display = "none";
+                    };
+                    //删除
+                    $('.table-striped').on('click', '.delete', function() {
+                        var tr = $(this).closest('tr'); // 获取所选员工记录的行元素
+                        var id = tr.data('id'); // 获取员工记录的 ID
+
+                        if (confirm('确认要删除该维修记录信息吗？')) {
+                            // 发送 AJAX 请求删除员工记录
+                            $.ajax({
+                                type: 'POST',
+                                url: '/pre/delectbyid',
+                                data: {
+                                    preid: id,
+                                    token: token
+                                },
+                                success: function(res) {
+                                    // 处理成功请求后的逻辑
+                                    console.log('删除成功！');
+                                    tr.remove(); // 在表格中将已删除的员工记录从 DOM 中移除
+                                },
+                                error: function(jqXHR, textStatus, errorThrown) {
+                                    // 处理请求失败后的逻辑
+                                    console.error(errorThrown);
+                                }
+                            });
+                        }
+                    });
+
                 });
             </script>
         </div>

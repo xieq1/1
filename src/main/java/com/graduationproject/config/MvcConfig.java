@@ -15,6 +15,6 @@ public class MvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginInterceptor(tokenUtil))
-                .addPathPatterns("/user/**"); // 添加需要校验 JWT 的路径
+                .addPathPatterns("/user/**");// 添加需要校验 JWT 的路径
     }
 }

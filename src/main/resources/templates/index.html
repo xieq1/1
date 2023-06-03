@@ -13,7 +13,7 @@
     <div class="area row">
         <div class="col-md-12 nav">
             <ul>
-                <li><a th:href="@{/User/topersonalinformation(token=${#httpServletRequest.getParameter('token')})}">个人信息</a></li>
+                <li><a th:href="@{/User/topersonalinformation}" onclick="addTokenToHeader()">个人信息</a></li>
                 <li class="right"><a href="#">退出</a></li>
             </ul>
         </div>
@@ -34,6 +34,18 @@
                 xxxxxxx</p>
         </div>
     </div>
+    <script>
+        function addTokenToHeader() {
+            // 获取 "token" Cookie 值
+            var cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+            // 添加 "token" 到请求头中
+            $.ajaxSetup({
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader("Cookie", "token=" + cookieValue);
+                }
+            });
+        }
+    </script>
 </div>
 </body>
 </html>
