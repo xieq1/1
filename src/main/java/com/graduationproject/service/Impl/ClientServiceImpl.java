@@ -1,8 +1,9 @@
-package com.graduationproject.service;
+package com.graduationproject.service.Impl;
 
 import com.graduationproject.dao.ClientController;
 import com.graduationproject.po.Client;
 import com.graduationproject.po.Contract;
+import com.graduationproject.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service("ClientService")
-public class ClientServiceImpl implements ClientService{
+public class ClientServiceImpl implements ClientService {
     @Qualifier("clientdao")
     @Autowired
     private ClientController clientService;

@@ -1,7 +1,8 @@
-package com.graduationproject.service;
+package com.graduationproject.service.Impl;
 
 import com.graduationproject.dao.UserController;
 import com.graduationproject.po.User;
+import com.graduationproject.service.UserService;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -11,7 +12,7 @@ import com.google.common.collect.ImmutableMap;
 import java.util.List;
 
 @Service("UserService")
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
     @Qualifier("userdao")
     @Autowired
     private UserController userservice;

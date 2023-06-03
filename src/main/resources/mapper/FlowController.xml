@@ -11,7 +11,7 @@
     <result column="cstrinfo" jdbcType="VARCHAR" property="cstrinfo" />
   </resultMap>
   <sql id="Base_Column_List">
-    flowid, flowname, projectid, projectcast, builders, `describe`, cstrinfo
+    flowid, flowname, projectid, projectcast, builders, `describe`, cstrinfo, result
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -98,6 +98,9 @@
       <if test="cstrinfo != null">
         cstrinfo = #{cstrinfo,jdbcType=VARCHAR},
       </if>
+      <if test="result != null">
+        result = #{result,jdbcType=VARCHAR},
+      </if>
     </set>
     where flowid = #{flowid,jdbcType=INTEGER}
   </update>
@@ -109,6 +112,7 @@
       builders = #{builders,jdbcType=VARCHAR},
       `describe` = #{describe,jdbcType=VARCHAR},
       cstrinfo = #{cstrinfo,jdbcType=VARCHAR}
+      result = #{result,jdbcType=VARCHAR}
     where flowid = #{flowid,jdbcType=INTEGER}
   </update>
 </mapper>

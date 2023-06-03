@@ -1,10 +1,11 @@
-package com.graduationproject.service;
+package com.graduationproject.service.Impl;
 
 import com.graduationproject.po.Statement;
+import com.graduationproject.service.StatementService;
 import org.springframework.stereotype.Service;
 
 @Service("StatementService")
-public class StatementServiceImpl implements StatementService{
+public class StatementServiceImpl implements StatementService {
     @Override
     public int deleteByPrimaryKey(Integer statementid) {
         return 0;

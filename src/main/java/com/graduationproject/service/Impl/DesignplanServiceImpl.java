@@ -1,10 +1,11 @@
-package com.graduationproject.service;
+package com.graduationproject.service.Impl;
 
 import com.graduationproject.po.Designplan;
+import com.graduationproject.service.DesignplanService;
 import org.springframework.stereotype.Service;
 
 @Service("DesignplanService")
-public class DesignplanServiceImpl implements DesignplanService{
+public class DesignplanServiceImpl implements DesignplanService {
     @Override
     public int deleteByPrimaryKey(Integer designplanid) {
         return 0;

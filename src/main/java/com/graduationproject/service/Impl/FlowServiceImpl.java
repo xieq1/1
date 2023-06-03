@@ -1,8 +1,9 @@
-package com.graduationproject.service;
+package com.graduationproject.service.Impl;
 
 import com.graduationproject.dao.FlowController;
 import com.graduationproject.po.Flow;
 import com.graduationproject.po.Materials;
+import com.graduationproject.service.FlowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service("FlowService")
-public class FlowServiceImpl implements FlowService{
+public class FlowServiceImpl implements FlowService {
     @Qualifier("flowdao")
     @Autowired
     private FlowController flowService;
@@ -38,6 +39,7 @@ public class FlowServiceImpl implements FlowService{
 
     @Override
     public int updateByPrimaryKeySelective(Flow record) {
+        flowService.updateByPrimaryKeySelective(record);
         return 0;
     }
 

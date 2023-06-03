@@ -1,8 +1,9 @@
-package com.graduationproject.service;
+package com.graduationproject.service.Impl;
 
 import com.graduationproject.dao.MaterialsController;
 import com.graduationproject.po.Materials;
 import com.graduationproject.po.User;
+import com.graduationproject.service.MaterialsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service("MaterialsService")
-public class MaterialsServiceImpl implements MaterialsService{
+public class MaterialsServiceImpl implements MaterialsService {
     @Qualifier("materialsdao")
     @Autowired
     private MaterialsController materialsService;

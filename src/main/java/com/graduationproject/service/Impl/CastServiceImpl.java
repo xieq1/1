@@ -1,8 +1,9 @@
-package com.graduationproject.service;
+package com.graduationproject.service.Impl;
 
 import com.graduationproject.dao.CastController;
 import com.graduationproject.po.Cast;
 import com.graduationproject.po.Schedule;
+import com.graduationproject.service.CastService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service("CastService")
-public class CastServiceImpl implements CastService{
+public class CastServiceImpl implements CastService {
     @Qualifier("castdao")
     @Autowired
     private CastController castService;

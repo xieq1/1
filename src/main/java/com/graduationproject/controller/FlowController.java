@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -32,6 +33,13 @@ public class FlowController {
     @PostMapping(value = "update")
     public String updatebyid(Flow record){
         flowService.updateByPrimaryKey(record);
+        return "process";
+    }
+
+    @PostMapping(value = "update1")
+    public String updatebyid1(Flow record){
+        System.out.println(record);
+        flowService.updateByPrimaryKeySelective(record);
         return "process";
     }
 

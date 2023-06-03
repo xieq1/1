@@ -1,7 +1,8 @@
-package com.graduationproject.service;
+package com.graduationproject.service.Impl;
 
 import com.graduationproject.dao.ContractController;
 import com.graduationproject.po.Contract;
+import com.graduationproject.service.ContractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service("ContractService")
-public class ContractServiceImpl implements ContractService{
+public class ContractServiceImpl implements ContractService {
     @Qualifier("contractdao")
     @Autowired
     private ContractController contractService;

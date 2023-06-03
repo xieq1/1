@@ -1,7 +1,8 @@
-package com.graduationproject.service;
+package com.graduationproject.service.Impl;
 
 import com.graduationproject.dao.MaintainidController;
 import com.graduationproject.po.Maintainid;
+import com.graduationproject.service.MatintainidService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service("MatintainidService")
-public class MatintainidServiceImpl implements MatintainidService{
+public class MatintainidServiceImpl implements MatintainidService {
     @Qualifier("maintainiddao")
     @Autowired
     private MaintainidController maintainidService;

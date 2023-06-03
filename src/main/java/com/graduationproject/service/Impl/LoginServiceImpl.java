@@ -1,13 +1,14 @@
-package com.graduationproject.service;
+package com.graduationproject.service.Impl;
 
 import com.graduationproject.dao.login;
 import com.graduationproject.po.User;
+import com.graduationproject.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service("LoginService")
-public class LoginServiceImpl implements LoginService{
+public class LoginServiceImpl implements LoginService {
     @Qualifier("UserDao")
     @Autowired//不加调用的时候该service为null，会报一个空指针异常的错误
     private login UserDao;

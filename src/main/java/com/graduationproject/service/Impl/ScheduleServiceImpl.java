@@ -1,7 +1,8 @@
-package com.graduationproject.service;
+package com.graduationproject.service.Impl;
 
 import com.graduationproject.dao.ScheduleController;
 import com.graduationproject.po.Schedule;
+import com.graduationproject.service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service("ScheduleService")
-public class ScheduleServiceImpl implements ScheduleService{
+public class ScheduleServiceImpl implements ScheduleService {
     @Qualifier("scheduledao")
     @Autowired
     private ScheduleController scheduleService;

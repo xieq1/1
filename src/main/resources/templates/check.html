@@ -27,9 +27,9 @@
         <div class="area grow-1" id="">
             <h5>施工验收管理</h5>
             <div th:replace="~{process::table1}" ></div>
-            <div class="construction-checks">
+            <div class="construction-checks" id="weish" style="display: none">
                 <h5>未审核施工环节列表</h5>
-                <table class="table-striped" id="table-striped" style="display: none">
+                <table class="table-striped">
                     <thead>
                     <tr>
                         <th>流程ID</th>
@@ -37,7 +37,7 @@
                         <th>描述</th>
                         <th>装修内容</th>
                         <th>施工人员</th>
-                        <th>完工时间</th>
+                        <th>审核状态</th>
                         <th>操作</th>
                     </tr>
                     </thead>
@@ -70,9 +70,9 @@
                 </table>
             </div>
 
-            <div class="construction-checks">
+            <div class="construction-checks" id="yish" style="display: none">
                 <h5>已审核施工环节列表</h5>
-                <table class="table-striped" style="display: none">
+                <table class="table-striped1" >
                     <thead>
                     <tr>
                         <th>流程ID</th>
@@ -81,7 +81,6 @@
                         <th>装修内容</th>
                         <th>施工人员</th>
                         <th>审核状态</th>
-                        <th>状态</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -115,32 +114,48 @@
                     },
                     success: function(res) {
                         $('#Table').hide();
-                        $('#table-striped').show();
+                        $('#weish').show();
+                        $('#yish').show();
                         $('#tile1').show();
                         $('#button1').show();
                         // 处理成功请求后的逻辑
                         flow = [];
                         if (res && res.length > 0) {
                             var str = '';
+                            var str1 = '';
                             for (var i = 0; i < res.length; i++) {
                                 flow.push(res[i]);
                                 console.log(res[i])
+                                if(res[i].result!='通过'){
                                 str += '<tr data-id="' + res[i].flowid + '">' +
                                     '<td>' + res[i].flowid+ '</td>' +
                                     '<td>' + res[i].flowname + '</td>' +
                                     '<td>' + res[i].describe + '</td>' +
                                     '<td>' + res[i].cstrinfo + '</td>' +
                                     '<td>' + res[i].builders + '</td>' +
-                                    '<td>' + res[i].projectcast + '</td>' +
+                                    '<td>' + res[i].result + '</td>' +
                                     '<td class="btn-group">' +
                                     '<a href="#" class="btn update1">通过</a>' +
-                                    '<a href="#" class="btn update2">拒绝</a>' +
+                                    '<a href="#" class="btn update2">不通过</a>' +
                                     '</td>' +
                                     '</tr>';
+                                }
+                                else {
+                                    str1 += '<tr data-id="' + res[i].flowid + '">' +
+                                        '<td>' + res[i].flowid+ '</td>' +
+                                        '<td>' + res[i].flowname + '</td>' +
+                                        '<td>' + res[i].describe + '</td>' +
+                                        '<td>' + res[i].cstrinfo + '</td>' +
+                                        '<td>' + res[i].builders + '</td>' +
+                                        '<td>' + res[i].result + '</td>' +
+                                        '</tr>';
+                                }
                             }
                             $('.table-striped tbody').html(str); // 将表格内容替换为从后端获取的员工信息
+                            $('.table-striped1 tbody').html(str1); // 将表格内容替换为从后端获取的员工信息
                         } else {
                             $('.table-striped tbody').html('暂无数据'); // 若未获取到任何员工信息，则在表格中显示暂无数据的提示
+                            $('.table-striped1 tbody').html(str1); // 将表格内容替换为从后端获取的员工信息
                         }
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
@@ -148,19 +163,68 @@
                         console.error(errorThrown);
                     }
                 });
-                $(document).ready(function() {
-                    $("#add-form").submit(function(event) {
-                        // 阻止表单默认提交行为
-                        event.preventDefault();
+                $('.table-striped').on('click', '.update1', function() {
+                    var tr = $(this).closest('tr');
+                    var id = tr.data('id');
+                    console.log(id);
 
-                        // 将施工项目ID设置为隐藏输入框的值
-                        $("#projectid").val(projectid);
-
-                        // 提交表单
-                        this.submit();
+                    var flows = flow.find(function(e) {
+                        return e.flowid == id;
                     });
+                    flows.result='通过';
+                    console.log(flows);
+                    if (flows) {
+                        $.ajax({
+                            type: 'post',
+                            url: '/flow/update1',
+                            data: {
+                                flowid: id,
+                                result: flows.result,
+                                token: token
+                            },
+                            success: function(res) {
+                                // 处理成功请求后的逻辑
+                                alert('更新审核状态成功');
+                                location.reload(); // 刷新页面以显示最新数据
+                            },
+                            error: function(jqXHR, textStatus, errorThrown) {
+                                // 处理请求失败后的逻辑
+                                alert('更新审核状态失败：' + errorThrown);
+                            }
+                        });
+                    }
                 });
+                $('.table-striped').on('click', '.update2', function() {
+                    var tr = $(this).closest('tr');
+                    var id = tr.data('id');
+                    console.log(id);
 
+                    var flows = flow.find(function(e) {
+                        return e.flowid == id;
+                    });
+                    flows.result='不通过';
+                    console.log(flows);
+                    if (flows) {
+                        $.ajax({
+                            type: 'post',
+                            url: '/flow/update1',
+                            data: {
+                                flowid: id,
+                                result: flows.result,
+                                token: token
+                            },
+                            success: function(res) {
+                                // 处理成功请求后的逻辑
+                                alert('更新审核状态成功');
+                                location.reload(); // 刷新页面以显示最新数据
+                            },
+                            error: function(jqXHR, textStatus, errorThrown) {
+                                // 处理请求失败后的逻辑
+                                alert('更新审核状态失败：' + errorThrown);
+                            }
+                        });
+                    }
+                });
             });
         </script>
     </div>

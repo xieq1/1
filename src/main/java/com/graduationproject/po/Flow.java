@@ -23,5 +23,7 @@ public class Flow implements Serializable {
 
     private String cstrinfo;
 
+    private String result;
+
     private static final long serialVersionUID = 1L;
 }
