@@ -8,12 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping("/statement")
@@ -49,5 +54,17 @@ public class StatementController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("合同文件上传失败：" + e.getMessage());
         }
+    }
+
+    @PostMapping(value="/selectall")
+    @ResponseBody
+    public List<Statement> selectall(){
+        return statementService.selectall();
+    }
+
+    @PostMapping("delectbyid")
+    public String delectbyid(Statement record){
+        statementService.deleteByPrimaryKey(record.getStatementid());
+        return "contract";
     }
 }

@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service("StatementService")
 public class StatementServiceImpl implements StatementService {
     @Qualifier("statementdao")
@@ -14,6 +16,7 @@ public class StatementServiceImpl implements StatementService {
     private StatementController statementService;
     @Override
     public int deleteByPrimaryKey(Integer statementid) {
+        statementService.deleteByPrimaryKey(statementid);
         return 0;
     }
 
@@ -45,5 +48,11 @@ public class StatementServiceImpl implements StatementService {
     @Override
     public void save(Statement statement) {
         statementService.save(statement);
+    }
+
+    @Override
+    public List<Statement> selectall() {
+        List<Statement> statementsList=statementService.selectall();
+        return statementsList;
     }
 }

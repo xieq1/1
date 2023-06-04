@@ -18,7 +18,7 @@ public class ProjectController {
 
     @PostMapping(value = "getprojectall")
     @ResponseBody
-    public List<Project> selectall(Project project){
+    public List<Project> selectall(){
         return projectService.selectall();
     }
 }

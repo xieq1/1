@@ -20,7 +20,7 @@
             resultType="com.graduationproject.po.User">
         select * from user limit #{pageSize} offset #{offset}
     </select>
-    <select id="findbyid" parameterType="int" resultType="com.graduationproject.po.User">
+    <select id="findbyid" parameterType="java.lang.Integer" resultType="com.graduationproject.po.User">
         select * from user where userid=#{userid}
     </select>
     <select id="getallUsers" resultType="com.graduationproject.po.User"></select>

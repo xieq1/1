@@ -1,5 +1,7 @@
 package com.graduationproject.config;
 
+import com.graduationproject.po.User;
+import com.graduationproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;

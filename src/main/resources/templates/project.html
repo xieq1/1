@@ -26,8 +26,8 @@
         <div th:include="sidebar"></div>
         <!-- article -->
         <div class="area grow-1" id="">
-            <h5>施工流程管理</h5>
-            <table class="Table" id="Table" th:fragment="table1">
+            <h5>施工项目管理</h5>
+            <table class="table-striped">
                 <thead>
                 <tr>
                     <th>编号</th>
@@ -37,39 +37,18 @@
                     <th>施工人员</th>
                     <th>设计方案id</th>
                     <th>验收结果</th>
-                    <th>查看流程</th>
+                    <th>操作</th>
                 </tr>
                 </thead>
                 <tbody>
                 <!-- 施工项目数据行 -->
                 </tbody>
             </table>
-
-            <div class="construction-process">
-                <h5 style="display: none" id="tile1">施工环节</h5>
-                <table class="table-striped" id="table-striped" style="display: none">
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>名称</th>
-                        <th>描述</th>
-                        <th>装修内容</th>
-                        <th>施工人员</th>
-                        <th>项目杂费</th>
-                        <th>操作</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-
-                    </tbody>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-modal" style="display: none" id="button1">新增施工环节</button>
-                </table>
-            </div>
             <div>
             </div>
             <!-- 添加对话框 -->
             <div class="modal fade" id="add-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <form id="add-form" th:action="@{/flow/insert(token=${#httpServletRequest.getParameter('token')})}" method="post">
+                <form id="add-form" th:action="@{/project/insert}" method="post">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -80,12 +59,12 @@
                                 <!-- 表单数据项 -->
                                 <table>
                                     <tr>
-                                        <td>流程Id</td>
-                                        <td><input id="flowid" name="flowid" value="" /></td>
+                                        <td>项目Id</td>
+                                        <td><input id="projectid" name="projectid" value="" /></td>
                                     </tr>
                                     <tr>
-                                        <td>流程名称</td>
-                                        <td><input id="flowname" name="flowname" value="" /></td>
+                                        <td>项目名称</td>
+                                        <td><input id="projectname" name="projectname" value="" /></td>
                                     </tr>
 
                                     <tr>
@@ -93,19 +72,16 @@
                                         <td><input id="projectcast" name="projectcast" value="" /></td>
                                     </tr>
                                     <tr>
+                                        <td>负责人</td>
+                                        <td><input id="principal" name="principal" value="" /></td>
+                                    </tr>
+                                    <tr>
                                         <td>施工成员</td>
                                         <td><input id="builders" name="builders" value="" /></td>
                                     </tr>
                                     <tr>
-                                        <td>描述</td>
-                                        <td><input id="describe" name="describe" value="" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td>装修内容</td>
-                                        <td><input id="cstrinfo" name="cstrinfo" value="" /></td>
-                                    </tr>
-                                    <tr>
-                                    <td><input id="projectid" name="projectid" value="" type="hidden"/></td>
+                                        <td>设计方案id</td>
+                                        <td><input id="designplanid" name="designplanid" value="" /></td>
                                     </tr>
                                     <tr>
                                         <td></td>
@@ -118,7 +94,7 @@
                 </form>
             </div>
             <div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <form id="edit-form" th:action="@{/flow/update(token=${#httpServletRequest.getParameter('token')})}" method="post">
+                <form id="edit-form" th:action="@{/project/update}" method="post">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -129,12 +105,12 @@
                                 <!-- 表单数据项 -->
                                 <table>
                                     <tr>
-                                        <td>流程Id</td>
-                                        <td><input id="edit-flowid" name="flowid" value="" readonly="readonly"/></td>
+                                        <td>项目Id</td>
+                                        <td><input id="edit-projectid" name="projectid" value="" readonly/></td>
                                     </tr>
                                     <tr>
-                                        <td>流程名称</td>
-                                        <td><input id="edit-flowname" name="flowname" value="" /></td>
+                                        <td>项目名称</td>
+                                        <td><input id="edit-projectname" name="projectname" value="" /></td>
                                     </tr>
 
                                     <tr>
@@ -142,20 +118,16 @@
                                         <td><input id="edit-projectcast" name="projectcast" value="" /></td>
                                     </tr>
                                     <tr>
+                                        <td>负责人</td>
+                                        <td><input id="edit-principal" name="principal" value="" /></td>
+                                    </tr>
+                                    <tr>
                                         <td>施工成员</td>
                                         <td><input id="edit-builders" name="builders" value="" /></td>
                                     </tr>
                                     <tr>
-                                        <td>描述</td>
-                                        <td><input id="edit-describe" name="describe" value="" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td>装修内容</td>
-                                        <td><input id="edit-cstrinfo" name="cstrinfo" value="" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td>施工项目id</td>
-                                        <td><input id="edit-projectid" name="projectid" value="" readonly="readonly"/></td>
+                                        <td>设计方案id</td>
+                                        <td><input id="edit-designplanid" name="designplanid" value="" /></td>
                                     </tr>
                                     <tr>
                                         <td></td>
@@ -169,82 +141,31 @@
             </div>
         </div>
 
-        <script th:fragment="js">
-        var project = [];
-        // 发送 AJAX 请求时添加 Token 到 URL 中
-        var token = new URLSearchParams(window.location.search).get("token");
-        $.ajax({
-            type: 'post',
-            url: '/project/getprojectall?token=' + token,
-            data: {},
-            success: function(res) {
-                // 处理成功请求后的逻辑
-                project = [];
-                if (res && res.length > 0) {
-                    var str = '';
-                    for (var i = 0; i < res.length; i++) {
-                        project.push(res[i]);
-                        console.log(res[i])
-                        str += '<tr data-id="' + res[i].projectid + '">' +
-                            '<td>' + res[i].projectid+ '</td>' +
-                            '<td>' + res[i].projectname + '</td>' +
-                            '<td>' + res[i].projectcast + '</td>' +
-                            '<td>' + res[i].principal + '</td>' +
-                            '<td>' + res[i].buiders + '</td>' +
-                            '<td>' + res[i].designplanid + '</td>' +
-                            '<td>' + res[i].acresult + '</td>' +
-                            '<td class="btn-group">' +
-                            '<a href="#" class="btn selectbypid">查看</a>' +
-                            '</td>' +
-                            '</tr>';
-                    }
-                    $('.Table tbody').html(str); // 将表格内容替换为从后端获取的员工信息
-                } else {
-                    $('.Table tbody').html('暂无数据'); // 若未获取到任何员工信息，则在表格中显示暂无数据的提示
-                }
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                // 处理请求失败后的逻辑
-                console.error(errorThrown);
-            }
-        });
-        </script>
         <script>
-        $('.Table').on('click', '.selectbypid', function() {
-            var tr = $(this).closest('tr');
-            var id = tr.data('id');
-            var projectid=id;
-            console.log(id);
-            var flow = [];
+            var project = [];
             $.ajax({
                 type: 'post',
-                url: '/flow/getflowall',
-                data: {
-                    id:id,
-                    token: token
-                },
+                url: '/project/getprojectall',
+                data: {},
                 success: function(res) {
-                    $('#Table').hide();
-                    $('#table-striped').show();
-                    $('#tile1').show();
-                    $('#button1').show();
                     // 处理成功请求后的逻辑
-                    flow = [];
+                    project = [];
                     if (res && res.length > 0) {
                         var str = '';
                         for (var i = 0; i < res.length; i++) {
-                            flow.push(res[i]);
+                            project.push(res[i]);
                             console.log(res[i])
-                            str += '<tr data-id="' + res[i].flowid + '">' +
-                                '<td>' + res[i].flowid+ '</td>' +
-                                '<td>' + res[i].flowname + '</td>' +
-                                '<td>' + res[i].describe + '</td>' +
-                                '<td>' + res[i].cstrinfo + '</td>' +
-                                '<td>' + res[i].builders + '</td>' +
+                            str += '<tr data-id="' + res[i].projectid + '">' +
+                                '<td>' + res[i].projectid+ '</td>' +
+                                '<td>' + res[i].projectname + '</td>' +
                                 '<td>' + res[i].projectcast + '</td>' +
+                                '<td>' + res[i].principal + '</td>' +
+                                '<td>' + res[i].buiders + '</td>' +
+                                '<td>' + res[i].designplanid + '</td>' +
+                                '<td>' + res[i].acresult + '</td>' +
                                 '<td class="btn-group">' +
-                                '<a href="#" class="btn update">编辑</a>' +
-                                '<a href="#" class="btn delete">删除</a>' +
+                                '<a href="#" class="update">更新</a>' +
+                                '<a href="#" class="delete">删除</a>' +
                                 '</td>' +
                                 '</tr>';
                         }
@@ -258,18 +179,6 @@
                     console.error(errorThrown);
                 }
             });
-            $(document).ready(function() {
-                $("#add-form").submit(function(event) {
-                    // 阻止表单默认提交行为
-                    event.preventDefault();
-
-                    // 将施工项目ID设置为隐藏输入框的值
-                    $("#projectid").val(projectid);
-
-                    // 提交表单
-                    this.submit();
-                });
-            });
             //删除
             $('.table-striped').on('click', '.delete', function() {
                 var tr = $(this).closest('tr'); // 获取所选员工记录的行元素
@@ -279,10 +188,9 @@
                     // 发送 AJAX 请求删除员工记录
                     $.ajax({
                         type: 'POST',
-                        url: '/flow/delectbyid',
+                        url: '/project/delectbyid',
                         data: {
-                            flowid: id,
-                            token: token
+                            projectid: id
                         },
                         success: function(res) {
                             // 处理成功请求后的逻辑
@@ -302,25 +210,23 @@
                 var id = tr.data('id');
                 console.log(id);
 
-                var flows = flow.find(function(e) {
-                    return e.flowid == id;
+                var projects = flow.find(function(e) {
+                    return e.projectid == id;
                 });
 
-                if (flows) {
+                if (projects) {
                     // 将记录的详细信息填充到模态框中
-                    $('#edit-flowid').val(flows.flowid);
-                    $('#edit-flowname').val(flows.flowname);
-                    $('#edit-describe').val(flows.describe);
-                    $('#edit-cstrinfo').val(flows.cstrinfo);
-                    $('#edit-builders').val(flows.builders);
-                    $('#edit-projectcast').val(flows.projectcast);
-                    $("#edit-projectid").val(projectid);
+                    $('#edit-projectid').val(projects.projectid);
+                    $('#edit-projectname').val(projects.projectname);
+                    $('#edit-projectcast').val(projects.projectcast);
+                    $('#edit-principal').val(projects.principal);
+                    $('#edit-builders').val(projects.builders);
+                    $('#edit-designplanid').val(projects.designplanid);
                     // 弹出模态框
                     $('#edit-modal').modal('show');
                 }
             });
-        });
-    </script>
+        </script>
     </div>
     <!-- footer -->
     <div class="area footer row">

@@ -45,6 +45,12 @@ public class HelloController {
         return "offer";
     }
 
+    @RequestMapping("/toproject")
+    public String toproject()
+    {
+        return "project";
+    }
+
     @RequestMapping("/toprocess")
     public String toprocess()
     {

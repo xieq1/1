@@ -12,7 +12,7 @@ import java.util.List;
 public interface UserController {
     public void UserInsert(@Param("name")String name, @Param("password")String password, @Param("role")String role, @Param("job")String job, @Param("salary")String slary);
     int getUserCount();
-    public User findbyid(@Param("userid")int userid);
+    public User findbyid(@Param("userid")Integer userid);
     List<User> getUsersByPage(@Param("page") int page, @Param("pageSize") int pageSize);
     List<User> getallUsers();
     public void updatebyuid(@Param("userid")int userid,@Param("name")String name, @Param("password")String password, @Param("role")String role, @Param("job")String job, @Param("salary")String slary);

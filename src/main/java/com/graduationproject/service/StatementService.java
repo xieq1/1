@@ -2,6 +2,8 @@ package com.graduationproject.service;
 
 import com.graduationproject.po.Statement;
 
+import java.util.List;
+
 public interface StatementService {
     int deleteByPrimaryKey(Integer statementid);
 
@@ -16,4 +18,6 @@ public interface StatementService {
     int updateByPrimaryKey(Statement record);
 
     void save(Statement statement);
+
+    List<Statement> selectall();
 }

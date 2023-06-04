@@ -58,7 +58,7 @@
     <div class="area row">
         <div class="col-md-12 nav">
             <ul>
-                <li><a th:href="@{/topersonalinformation}">个人信息</a></li>
+                <li><a th:href="@{/User/topersonalinformation}" onclick="addTokenToHeader()">个人信息</a></li>
                 <li class="right"><a href="#">退出</a></li>
             </ul>
         </div>
@@ -109,8 +109,6 @@
                     <option value="medium">一般</option>
                     <option value="hard">困难</option>
                 </select><br><br>
-                <label for="quote-attribute">方案报价：</label>
-                <input type="text" id="quote-attribute" name="quote-attribute"><br><br>
                 <input type="submit" value="上传">
                 <input type="reset" value="重置">
             </form>

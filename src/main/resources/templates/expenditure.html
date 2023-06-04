@@ -13,7 +13,7 @@
     <div class="area row">
         <div class="col-md-12 nav">
             <ul>
-                <li><a th:href="@{/topersonalinformation}">个人信息</a></li>
+                <li><a th:href="@{/User/topersonalinformation}" onclick="addTokenToHeader()">个人信息</a></li>
                 <li class="right"><a href="#">退出</a></li>
             </ul>
         </div>
@@ -60,8 +60,8 @@
                 </tbody>
             </table>
 
-            <!-- 生成报表按钮 -->
-            <button id="generate-report">生成报表</button>
+            <!-- 生成饼图按钮 -->
+            <button id="generate-report">生成饼图</button>
 
             <div id="report-div"></div>
 
@@ -70,6 +70,7 @@
             <script src="https://cdn.bootcss.com/Chart.js/2.9.4/Chart.min.js"></script>
             <script>
                 var expenses = [];
+                var reportText;
                 // 监听添加支出表单提交事件
                 $('#add-form').submit(function(event) {
                     event.preventDefault(); // 阻止表单默认提交行为
@@ -113,7 +114,7 @@
 
                     // 显示报表内容和图表
                     $('#report-div').text(reportText);
-                    generateTypeChart();
+                    generateTypeChart(reportText);
                 });
 
                 // 生成支出类型的饼图
@@ -152,7 +153,6 @@
                             borderWidth: 1
                         }]
                     };
-
                     // 创建饼图
                     var chartOptions = {
                         responsive: true,

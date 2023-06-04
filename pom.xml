@@ -112,12 +112,19 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
+        <!--阿里云OSS-->
         <dependency>
             <groupId>com.aliyun.oss</groupId>
             <artifactId>aliyun-sdk-oss</artifactId>
             <version>3.13.0</version> <!-- 根据自己使用的版本进行配置 -->
         </dependency>
-
+        <!--bimface-->
+        <dependency>
+            <groupId>com.bimface</groupId>
+            <artifactId>bimface-java-sdk</artifactId>
+            <version>3.3.0</version>
+            <classifier>all</classifier>
+        </dependency>
 
     </dependencies>
 

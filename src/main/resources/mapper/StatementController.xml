@@ -16,7 +16,10 @@
     from statement
     where statementid = #{statementid,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <select id="selectall" resultType="com.graduationproject.po.Statement">
+      select * from statement
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from statement
     where statementid = #{statementid,jdbcType=INTEGER}
   </delete>

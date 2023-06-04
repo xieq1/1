@@ -4,6 +4,8 @@ import com.graduationproject.po.Statement;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository("statementdao")
 @Mapper
 public interface StatementController {
@@ -20,4 +22,6 @@ public interface StatementController {
     int updateByPrimaryKey(Statement record);
 
     void save(Statement statement);
+
+    List<Statement> selectall();
 }
